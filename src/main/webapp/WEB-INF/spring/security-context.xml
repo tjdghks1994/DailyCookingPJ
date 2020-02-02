@@ -9,7 +9,7 @@
 
 	<security:http>
 	
-		<security:form-login/>
+		<security:form-login login-page="/login"/>
 	
 	</security:http>
 	

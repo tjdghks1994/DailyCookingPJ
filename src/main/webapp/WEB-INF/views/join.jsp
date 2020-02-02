@@ -23,41 +23,41 @@
 			<div class="main-agileits">
 				<div class="form-w3agile">
 					<h3>회원 가입</h3>
-					<form action="#" method="post">
+					<form action="/join" method="post">
 						<p style="font-size: 20px; margin-bottom: 10px;">이름</p>
 						<div class="key">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
-							<input  type="text">
+							<input  type="text" name="username">
 							<div class="clearfix"></div>
 						</div>
 						<p style="font-size: 20px; margin-bottom: 10px;">아이디</p>
 						<div class="key">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
-							<input  type="text">
+							<input  type="text" name="userid">
 							<div class="clearfix"></div>
 						</div>
 						<p style="font-size: 20px; margin-bottom: 10px;">비밀번호</p>
 						<div class="key">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
-							<input  type="password">
+							<input  type="password" name="userpw">
 							<div class="clearfix"></div>
 						</div>
 						<p style="font-size: 20px; margin-bottom: 10px;">비밀번호 확인</p>
 						<div class="key">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
-							<input  type="password">
+							<input  type="password" name="userpwck">
 							<div class="clearfix"></div>
 						</div>
 						<p style="font-size: 20px; margin-bottom: 10px;">닉네임</p>
 						<div class="key">
 							<i class="fa fa-lock" aria-hidden="true"></i>
-							<input  type="text">
+							<input  type="text" name="nickname">
 							<div class="clearfix"></div>
 						</div>
 						<p style="font-size: 20px; margin-bottom: 10px;">이메일</p>
 						<div class="key">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
-							<input  type="text">
+							<input  type="text" name="usermail">
 							<div class="clearfix"></div>
 						</div>
 						<input type="submit" value="회원가입">
