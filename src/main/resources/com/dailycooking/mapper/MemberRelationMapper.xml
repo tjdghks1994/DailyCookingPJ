@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dailycooking.mapper.MemberRelationMapper">
+	<insert id="join">
+		insert into daily_member(userid,username,nickname,usermail,userpw)
+		values(#{userid},#{username},#{nickname},#{usermail},#{userpw})
+	</insert>
+	<insert id="insertAuth">
+		insert into daily_member_auth
+		values(#{userid},'ROLE_USER')
+	</insert>
+</mapper>

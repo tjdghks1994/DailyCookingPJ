@@ -3,6 +3,9 @@ package com.dailycooking.domain;
 import java.util.Date;
 import java.util.List;
 
+import lombok.Data;
+
+@Data
 public class MemberVO {
 	private String userid; // 사용자 아이디
 	private String username; // 사용자 이름
