@@ -19,7 +19,6 @@ public class MemberRelationMapperTest {
 	@Setter(onMethod_ = @Autowired)
 	private MemberRelationMapper mapper;
 	
-	@Test
 	public void join() {
 		MemberVO mvo = new MemberVO();
 		mvo.setUserid("test01");
@@ -29,5 +28,11 @@ public class MemberRelationMapperTest {
 		mvo.setUsermail("test@naver.com");
 		
 		mapper.join(mvo);
+	}
+	
+	@Test
+	public void insertAuth() {
+		mapper.insertAuth("test01");
+		log.info("권한 설정 하기");
 	}
 }
