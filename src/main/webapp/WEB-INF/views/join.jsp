@@ -23,7 +23,7 @@
 			<div class="main-agileits">
 				<div class="form-w3agile">
 					<h3>회원 가입</h3>
-					<form action="/join" method="post">
+					<form action="/join" method="post" id="joinForm">
 						<p style="font-size: 20px; margin-bottom: 10px;">이름</p>
 						<div class="key">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
@@ -33,7 +33,7 @@
 						<p style="font-size: 20px; margin-bottom: 10px;">아이디</p>
 						<div class="key">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
-							<input  type="text" name="userid">
+							<input  type="text" name="userid" id="userid">
 							<div class="clearfix"></div>
 						</div>
 						<p style="font-size: 20px; margin-bottom: 10px;">비밀번호</p>
@@ -60,7 +60,7 @@
 							<input  type="text" name="usermail">
 							<div class="clearfix"></div>
 						</div>
-						<input type="submit" value="회원가입">
+						<input type="button" value="회원가입" id="joinBtn" style="background: #fdb515;">
 						<input type="button" value="취소" id="cancleBtn">
 					</form>
 				</div>
@@ -74,6 +74,7 @@ $(function(){
 		e.preventDefault();
 		history.back();
 	});
+	  
 });
 
 </script>
