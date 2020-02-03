@@ -26,23 +26,24 @@
 		<div class="main-agileits">
 				<div class="form-w3agile">
 					<h3>로그인</h3>
-					<form action="#" method="post">
+					<form action="/login" method="post">
 						<p style="font-size: 20px; margin-bottom: 10px;">아이디</p>
 						<div class="key">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
-							<input  type="text">
+							<input  type="text" name="username">
 							<div class="clearfix"></div>
 						</div>
 						<p style="font-size: 20px; margin-bottom: 10px;">비밀번호</p>
 						<div class="key">
 							<i class="fa fa-lock" aria-hidden="true"></i>
-							<input  type="password">
+							<input  type="password" name="password">
 							<div class="clearfix"></div>
 						</div>
 						<input type="submit" value="Login">
 						<div class="form-w3agile2">
 							<input type="checkbox"> 로그인 상태 유지하기
 						</div>
+						<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 					</form>
 				</div>
 				
