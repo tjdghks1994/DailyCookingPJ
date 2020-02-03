@@ -12,8 +12,7 @@
 		<result property="usermail" column="usermail"/>
 		<result property="regDate" column="regdate"/>
 		<result property="suspension" column="suspension"/>
-		<collection property="authList" column="authMap">
-		</collection>
+		<collection property="authList" resultMap="authMap"/>
 	</resultMap>
 	
 	<resultMap type="com.dailycooking.domain.AuthVO" id="authMap">
@@ -25,7 +24,24 @@
 	select 
 		mem.userid, userpw, username, nickname, usermail, regdate, suspension, auth
 	from 
-		daily_member mem LEFT OUTER JOIN daily_member_auth auth on mem.userid = auth.userid
-	where mem.userid = #{userid}
+		daily_member mem, daily_member_auth auth
+	where
+		mem.userid = auth.userid AND mem.userid = #{userid}
+	</select>
+	
+	<select id="read" resultType="com.dailycooking.domain.MemberVO">
+	select
+		userid, userpw, username, nickname, usermail, regdate, suspension
+	from
+		daily_member
+	where userid = #{userid}
+	</select>
+	
+	<select id="read2" resultType="com.dailycooking.domain.AuthVO">
+	select
+		userid, auth
+	from
+		daily_member_auth
+	where userid = #{userid}
 	</select>
 </mapper>

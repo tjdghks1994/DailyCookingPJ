@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.dailycooking.domain.AuthVO;
 import com.dailycooking.domain.MemberVO;
 
 import lombok.Setter;
@@ -29,9 +30,9 @@ public class MemberMapperTest {
 	@Test
 	public void testRead() {
 		MemberVO mvo = mapper.readInfo("admin");
-		
 		log.warn("mvo : " + mvo);
 		
 		mvo.getAuthList().forEach(authVO -> log.info("authVO : " + authVO));
 	}
+
 }
