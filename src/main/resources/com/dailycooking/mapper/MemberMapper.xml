@@ -3,5 +3,29 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dailycooking.mapper.MemberMapper">
+	<resultMap type="com.dailycooking.domain.MemberVO" id="memberMap">
+		<id property="userid" column="userid"/>
+		<result property="userid" column="userid"/>
+		<result property="userpw" column="userpw"/>
+		<result property="username" column="username"/>
+		<result property="nickname" column="nickname"/>
+		<result property="usermail" column="usermail"/>
+		<result property="regDate" column="regdate"/>
+		<result property="suspension" column="suspension"/>
+		<collection property="authList" column="authMap">
+		</collection>
+	</resultMap>
 	
+	<resultMap type="com.dailycooking.domain.AuthVO" id="authMap">
+		<result property="userid" column="userid"/>
+		<result property="auth" column="auth"/>
+	</resultMap>
+	
+	<select id="readInfo" resultMap="memberMap">
+	select 
+		mem.userid, userpw, username, nickname, usermail, regdate, suspension, auth
+	from 
+		daily_member mem LEFT OUTER JOIN daily_member_auth auth on mem.userid = auth.userid
+	where mem.userid = #{userid}
+	</select>
 </mapper>
