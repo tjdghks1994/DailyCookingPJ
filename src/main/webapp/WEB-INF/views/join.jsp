@@ -9,6 +9,7 @@
 <link href="/resources/css/bootstrap.css" rel='stylesheet' type='text/css' />
 <!-- Custom Theme files -->
 <link href="/resources/css/style.css" rel='stylesheet' type='text/css' />
+<script src="/resources/js/jquery-1.11.1.min.js"></script>
 </head>
 <jsp:include page="include/header.jsp"></jsp:include>
 <body>
@@ -60,8 +61,9 @@
 							<input  type="text" name="usermail">
 							<div class="clearfix"></div>
 						</div>
-						<input type="button" value="회원가입" id="joinBtn" style="background: #fdb515;">
+						<input type="button" value="회원가입" id="joinButton" style="background: #fdb515;">
 						<input type="button" value="취소" id="cancleBtn">
+						<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 					</form>
 				</div>
 			</div>
@@ -74,7 +76,13 @@ $(function(){
 		e.preventDefault();
 		history.back();
 	});
-	  
+	
+	var formJoin = $("#joinForm");
+	var joinButton = $("#joinButton");
+	
+	joinButton.on("click",function(e){
+		formJoin.submit();
+	});
 });
 
 </script>

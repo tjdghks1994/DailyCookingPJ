@@ -11,7 +11,7 @@
 <link href="/resources/css/style.css" rel='stylesheet' type='text/css' />
 <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
 <!-- js -->
-   <script src="/resources/js/jquery-1.11.1.min.js"></script>
+<script src="/resources/js/jquery-1.11.1.min.js"></script>
 <!-- //js -->
 <!-- start-smoth-scrolling -->
 <script type="text/javascript" src="/resources/js/move-top.js"></script>
@@ -35,7 +35,7 @@
 			<h5><a id="questionLink">관리자에게 문의/건의 하기</a> </h5>
 		</div>
 		<div class="small-menu">
-				<h5><a href="/login">로그인</a><label>/</label><a href="#" id="joinLink2">회원가입</a></h5>
+				<h5><a href="/customLogin">로그인</a><label>/</label><a href="#" id="joinLink2">회원가입</a></h5>
 		</div>
 		<div class="container">
 			<div class="logo">
