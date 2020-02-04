@@ -28,7 +28,7 @@ public class MemberRelationController { // 회원 관련된 컨트롤러 사용 
 	}
 	
 	@GetMapping("/join")
-	public void join() {
+	public void join() { // 회원가입 페이지로 이동
 		log.info("join getMapping");
 	}
 	

@@ -42,7 +42,7 @@
 						</div>
 						<input type="submit" value="Login">
 						<div class="form-w3agile2">
-							<input type="checkbox"> 로그인 상태 유지하기
+							<input type="checkbox" name="remember-me"> 로그인 상태 유지하기
 						</div>
 						<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 					</form>
@@ -74,6 +74,15 @@ $(function(){
 });
 
 </script>
+
+<c:if test="${joinResult != null }"> <!-- 회원가입 완료시 알림창 -->
+	<script>
+		$(function(){
+			var joinResult = '${joinResult}';
+			alert(joinResult);
+		});
+	</script>
+</c:if>
 
 <c:if test="${logout != null }"> <!-- 로그아웃 진행 시 로그아웃되었다고 알림  -->
 	<script>
