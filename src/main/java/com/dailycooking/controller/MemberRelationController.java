@@ -1,5 +1,8 @@
 package com.dailycooking.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -71,5 +74,13 @@ public class MemberRelationController { // 회원 관련된 컨트롤러 사용 
 	@GetMapping("/index")
 	public void loginGet() { // 로그인 완료시 index페이지로 이동하기위한 
 		log.info("로그인 시 index페이지로 이동");
+	}
+	
+	@GetMapping(value = "/idCheck", produces = {MediaType.TEXT_PLAIN_VALUE})
+	public ResponseEntity<String> idCheck(String userid){
+		log.info("중복 체크할 아이디 : " + userid);
+		
+		return service.idCheck(userid) == 1 ? new ResponseEntity<>("아이디가 중복되었습니다", HttpStatus.OK)
+				: new ResponseEntity<>("사용가능한 아이디입니다", HttpStatus.OK);
 	}
 }

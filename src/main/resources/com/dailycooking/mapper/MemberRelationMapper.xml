@@ -11,4 +11,8 @@
 		insert into daily_member_auth
 		values(#{userid},'ROLE_USER')
 	</insert>
+	<select id="idCheck" resultType="com.dailycooking.domain.MemberVO">
+		select * from daily_member
+		where userid = #{userid}
+	</select>
 </mapper>

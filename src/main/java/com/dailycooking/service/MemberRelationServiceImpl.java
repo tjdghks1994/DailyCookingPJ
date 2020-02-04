@@ -32,5 +32,13 @@ public class MemberRelationServiceImpl implements MemberRelationService {
 		
 		return mapper.insertAuth(mvo.getUserid()); // 회원가입한 아이디에 권한 부여 - 성공시 1 return
 	}
+
+	@Override
+	public int idCheck(String userid) { // 아이디 중복체크 
+		// TODO Auto-generated method stub
+		log.info("중복 체크 할 아이디 : " + userid);
+		
+		return mapper.idCheck(userid) != null ? 1 : 0; // 아이디가 존재하면 1 존재하지않으면 0
+	}
 	
 }

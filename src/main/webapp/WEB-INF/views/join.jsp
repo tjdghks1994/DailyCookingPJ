@@ -77,11 +77,20 @@ $(function(){
 		history.back();
 	});
 	
-	var formJoin = $("#joinForm");
-	var joinButton = $("#joinButton");
+	var formJoin = $("#joinForm"); // 회원가입 폼태그
+	var joinButton = $("#joinButton"); // 회원가입 버튼 태그
 	
-	joinButton.on("click",function(e){
-		formJoin.submit();
+	joinButton.on("click",function(e){ // 회원가입 버튼 클릭시 진행 - 정규표현식 처리 할것
+		var inputName = $("input[name='username']").val(); // 회원이 입력한 이름 값 저장
+		var inputId = $("input[name='userid']").val(); // 회원이 입력한 아이디 값 저장
+		var inputPw = $("input[name='userpw']").val(); // 회원이 입력한 패스워드 값 저장
+		var inputPwCk = $("input[name='userpwck']").val(); // 회원이 입력한 패스워드 확인 값 저장
+		var inputNick = $("input[name='nickname']").val(); // 회원이 입력한 닉네임 값 저장
+		var inputEmail = $("input[name='usermail']").val(); // 회원이 입력한 메일 값 저장
+		
+		
+		
+		/* formJoin.submit(); // 폼 전송 */
 	});
 });
 
