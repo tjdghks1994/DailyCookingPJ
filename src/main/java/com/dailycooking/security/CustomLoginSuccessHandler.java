@@ -28,7 +28,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		
 		log.warn("권한 : " + roleNames);
 		
-		response.sendRedirect("/");
+		response.sendRedirect("/index");
 	}
 
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -73,6 +74,14 @@ $(function(){
 });
 
 </script>
+
+<c:if test="${logout != null }"> <!-- 로그아웃 진행 시 로그아웃되었다고 알림  -->
+	<script>
+		$(function(){
+			alert("로그아웃하였습니다");
+		});
+	</script>
+</c:if>
 </body>
 
 </html>

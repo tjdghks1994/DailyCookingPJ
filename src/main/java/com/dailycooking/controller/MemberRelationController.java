@@ -33,7 +33,7 @@ public class MemberRelationController { // 회원 관련된 컨트롤러 사용 
 	}
 	
 	@PostMapping("/join")
-	public String join(MemberVO mvo, RedirectAttributes rttr) {
+	public String join(MemberVO mvo, RedirectAttributes rttr) { // 회원가입
 		
 		log.info("join postMapping");
 		
@@ -47,7 +47,7 @@ public class MemberRelationController { // 회원 관련된 컨트롤러 사용 
 	}
 	
 	@GetMapping("/customLogin")
-	public void login(String error, String logout, Model model) {
+	public void login(String error, String logout, Model model) { // 로그인 페이지 커스터마이징
 		log.info("login getMapping");
 		log.info("error : " + error);
 		log.info("logout : " + logout);
@@ -58,5 +58,18 @@ public class MemberRelationController { // 회원 관련된 컨트롤러 사용 
 		if(logout != null) {
 			model.addAttribute("logout", "로그아웃 처리 되었습니다");
 		}
+	}
+	
+	@GetMapping("/customLogout")
+	public void logoutGet(Model model) { // 로그아웃시 메인 페이지로 이동
+		
+		log.info("로그아웃 하였음");
+		model.addAttribute("logout","로그아웃 하였습니다");
+		
+	}
+	
+	@GetMapping("/index")
+	public void loginGet() { // 로그인 완료시 index페이지로 이동하기위한 
+		log.info("로그인 시 index페이지로 이동");
 	}
 }

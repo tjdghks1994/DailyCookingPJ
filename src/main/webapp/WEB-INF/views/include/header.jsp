@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,7 +38,16 @@
 			<h5><a id="questionLink">관리자에게 문의/건의 하기</a> </h5>
 		</div>
 		<div class="small-menu">
+			<sec:authorize access="isAnonymous()">
 				<h5><a href="/customLogin">로그인</a><label>/</label><a href="#" id="joinLink2">회원가입</a></h5>
+			</sec:authorize>
+			<sec:authorize access="isAuthenticated()">
+			<form action="/customLogout" method="post" style="display: inline;" class="logoutForm">
+				<h5 style="display: inline;"><a href="#" class="logoutLink">로그아웃</a></h5>
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token }">
+			</form>
+				<h5 style="display: inline;"><label>/</label><a href="#" id="joinLink2">마이페이지</a></h5>
+			</sec:authorize>
 		</div>
 		<div class="container">
 			<div class="logo">
@@ -212,6 +224,14 @@ $(function(){
 	questionLink.on('click', function(e) { // 관리자 문의/건의하기 클릭시 진행
 		e.preventDefault();
 		modal6.modal('show');
+	});
+	
+	var logoutLink = $('.logoutLink'); // 로그아웃 링크 a 태그
+	var logoutForm = $('.logoutForm'); // 로그아웃 폼 태그
+	logoutLink.on("click",function(e){ // 로그아웃 링크 클릭시 진행
+		e.preventDefault();
+	
+		logoutForm.submit();
 	});
 });
 
