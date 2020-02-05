@@ -1,14 +1,11 @@
 package com.dailycooking.controller;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -92,5 +89,10 @@ public class MemberRelationController { // 회원 관련된 컨트롤러 사용 
 		} else {
 			return "yes";
 		}
+	}
+	
+	@GetMapping("/idSearch")
+	public void idSearch() {
+		log.info("아이디찾기");
 	}
 }

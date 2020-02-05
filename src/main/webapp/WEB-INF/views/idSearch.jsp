@@ -47,7 +47,7 @@
 		var cancle = $("#cancleBtn");
 		cancle.on("click", function(e){
 			e.preventDefault();
-			location.href="/login";
+			location.href="/customLogin";
 		});
 	});
 </script>
