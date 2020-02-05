@@ -89,40 +89,93 @@ $(function(){
 		var inputPwCk = $("input[name='userpwck']").val(); // 회원이 입력한 패스워드 확인 값 저장
 		var inputNick = $("input[name='nickname']").val(); // 회원이 입력한 닉네임 값 저장
 		var inputEmail = $("input[name='usermail']").val(); // 회원이 입력한 메일 값 저장
+		var nameRegEx = /^[가-힣]+$/; // 이름 정규표현식은 한글만 가능
+		// 이메일 정규표현식
+		var emailRegEx = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
+		// 비밀번호 정규표현식 - 6~20자리의 영문 대소문자여야 하며 최소 1개의 숫자나 특수문자를 포함해야함
+		var pwRegEx = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{6,20}$/;
 		
-		if(checkOverlap == false){
-			alert("아이디가 중복되었습니다");
-		} else {
+		if(inputName.length < 1){ // 이름을 입력하지 않았으면
+			alert("이름을 입력하세요");
+			$("input[name='username']").focus();
+		} else if(!(nameRegEx.test(inputName))){ // 이름 정규표현식에 맞게 입력하지 않으면
+			$("input[name='username']").val(""); // 이름 입력 란 값 초기화
+			alert("이름은 한글만 작성가능합니다");
+			$("input[name='username']").focus();
+		} else if(inputId.length < 1){ // 아이디를 입력하지 않았으면
+			alert("아이디를 입력하세요");
+			idCheck = false;
+			$("input[name='userid']").focus();
+		} else if(idCheck == false) { // 아이디 정규표현식에 맞지않게 입력하지 않으면
+			alert("아이디는 영어 소문자로 시작하는 5~15자 영문 또는 숫자만 입력하세요");
+			$("input[name='userid']").val("");
+			$("input[name='userid']").focus();
+		} else if(!(pwRegEx.test(inputPw))){ // 비밀번호 정규표현식에 맞게 입력하지 않으면
+			$("input[name='userpw']").val(""); // 비밀번호 입력 란 값 초기화
+			alert("비밀번호는 6~20자리의 영문 대소문자여야 하며 최소 1개의 숫자나 특수문자를 포함해야됩니다 다시입력해주세요!");
+			$("input[name='userpw']").focus();
+		} else if(!(pwRegEx.test(inputPwCk))){ // 비밀번호 정규표현식에 맞게 입력하지 않으면
+			$("input[name='userpwck']").val(""); // 비밀번호 확인란 값 초기화
+			alert("비밀번호 확인란은 6~20자리의 영문 대소문자여야 하며 최소 1개의 숫자나 특수문자를 포함해야됩니다 다시입력해주세요!");
+			$("input[name='userpwck']").focus();
+		} else if(inputPw != inputPwCk) { // 비밀번호와 비밀번호 확인란 값이 다르면
+			$("input[name='userpwck']").val(""); // 비밀번호 확인란 값 초기화
+			alert("비밀번호와 비밀번호 확인란이 동일하지 않습니다 다시 입력해주세요");
+			$("input[name='userpwck']").focus();
+		} else if(inputNick.length < 1) { // 닉네임을 입력하지 않았으면
+			alert("닉네임을 입력해주세요");
+			$("input[name='nickname']").focus();
+		} else if(!(emailRegEx.test(inputEmail))){ // 이메일 정규표현식에 맞게 입력하지 않으면 
+			$("input[name='usermail']").val(""); // 이메일 입력 란 값 초기화
+			alert("이메일 형식대로 입력하세요 ex) xxx.naver.com ");
+			$("input[name='usermail']").focus();
+		} else if(checkOverlap == false){ // 아이디가 중복된 경우
+			$("input[name='userid']").val(""); // 아이디 입력 란 값 초기화
+			alert("중복된 아이디 입니다 다시입력해주세요");
+			$("input[name='userid']").focus();
+		} else { // 전부 만족했을 때 폼 전송 - 회원가입
 			formJoin.submit();
-		}
-		
-		
-	});
+		} 
+	}); // END 회원가입 버튼 클릭시 진행 되는 함수 
 	
-	
+	var idCheck = false; // 아이디 정규표현식 체크 값
+	var idRegEx =  /^[a-z]{1}[a-z0-9]{4,14}$/; // 아이디는 영어 소문자로 시작하는 5~15자 영문 또는 숫자
 	var checkOverlap = false; // 아이디 중복 체크 - 중복이면 false 중복이 아니면 true
-	var inputNameTag = $("input[name='userid']"); // 아이디 입력 태그
+	var inputIdTag = $("input[name='userid']"); // 아이디 입력 태그
 	
-	inputNameTag.on("keyup", function(){ // 회원가입 시 아이디값 입력시 진행
+	inputIdTag.on("keyup", function(){ // 회원가입 시 아이디값 입력시 진행
 		var value = $(this).val(); // 아이디 입력 태그의 값 저장
 		
-		$.get("/userid", // 아이디 중복확인 ajax로 처리
-			{userid:value},
-			function(data){ // data - 서버에서 전송된 값
-				if(data == 'yes'){ 
-					$(".checkOverlap").html("사용가능한 아이디입니다");
-					$(".checkOverlap").css("color","lightgreen");
-					checkOverlap = true;
-				} else if(data == 'no'){
-					$(".checkOverlap").html("중복된 아이디입니다");
-					$(".checkOverlap").css("color","red");
-					checkOverlap = false;
-				}
-			},
-			"html"
-		);
-		
-	});
+		if($("input[name='userid']").val().length > 4 ){ // 5자리 이상의 아이디를 입력했을경우 진행
+			
+			$.get("/userid", // 아이디 중복확인 ajax로 처리
+					{userid:value},
+					function(data){ // data - 서버에서 전송된 값
+						if(idRegEx.test(value)){ // 아이디 정규표현식에 맞게 입력하였다면
+							if(data == 'yes'){
+								$(".checkOverlap").html("사용가능한 아이디입니다");
+								$(".checkOverlap").css("color","lightgreen");
+								checkOverlap = true; // 아이디 중복 체크 값을 true로 변경
+								idCheck = true; // 아이디 정규표현식 체크 값을 true로 변경
+							} else if(data == 'no'){ 
+								$(".checkOverlap").html("중복된 아이디입니다");
+								$(".checkOverlap").css("color","red");
+								checkOverlap = false; // 아이디 중복 체크 값을 false로 변경
+								idCheck = true; // 아이디 정규표현식 체크 값을 true로 변경
+							}
+						} else { // 아이디 정규표현식에 맞지 않게 입력하였다면
+							$(".checkOverlap").html("영어 소문자로 시작하는 5~15자 영문 또는 숫자만 입력하세요");
+							$(".checkOverlap").css("color","red");
+							$(".checkOverlap").css("font-size","10px");
+							idCheck = false; // 아이디 정규표현식 체크 값을 false로 변경
+						}
+						 
+					},
+					"html"
+				);	
+		}
+
+	}); // END 회원가입 시 아이디값 입력시 진행되는 함수
 	
 	
 });
