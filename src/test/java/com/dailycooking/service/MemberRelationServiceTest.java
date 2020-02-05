@@ -12,7 +12,8 @@ import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
+@ContextConfiguration({"file:src/main/webapp/WEB-INF/spring/root-context.xml",
+	"file:src/main/webapp/WEB-INF/spring/security-context.xml"})
 @Log4j
 public class MemberRelationServiceTest {
 
@@ -23,7 +24,6 @@ public class MemberRelationServiceTest {
 		log.info(service);
 	}
 
-	@Test
 	public void testJoin() {
 		
 		MemberVO mvo = new MemberVO();
@@ -34,5 +34,11 @@ public class MemberRelationServiceTest {
 		mvo.setUsermail("test2@naver.com");
 		
 		log.info("join 결과 : " +service.join(mvo));
+	}
+	
+	@Test
+	public void testCheck() {
+		String userid = "admin";
+		log.info("아이디 체크 결과 : " + service.idCheck(userid));
 	}
 }

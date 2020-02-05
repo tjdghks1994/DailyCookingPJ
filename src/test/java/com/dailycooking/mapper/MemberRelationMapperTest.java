@@ -46,10 +46,14 @@ public class MemberRelationMapperTest {
 		mapper.join(mvo);
 	}
 	
-	@Test
 	public void insertAuth() {
 		mapper.insertAuth("admin");
 		log.info("권한 설정 하기");
+	}
+	
+	@Test
+	public void testCheck() {
+		log.info("id체크 결과 : " + mapper.idCheck("admin"));
 	}
 	
 	public void testInsertMember() {
