@@ -31,7 +31,8 @@
 							<input  type="text" name="username">
 							<div class="clearfix"></div>
 						</div>
-						<p style="font-size: 20px; margin-bottom: 10px;">아이디</p>
+						<p style="font-size: 20px; margin-bottom: 10px; display: inline-block;">아이디</p>
+						<span class="checkOverlap"></span>
 						<div class="key">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
 							<input  type="text" name="userid" id="userid">
@@ -67,7 +68,8 @@
 					</form>
 				</div>
 			</div>
-		</div>
+		</div>		
+		
 <script>
 $(function(){
 	
@@ -88,10 +90,41 @@ $(function(){
 		var inputNick = $("input[name='nickname']").val(); // 회원이 입력한 닉네임 값 저장
 		var inputEmail = $("input[name='usermail']").val(); // 회원이 입력한 메일 값 저장
 		
+		if(checkOverlap == false){
+			alert("아이디가 중복되었습니다");
+		} else {
+			formJoin.submit();
+		}
 		
 		
-		/* formJoin.submit(); // 폼 전송 */
 	});
+	
+	
+	var checkOverlap = false; // 아이디 중복 체크 - 중복이면 false 중복이 아니면 true
+	var inputNameTag = $("input[name='userid']"); // 아이디 입력 태그
+	
+	inputNameTag.on("keyup", function(){ // 회원가입 시 아이디값 입력시 진행
+		var value = $(this).val(); // 아이디 입력 태그의 값 저장
+		
+		$.get("/userid", // 아이디 중복확인 ajax로 처리
+			{userid:value},
+			function(data){ // data - 서버에서 전송된 값
+				if(data == 'yes'){ 
+					$(".checkOverlap").html("사용가능한 아이디입니다");
+					$(".checkOverlap").css("color","lightgreen");
+					checkOverlap = true;
+				} else if(data == 'no'){
+					$(".checkOverlap").html("중복된 아이디입니다");
+					$(".checkOverlap").css("color","red");
+					checkOverlap = false;
+				}
+			},
+			"html"
+		);
+		
+	});
+	
+	
 });
 
 </script>

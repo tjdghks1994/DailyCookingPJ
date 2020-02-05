@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dailycooking.domain.MemberVO;
@@ -76,11 +78,19 @@ public class MemberRelationController { // 회원 관련된 컨트롤러 사용 
 		log.info("로그인 시 index페이지로 이동");
 	}
 	
-	@GetMapping(value = "/idCheck", produces = {MediaType.TEXT_PLAIN_VALUE})
-	public ResponseEntity<String> idCheck(String userid){
-		log.info("중복 체크할 아이디 : " + userid);
+	@GetMapping(value = "/userid", produces = {MediaType.APPLICATION_XML_VALUE,
+			MediaType.APPLICATION_JSON_UTF8_VALUE
+	})
+	@ResponseBody
+	public String idCheck(String userid){ // 회원가입시 중복확인 처리 - ajax
+
+		MemberVO vo = service.idCheck(userid);
+		log.info("아이디 중복확인 컨트롤러 ...." + userid);
 		
-		return service.idCheck(userid) == 1 ? new ResponseEntity<>("아이디가 중복되었습니다", HttpStatus.OK)
-				: new ResponseEntity<>("사용가능한 아이디입니다", HttpStatus.OK);
+		if(vo != null) {
+			return "no";
+		} else {
+			return "yes";
+		}
 	}
 }

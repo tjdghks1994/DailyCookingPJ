@@ -1,5 +1,6 @@
 package com.dailycooking.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,11 +14,12 @@ import lombok.extern.log4j.Log4j;
 
 @Service
 @Log4j
-@AllArgsConstructor
 public class MemberRelationServiceImpl implements MemberRelationService {
 
+	@Setter(onMethod_ = @Autowired)
 	private MemberRelationMapper mapper;
 	
+	@Setter(onMethod_ = @Autowired)
 	private BCryptPasswordEncoder bcrypt; // 암호화 처리를 위한
 	
 	@Override
@@ -34,11 +36,12 @@ public class MemberRelationServiceImpl implements MemberRelationService {
 	}
 
 	@Override
-	public int idCheck(String userid) { // 아이디 중복체크 
+	public MemberVO idCheck(String userid) { // 아이디 중복체크 
 		// TODO Auto-generated method stub
 		log.info("중복 체크 할 아이디 : " + userid);
-		
-		return mapper.idCheck(userid) != null ? 1 : 0; // 아이디가 존재하면 1 존재하지않으면 0
+		MemberVO memberVO = mapper.idCheck(userid);
+		log.info("memberVO : " + memberVO);
+		return memberVO;
 	}
 	
 }

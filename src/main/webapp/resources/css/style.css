@@ -393,6 +393,11 @@ ul{
 	background: #ffffff;
 }
 
+.checkOverlap { /* 회원가입 진행시 ajax처리 내용 태그 */
+	margin-bottom: 10px;
+	margin-left: 5px;
+}
+
 /* 내가 추가한 style.css 끝 */
 
 /*--popup--*/
