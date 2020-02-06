@@ -92,12 +92,12 @@ public class MemberRelationController { // 회원 관련된 컨트롤러 사용 
 	}
 	
 	@GetMapping("/idSearch")
-	public void idSearch() {
-		log.info("아이디찾기");
+	public void idSearch() { // 아이디 찾기 페이지로 이동
+		log.info("아이디찾기 페이지로이동");
 	}
 	
 	@PostMapping("/idSearch")
-	public String idSearchMember(MemberVO mvo, Model model) {
+	public String idSearchMember(MemberVO mvo, Model model) { // 아이디 찾기
 		
 		String idSearchResult = service.idSearch(mvo);
 		model.addAttribute("searchResult", idSearchResult);
@@ -108,5 +108,38 @@ public class MemberRelationController { // 회원 관련된 컨트롤러 사용 
 			return "/customLogin"; // 존재하는 아이디가 있는경우 로그인 페이지로 이동
 		}
 		
+	}
+	
+	@GetMapping("/pwSearch")
+	public void pwSearch() { // 비밀번호찾기 페이지 이동
+		log.info("패스워드찾기 페이지로 이동");
+	}
+	
+	@PostMapping("/pwSearch")
+	public void pwSearchMember(MemberVO mvo, Model model) { // 비밀번호 찾기
+		MemberVO memberVo = service.pwSearch(mvo);
+		log.info(memberVo);
+		
+		if(memberVo != null) { // 비밀번호 찾기 시 입력한 정보와 일치하는 계정이 존재하면
+			String pwSearchResult = "match"; 
+			model.addAttribute("memId", memberVo.getUserid()); // view페이지로 회원 아이디 값 전송
+			model.addAttribute("pwSearchResult", pwSearchResult); // view페이지로 결과값 - match 전송
+		} else { // 비밀번호 찾기 시 입력한 정보와 일치하는 계정이 존재하지않으면 memberVo = null값
+			String pwSearchResult = "notMatch";
+			model.addAttribute("pwSearchResult", pwSearchResult); // view페이지로 결과값 - notMatch 전송
+		}
+	}
+	
+	@PostMapping("/pwChange")
+	public String pwChangeMember(MemberVO mvo, Model model) { // 비밀번호 변경
+		int pwChangeResult = service.pwChange(mvo); // 비밀번호 변경에 성공하면 1 반환
+		
+		if(pwChangeResult == 1) {
+			model.addAttribute("pwChangeResult", "changeOk"); // view 페이지로 비밀번호 성공 결과 값 - changeOk 전송
+			return "/customLogin";
+		} else {
+			model.addAttribute("pwChangeResult", "notChange"); // view 페이지로 비밀번호 실패 결과 값 - notChange 전송
+			return "/pwChange";
+		}
 	}
 }

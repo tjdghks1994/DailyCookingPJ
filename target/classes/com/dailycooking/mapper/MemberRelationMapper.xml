@@ -19,4 +19,11 @@
 		select * from daily_member
 		where username = #{username} AND usermail = #{usermail}
 	</select>
+	<select id="pwSearch" resultType="com.dailycooking.domain.MemberVO">
+		select * from daily_member
+		where username = #{username} AND userid = #{userid} AND usermail = #{usermail}
+	</select>
+	<update id="pwChange">
+		update daily_member set userpw = #{userpw} where userid = #{userid}
+	</update>
 </mapper>

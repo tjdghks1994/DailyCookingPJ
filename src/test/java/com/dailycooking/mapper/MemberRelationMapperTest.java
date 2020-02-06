@@ -55,7 +55,6 @@ public class MemberRelationMapperTest {
 		log.info("id체크 결과 : " + mapper.idCheck("admin"));
 	}
 	
-	@Test
 	public void testIdSearch() {
 		MemberVO mvo = new MemberVO();
 		mvo.setUsername("양현아");
@@ -66,6 +65,16 @@ public class MemberRelationMapperTest {
 		log.info(searchVo);
 		log.info("회원님의 아이디는 : " + searchVo.getUserid());
 		
+	}
+
+	@Test
+	public void testPwSearch() {
+		MemberVO mvo = new MemberVO();
+		mvo.setUserid("cmme0914");
+		mvo.setUsername("양현아");
+		mvo.setUsermail("cmme@naver.com");
+		
+		log.info("MemberVO : " + mapper.pwSearch(mvo));
 	}
 	
 	}

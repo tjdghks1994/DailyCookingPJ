@@ -56,6 +56,28 @@ public class MemberRelationServiceImpl implements MemberRelationService {
 		}
 	
 	}
+
+	@Override
+	public MemberVO pwSearch(MemberVO mvo) { // 비밀번호 찾기
+		log.info("회원님이 입력한 내용 : " + mvo.getUsername() + " : " + mvo.getUserid() + " : " + mvo.getUsermail());
+		MemberVO memberVO = mapper.pwSearch(mvo);
+		log.info("memberVO");
+		
+		return memberVO;
+		
+	}
+
+	@Override
+	public int pwChange(MemberVO mvo) {
+		String password = mvo.getUserpw();
+		String encodePassword = bcrypt.encode(password); // 사용자 패스워드 암호화 처리 
+		
+		mvo.setUserpw(encodePassword); // 암호화 처리한 비밀번호 set
+		int result = mapper.pwChange(mvo); // 성공하면1 실패하면 0
+		log.info("비밀번호 변경 결과 : " + result);
+		
+		return result;
+	}
 	
 	
 	
