@@ -36,9 +36,19 @@ public class MemberRelationServiceTest {
 		log.info("join 결과 : " +service.join(mvo));
 	}
 	
-	@Test
 	public void testCheck() {
 		String userid = "admin";
 		log.info("아이디 체크 결과 : " + service.idCheck(userid));
+	}
+	
+	@Test
+	public void testIdSearch() {
+		
+		MemberVO mvo = new MemberVO();
+		mvo.setUsername("양현");
+		mvo.setUsermail("cmme@naver.com");
+		
+		String result = service.idSearch(mvo);
+		log.info(result);
 	}
 }

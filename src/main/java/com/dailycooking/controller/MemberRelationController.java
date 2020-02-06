@@ -95,4 +95,18 @@ public class MemberRelationController { // 회원 관련된 컨트롤러 사용 
 	public void idSearch() {
 		log.info("아이디찾기");
 	}
+	
+	@PostMapping("/idSearch")
+	public String idSearchMember(MemberVO mvo, Model model) {
+		
+		String idSearchResult = service.idSearch(mvo);
+		model.addAttribute("searchResult", idSearchResult);
+		
+		if(idSearchResult == "존재하는 아이디가 없습니다") { // 존재하는 아이디가 없는경우 아이디찾기 페이지 그대로
+			return "/idSearch";
+		} else {
+			return "/customLogin"; // 존재하는 아이디가 있는경우 로그인 페이지로 이동
+		}
+		
+	}
 }

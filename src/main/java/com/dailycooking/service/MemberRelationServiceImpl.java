@@ -37,11 +37,26 @@ public class MemberRelationServiceImpl implements MemberRelationService {
 
 	@Override
 	public MemberVO idCheck(String userid) { // 아이디 중복체크 
-		// TODO Auto-generated method stub
 		log.info("중복 체크 할 아이디 : " + userid);
 		MemberVO memberVO = mapper.idCheck(userid);
 		log.info("memberVO : " + memberVO);
 		return memberVO;
 	}
+
+	@Override
+	public String idSearch(MemberVO mvo) { // 아이디 찾기
+			log.info("회원님이 입력한 내용 : " + mvo.getUsername() + " : " + mvo.getUsermail());
+			MemberVO memberVO = mapper.idSearch(mvo);
+		if(memberVO != null) { // 회원이 입력한 내용으로 아이디찾기했을 때 존재하는 계정이 있다면
+			log.info("memberVO : " + memberVO);
+			log.info("회원님의 아이디 : " + memberVO.getUserid());
+			return memberVO.getUserid();
+		} else { // 존재하는 계정이 없다면
+			return "존재하는 아이디가 없습니다";
+		}
+	
+	}
+	
+	
 	
 }

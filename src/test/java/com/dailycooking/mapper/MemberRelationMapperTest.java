@@ -51,37 +51,21 @@ public class MemberRelationMapperTest {
 		log.info("권한 설정 하기");
 	}
 	
-	@Test
 	public void testCheck() {
 		log.info("id체크 결과 : " + mapper.idCheck("admin"));
 	}
 	
-	public void testInsertMember() {
-		String sql = "insert into daily_member(userid,username,nickname,userpw,usermail) values"
-				+ "(?,?,?,?,?)";
+	@Test
+	public void testIdSearch() {
+		MemberVO mvo = new MemberVO();
+		mvo.setUsername("양현아");
+		mvo.setUsermail("cmme@naver.com");
 		
-		for(int i=0; i<10; i++) {
-			Connection con = null;
-			PreparedStatement pstmt = null;
-			
-			try {
-				con = ds.getConnection();
-				pstmt = con.prepareStatement(sql);
-				
-				pstmt.setString(1, "tester" + i);
-				pstmt.setString(2, "테스터" + i);
-				pstmt.setString(3, "비밀번호 암호화" + i);
-				pstmt.setString(4, pwencoder.encode("1111"));
-				pstmt.setString(5, "test"+i+"@naver.com");
-				
-				pstmt.executeUpdate();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} finally {
-				if(pstmt != null) {try {pstmt.close();} catch (Exception e) {}}
-				if(con != null) {try {con.close();} catch (Exception e) {}}
-				}
-			}
-		}
+		MemberVO searchVo = mapper.idSearch(mvo);
+		
+		log.info(searchVo);
+		log.info("회원님의 아이디는 : " + searchVo.getUserid());
+		
+	}
+	
 	}

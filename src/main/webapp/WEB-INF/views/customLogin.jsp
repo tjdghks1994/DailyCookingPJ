@@ -99,6 +99,16 @@ $(function(){
 		});
 	</script>
 </c:if>
+
+<c:if test="${searchResult != null }">
+	<script>
+		$(function(){
+			var memberId = '${searchResult}';
+			alert("회원님의 아이디 찾기 결과 : " + memberId + "입니다");
+		});
+	</script>
+</c:if>
+
 </body>
 
 </html>

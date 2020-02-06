@@ -15,4 +15,8 @@
 		select * from daily_member
 		where userid = #{userid}
 	</select>
+	<select id="idSearch" resultType="com.dailycooking.domain.MemberVO">
+		select * from daily_member
+		where username = #{username} AND usermail = #{usermail}
+	</select>
 </mapper>
