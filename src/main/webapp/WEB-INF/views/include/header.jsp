@@ -70,16 +70,15 @@
 					</div> 
 					<div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
 						<ul class="nav navbar-nav ">
-							<li class="dropdown"><a href="index.html" class="hyper"><span>Home</span></a></li>	
-							
+							<li class="dropdown"><a href="index" class="hyper"><span>Home</span></a></li>	
 							<li class="dropdown">
-								<a href="#" class="dropdown-toggle hyper" id="menuRec" data-toggle="dropdown" ><span>메뉴 추천</span></a>
+								<a href="#" class="hyper" id="menuRec"><span>메뉴 추천</span></a>
 							</li>
 							<li class="dropdown">
-								<a href="#" class="dropdown-toggle hyper" data-toggle="dropdown" ><span> 음식 레시피  </span></a>
+								<a href="recipeMenu" class="hyper"><span> 음식 레시피  </span></a>
 							</li>
 							<li class="dropdown">
-								<a href="#" class="dropdown-toggle hyper" data-toggle="dropdown" ><span>추천 음식점</span></a>
+								<a href="#" class="hyper"><span>추천 음식점</span></a>
 							</li>
 						</ul>
 					</div>
