@@ -9,8 +9,8 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class RecipeController {
 
-	@GetMapping("/recipeMenu")
+	@GetMapping("/recipeList")
 	public String recipeMenu() {
-		return "/recipeBoard/recipeMenu";
+		return "/recipeBoard/recipeList";
 	}
 }

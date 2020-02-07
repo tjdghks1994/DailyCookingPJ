@@ -405,6 +405,10 @@ ul{
 	height: 300px;
 }
 
+.recipeBoardCount {
+	color: orange; font-size: 22px; font-weight: bold;
+}
+
 /* 내가 추가한 style.css 끝 */
 
 /*--popup--*/
@@ -1031,7 +1035,7 @@ ul.nav.tabs {
 }
 .col-m {
     padding: 1em;
-    border: 1px solid #B2B2B2;
+    border: 2px solid lightgray;
 }
 .offer-img{
 	position:relative;

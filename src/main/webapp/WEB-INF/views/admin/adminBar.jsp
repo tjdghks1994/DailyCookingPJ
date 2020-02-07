@@ -33,8 +33,10 @@
 			</div>
 			<div class="menuItemDiv">
 				<p class="menuItem">게시물 관리</p>
-				<a href="#" class="menuList">레시피 게시판 목록</a>
-				<a href="#" class="menuList" style="margin-bottom: 10px;">추천음식점 게시판 목록</a>
+				<a href="/adminRecipe" class="menuList">레시피 게시판 목록</a>
+				<a href="/adminSuspendRecipe" class="menuList">레시피 게시판 신고 목록</a>
+				<a href="/adminStore" class="menuList">추천음식점 게시판 목록</a>
+				<a href="/adminSuspendStore" class="menuList" style="margin-bottom: 10px;">추천음식점 게시판 신고 목록</a>
 			</div>
 			<div class="menuItemDiv">
 				<p class="menuItem">문의/건의사항</p>
