@@ -398,6 +398,13 @@ ul{
 	margin-left: 5px;
 }
 
+.searchDivImg { /* 메인페이지 검색 창 배경사진 */
+	background-image: url('/resources/images/mainBackGround.jpg');
+	background-repeat: no-repeat; 
+	background-size: 100% 100%;
+	height: 300px;
+}
+
 /* 내가 추가한 style.css 끝 */
 
 /*--popup--*/
@@ -858,15 +865,15 @@ span.fa.fa-shopping-cart.my-cart-icon {
 }
 .search-form {
     width: 55%;
-    margin: 0 auto;
+    margin: 20px auto;
 }
 .search-form input[type='text']{
-	width: 93%;
+	width: 85%;
     padding: 10px;
     outline: none;
     font-size: 1em;
-    color: #fff;
-    border: 1px solid #FFF;
+    color: black;
+    border: 1px solid black;
     background: rgba(255, 255, 255, 0.45);
 }
 .search-form input[type='submit']{
@@ -874,11 +881,11 @@ span.fa.fa-shopping-cart.my-cart-icon {
     height: 41px;
     outline: none;
     border: 1px solid #fff;
-    background: url(../images/can.png) no-repeat 6px 7px #FCCD1E;
+    background: url(/resources/images/searchIcon.png) no-repeat 6px 7px #FCCD1E;
     display: inline-block;
 }
 .search-form input[type='submit']:hover {
-    background: url(../images/can.png) no-repeat 6px 7px #039445;
+    background: url(/resources/images/searchIcon.png) no-repeat 6px 7px silver;
         transition: 0.5s all;
     -webkit-transition: 0.5s all;
     -moz-transition: 0.5s all;
@@ -886,7 +893,7 @@ span.fa.fa-shopping-cart.my-cart-icon {
     -ms-transition: 0.5s all;
 }
  ::-webkit-input-placeholder{
-	color:#fff;
+	color:black;
 }
 
 :-moz-placeholder { /* Firefox 18- */
@@ -1032,7 +1039,7 @@ ul.nav.tabs {
 }
 .offer-img img{
 	margin:0 auto;
-	width: 55%;
+	width: 80%;
 }
 .offer{
 	    position: absolute;
