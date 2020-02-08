@@ -26,10 +26,10 @@
 				<div class="container">
 					<!-- 검색설정 -->
 					<div>
-						<ul class="nav navbar-nav">
-							<li><a href="">최신순</a></li>
-							<li><a href="">조회순</a></li>
-							<li><a href="">인기순</a></li>
+						<ul class="nav navbar-nav" style="float: left;">
+							<li style="font-size: 14px;"><a href="">최신순</a></li>
+							<li style="font-size: 14px;"><a href="">조회순</a></li>
+							<li style="font-size: 14px;"><a href="">인기순</a></li>
 						</ul>
 						<div style="width: 100%; text-align: right; margin-bottom: 20px;">
 					      	<form id="searchForm" action="" method="get">
@@ -39,12 +39,13 @@
 					               <option value="">제목</option>
 					               <option value="">태그</option>
 					            </select>
-					            <input type="text" name="keyword">
+					            <input type="text" name="keyword" style="width: 200px;">
 					           <button class="btn btn-default" style="height: 30px; padding: 1px 5px;">검색</button>
 					        </form>
 					    </div>
 					</div>
 					<!-- 게시물 목록 뿌려주는곳 -->
+				<div>	
 					<div class="col-md-3 m-wthree" style="margin-bottom: 20px;">
 						<div class="col-m">
 							<a href="#" data-toggle="modal" data-target="#myModal1"
@@ -368,6 +369,7 @@
 							</div>
 						</div>
 					</div>
+				</div>
 				</div>
 				
 				<nav style="text-align: center;">

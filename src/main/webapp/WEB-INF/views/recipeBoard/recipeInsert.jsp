@@ -37,7 +37,8 @@
 	      <div>
 	      	<p class="titles">요리정보</p>
 	        <select id="cookInfo"  text="인원">
-				<option value="" >인원</option><option value="1">1인분</option>
+				<option value="" >인원</option>
+				<option value="1">1인분</option>
 				<option value="2">2인분</option>
 				<option value="3">3인분</option>
 				<option value="4">4인분</option>
@@ -47,15 +48,13 @@
 	      	
 	      	<span>시간 </span>
 	        <select id="cookTime"  text="요리시간">
-				<option value="" >시간</option><option value="5">5분이내</option>
+				<option value="" >시간</option>
 				<option value="10">10분이내</option>
-				<option value="15">15분이내</option>
 				<option value="20">20분이내</option>
 				<option value="30">30분이내</option>
 				<option value="60">60분이내</option>
 				<option value="90">90분이내</option>
-				<option value="120">2시간이내</option>
-				<option value="999">2시간이상</option>
+				<option value="120">2시간이상</option>
 			</select>
 	     	
 	     	<span>난이도 </span>

@@ -3,5 +3,30 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dailycooking.mapper.RecipeMapper">
+	<select id="getList" resultType="com.dailycooking.domain.RecipeBoardVO">
+		select * from recipe_board where recipenum > 0
+	</select>
 	
+	<insert id="insertSelectKey">
+		<selectKey keyProperty="recipenum" order="BEFORE" resultType="long">
+			select seq_recipenum.nextval from dual
+		</selectKey>
+		insert into recipe_board(recipenum,title,material,personnel,cookingtime,cookinglevel,cookingorder,cookingtip,cookingtag,userid)
+		values (seq_recipenum.nextval, #{title}, #{material},#{personnel},#{cookingTime},#{cookingLevel},
+		#{cookingOrder},#{cookingTip},#{cookingTag},#{userid})
+	</insert>
+	
+	<select id="read" resultType="com.dailycooking.domain.RecipeBoardVO">
+		select * from recipe_board where recipenum = #{recipenum}
+	</select>
+	
+	<delete id="delete">
+		delete from recipe_board where recipenum = #{recipenum}
+	</delete>
+	
+	<update id="update">
+		update recipe_board set title = #{title}, material = #{material}, personnel = #{personnel},
+		cookingtime = #{cookingTime}, cookinglevel = #{cookingLevel}, cookingorder = #{cookingOrder},
+		cookingtip = #{cookingTip}, updateDate = sysdate where recipenum = #{recipenum}
+	</update>
 </mapper>
