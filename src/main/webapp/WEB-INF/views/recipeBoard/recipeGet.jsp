@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,9 +27,35 @@
 			<p class="recipeWriter">작성자 : <c:out value="${recipe.userid }"></c:out> </p>
 			<p class="recipeTitle"><c:out value="${recipe.title }"></c:out> </p>
 			<div class="recipeImgDiv">
-				<span class="recipeInfo"><img src="/resources/images/people.png" class="infoImg1"> 1인분</span>
-				<span class="recipeInfo"><img src="/resources/images/time.png" class="infoImg2"> 30분 이내</span>
-				<span class="recipeInfo"><img src="/resources/images/level.png" class="infoImg2">초보</span>
+				<span class="recipeInfo"><img src="/resources/images/people.png" class="infoImg1">
+				 <c:choose>	
+				 	<c:when test="${recipe.personnel eq 1}">1인분</c:when>
+				 	<c:when test="${recipe.personnel eq 2}">2인분</c:when>
+				 	<c:when test="${recipe.personnel eq 3}">3인분</c:when>
+				 	<c:when test="${recipe.personnel eq 4}">4인분</c:when>
+				 	<c:when test="${recipe.personnel eq 5}">5인분</c:when>
+				 	<c:when test="${recipe.personnel eq 6}">6인분 이상</c:when>
+				  </c:choose>
+				 </span>
+				<span class="recipeInfo"><img src="/resources/images/time.png" class="infoImg2">
+				  <c:choose>
+				  	<c:when test="${recipe.cookingTime eq 10 }">10분 이내</c:when>
+				  	<c:when test="${recipe.cookingTime eq 20 }">20분 이내</c:when>
+				  	<c:when test="${recipe.cookingTime eq 30 }">30분 이내</c:when>
+				  	<c:when test="${recipe.cookingTime eq 60 }">60분 이내</c:when>
+				  	<c:when test="${recipe.cookingTime eq 90 }">90분 이내</c:when>
+				  	<c:when test="${recipe.cookingTime eq 120 }">120분 이상</c:when>
+				  </c:choose>
+				 </span>
+				<span class="recipeInfo"><img src="/resources/images/level.png" class="infoImg2">
+				 <c:choose>
+				 	<c:when test="${recipe.cookingLevel eq 1}">매우 쉬움</c:when>
+				 	<c:when test="${recipe.cookingLevel eq 2}">쉬움</c:when>
+				 	<c:when test="${recipe.cookingLevel eq 3}">보통</c:when>
+				 	<c:when test="${recipe.cookingLevel eq 4}">어려움</c:when>
+				 	<c:when test="${recipe.cookingLevel eq 5}">매우 어려움</c:when>
+				 </c:choose>
+				</span>
 			</div>
 			<div>
 				<a class="recipeSc">
@@ -46,9 +73,11 @@
 			</div>
 			
 			<div class="managerBtn">
+			<sec:authorize access="isAuthenticated()">
 				<a class="managerText" href="/recipeModify">글 수정하기</a> <!-- 해당 게시물을 작성한 유저만 보이게 -->
 				<a class="managerText">글 삭제하기</a> <!-- 해당 게시물을 작성한 유저만 보이게 -->
 				<a class="reportText">글 신고하기</a> <!-- 로그인 한 유저만 보이게 -->
+			</sec:authorize>
 			</div>
 		</div>
 	</div>
@@ -166,10 +195,8 @@
 	              	<div style="margin-bottom: 20px;">
               			<span style="font-size: 16px;">태그</span>
               		</div>
-              		<div style="margin-top: 10px;" class="tagDiv">
-	              		<a class="recipeTag">#태그1</a>
-	              		<a class="recipeTag">#존맛탱</a>
-	              		<a class="recipeTag">#누구나 만들 수 있음</a>
+              		<div style="margin-top: 10px;" class="tagDiv"> <!-- jQuery 이용해서 동적 태그생성 -->
+              		
 	              	</div>
 	              </div>
               </div>
@@ -224,13 +251,26 @@
 	
 	var orderDiv = $(".orderDiv"); // 조리순서 div 태그
 	var orderText = ""; // 동적으로 태그 생성하기위해 변수 생성
-	for(var i=0; i<orderArrayLength; i++){
+	for(var i=0; i<orderArrayLength-1; i++){
 		orderText += '<div class="cookingOrder">';
 		orderText += '<span id="orderValue">' + (i+1) + '.</span>';
 		orderText += '<span id="orderContent" style="font-size: 18px; margin-left: 10px;">' + orderArray[i] + '</span>';
 		orderText += '<br></div>';
 	}
 	orderDiv.append(orderText); // 조리순서 view 페이지에 부착
+	
+	var tag = '${recipe.cookingTag}';
+	var tagArray = tag.split("#");
+	console.log(tagArray[0] + " : " + tagArray[1]);
+	var tagArrayLength = tagArray.length;
+	console.log(tagArrayLength);
+	
+	var tagDiv = $(".tagDiv"); // 게시글 태그 div
+	var tagText = "";
+	for(var i=1; i<tagArrayLength; i++){
+		tagText += '<a class="recipeTag">#'+ tagArray[i] +'</a>';
+	}
+	tagDiv.append(tagText); // 게시물의 태그값 view 페이지에 부착
 </script>
 </body>
 </html>
