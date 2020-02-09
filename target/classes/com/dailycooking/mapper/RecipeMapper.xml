@@ -29,4 +29,5 @@
 		cookingtime = #{cookingTime}, cookinglevel = #{cookingLevel}, cookingorder = #{cookingOrder},
 		cookingtip = #{cookingTip}, updateDate = sysdate where recipenum = #{recipenum}
 	</update>
+	
 </mapper>

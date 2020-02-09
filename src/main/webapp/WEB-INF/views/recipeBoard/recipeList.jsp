@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +20,7 @@
 						<span style="font-size: 18px;">총 
 						 <span class="recipeBoardCount">35</span>
 						개의 레시피가 있습니다 </span>
-						<button id="regBtn" type="button" class="btn btn-success btn-sm pull-right">레시피 작성하기</button>
+						<button id="regWriteBtn" type="button" class="btn btn-success btn-sm pull-right">레시피 작성하기</button>
 					</div>
 				</div>
 			</div>
@@ -45,331 +47,37 @@
 					    </div>
 					</div>
 					<!-- 게시물 목록 뿌려주는곳 -->
+			
 				<div>	
-					<div class="col-md-3 m-wthree" style="margin-bottom: 20px;">
-						<div class="col-m">
-							<a href="#" data-toggle="modal" data-target="#myModal1"
-								class="offer-img"> <img src="/resources/images/gooksu.jpg"
-								class="img-responsive" alt="">
+				<c:forEach items="${list }" var="recipe">
+					<div class="col-md-3 m-wthree" style="margin-bottom : 20px; height: 340px;">
+						<div class="col-m" style="margin-bottom: 20px; height: 340px;">
+							<a href="/recipe/get" class="offer-img">
+							 <img src="/resources/images/gooksu.jpg" class="img-responsive">
 							</a>
 							<div class="mid-1">
 								<div class="women">
 									<h6>
-										<a href="single.html">음식이름1</a>
+										<a href="/recipe/get?recipenum=${recipe.recipenum }"><c:out value="${recipe.title }"></c:out> </a>
 									</h6>
 								</div>
 								<div class="mid-2">
-									<p>글쓴이</p>
+									<p><c:out value="${recipe.userid }"></c:out> </p>
 									<div class="block">
 										<div class="starbox small ghosting"></div>
 									</div>
 									<div class="clearfix"></div>
 									<hr>
 									<div class="clearfix">
-										<a href="single.html">#맛잇</a>
+											<p style="height: 36px;"><c:out value="${recipe.cookingTag }"></c:out> </p>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					
-					<div class="col-md-3 m-wthree" style="margin-bottom: 20px;">
-						<div class="col-m">
-							<a href="#" data-toggle="modal" data-target="#myModal1"
-								class="offer-img"> <img src="/resources/images/gooksu.jpg"
-								class="img-responsive" alt="">
-							</a>
-							<div class="mid-1">
-								<div class="women">
-									<h6>
-										<a href="single.html">음식이름1</a>
-									</h6>
-								</div>
-								<div class="mid-2">
-									<p>글쓴이</p>
-									<div class="block">
-										<div class="starbox small ghosting"></div>
-									</div>
-									<div class="clearfix"></div>
-									<hr>
-									<div class="clearfix">
-										<a href="single.html">#맛잇</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					
-					<div class="col-md-3 m-wthree" style="margin-bottom: 20px;">
-						<div class="col-m">
-							<a href="#" data-toggle="modal" data-target="#myModal1"
-								class="offer-img"> <img src="/resources/images/gooksu.jpg"
-								class="img-responsive" alt="">
-							</a>
-							<div class="mid-1">
-								<div class="women">
-									<h6>
-										<a href="single.html">음식이름1</a>
-									</h6>
-								</div>
-								<div class="mid-2">
-									<p>글쓴이</p>
-									<div class="block">
-										<div class="starbox small ghosting"></div>
-									</div>
-									<div class="clearfix"></div>
-									<hr>
-									<div class="clearfix">
-										<a href="single.html">#맛잇</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					
-					<div class="col-md-3 m-wthree" style="margin-bottom: 20px;">
-						<div class="col-m">
-							<a href="#" data-toggle="modal" data-target="#myModal1"
-								class="offer-img"> <img src="/resources/images/gooksu.jpg"
-								class="img-responsive" alt="">
-							</a>
-							<div class="mid-1">
-								<div class="women">
-									<h6>
-										<a href="single.html">음식이름1</a>
-									</h6>
-								</div>
-								<div class="mid-2">
-									<p>글쓴이</p>
-									<div class="block">
-										<div class="starbox small ghosting"></div>
-									</div>
-									<div class="clearfix"></div>
-									<hr>
-									<div class="clearfix">
-										<a href="single.html">#맛잇</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					
-					<div class="col-md-3 m-wthree" style="margin-bottom: 20px;">
-						<div class="col-m">
-							<a href="#" data-toggle="modal" data-target="#myModal1"
-								class="offer-img"> <img src="/resources/images/gooksu.jpg"
-								class="img-responsive" alt="">
-							</a>
-							<div class="mid-1">
-								<div class="women">
-									<h6>
-										<a href="single.html">음식이름1</a>
-									</h6>
-								</div>
-								<div class="mid-2">
-									<p>글쓴이</p>
-									<div class="block">
-										<div class="starbox small ghosting"></div>
-									</div>
-									<div class="clearfix"></div>
-									<hr>
-									<div class="clearfix">
-										<a href="single.html">#맛잇</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					
-					<div class="col-md-3 m-wthree" style="margin-bottom: 20px;">
-						<div class="col-m">
-							<a href="#" data-toggle="modal" data-target="#myModal1"
-								class="offer-img"> <img src="/resources/images/gooksu.jpg"
-								class="img-responsive" alt="">
-							</a>
-							<div class="mid-1">
-								<div class="women">
-									<h6>
-										<a href="single.html">음식이름1</a>
-									</h6>
-								</div>
-								<div class="mid-2">
-									<p>글쓴이</p>
-									<div class="block">
-										<div class="starbox small ghosting"></div>
-									</div>
-									<div class="clearfix"></div>
-									<hr>
-									<div class="clearfix">
-										<a href="single.html">#맛잇</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					
-					<div class="col-md-3 m-wthree" style="margin-bottom: 20px;">
-						<div class="col-m">
-							<a href="#" data-toggle="modal" data-target="#myModal1"
-								class="offer-img"> <img src="/resources/images/gooksu.jpg"
-								class="img-responsive" alt="">
-							</a>
-							<div class="mid-1">
-								<div class="women">
-									<h6>
-										<a href="single.html">음식이름1</a>
-									</h6>
-								</div>
-								<div class="mid-2">
-									<p>글쓴이</p>
-									<div class="block">
-										<div class="starbox small ghosting"></div>
-									</div>
-									<div class="clearfix"></div>
-									<hr>
-									<div class="clearfix">
-										<a href="single.html">#맛잇</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					
-					<div class="col-md-3 m-wthree" style="margin-bottom: 20px;">
-						<div class="col-m">
-							<a href="#" data-toggle="modal" data-target="#myModal1"
-								class="offer-img"> <img src="/resources/images/gooksu.jpg"
-								class="img-responsive" alt="">
-							</a>
-							<div class="mid-1">
-								<div class="women">
-									<h6>
-										<a href="single.html">음식이름1</a>
-									</h6>
-								</div>
-								<div class="mid-2">
-									<p>글쓴이</p>
-									<div class="block">
-										<div class="starbox small ghosting"></div>
-									</div>
-									<div class="clearfix"></div>
-									<hr>
-									<div class="clearfix">
-										<a href="single.html">#맛잇</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					
-					<div class="col-md-3 m-wthree" style="margin-bottom: 20px;">
-						<div class="col-m">
-							<a href="#" data-toggle="modal" data-target="#myModal1"
-								class="offer-img"> <img src="/resources/images/gooksu.jpg"
-								class="img-responsive" alt="">
-							</a>
-							<div class="mid-1">
-								<div class="women">
-									<h6>
-										<a href="single.html">음식이름1</a>
-									</h6>
-								</div>
-								<div class="mid-2">
-									<p>글쓴이</p>
-									<div class="block">
-										<div class="starbox small ghosting"></div>
-									</div>
-									<div class="clearfix"></div>
-									<hr>
-									<div class="clearfix">
-										<a href="single.html">#맛잇</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					
-					<div class="col-md-3 m-wthree" style="margin-bottom: 20px;">
-						<div class="col-m">
-							<a href="#" data-toggle="modal" data-target="#myModal1"
-								class="offer-img"> <img src="/resources/images/gooksu.jpg"
-								class="img-responsive" alt="">
-							</a>
-							<div class="mid-1">
-								<div class="women">
-									<h6>
-										<a href="single.html">음식이름1</a>
-									</h6>
-								</div>
-								<div class="mid-2">
-									<p>글쓴이</p>
-									<div class="block">
-										<div class="starbox small ghosting"></div>
-									</div>
-									<div class="clearfix"></div>
-									<hr>
-									<div class="clearfix">
-										<a href="single.html">#맛잇</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					
-					<div class="col-md-3 m-wthree" style="margin-bottom: 20px;">
-						<div class="col-m">
-							<a href="#" data-toggle="modal" data-target="#myModal1"
-								class="offer-img"> <img src="/resources/images/gooksu.jpg"
-								class="img-responsive" alt="">
-							</a>
-							<div class="mid-1">
-								<div class="women">
-									<h6>
-										<a href="single.html">음식이름1</a>
-									</h6>
-								</div>
-								<div class="mid-2">
-									<p>글쓴이</p>
-									<div class="block">
-										<div class="starbox small ghosting"></div>
-									</div>
-									<div class="clearfix"></div>
-									<hr>
-									<div class="clearfix">
-										<a href="single.html">#맛잇</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					
-					<div class="col-md-3 m-wthree" style="margin-bottom: 20px;">
-						<div class="col-m">
-							<a href="#" data-toggle="modal" data-target="#myModal1"
-								class="offer-img"> <img src="/resources/images/gooksu.jpg"
-								class="img-responsive" alt="">
-							</a>
-							<div class="mid-1">
-								<div class="women">
-									<h6>
-										<a href="single.html">음식이름1</a>
-									</h6>
-								</div>
-								<div class="mid-2">
-									<p>글쓴이</p>
-									<div class="block">
-										<div class="starbox small ghosting"></div>
-									</div>
-									<div class="clearfix"></div>
-									<hr>
-									<div class="clearfix">
-										<a href="single.html">#맛잇</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+				</c:forEach>
 				</div>
+			
 				</div>
 				
 				<nav style="text-align: center;">
@@ -389,5 +97,21 @@
 		</div>
 	</div>
 	<jsp:include page="../include/footer.jsp"></jsp:include>
+<script>
+	$(function(){
+		var register = $("#regWriteBtn"); // 레시피 작성하기 버튼
+		register.on("click",function(){ // 레시피 작성하기 버튼 클릭 시 진행
+			location.href = '/recipe/register'; 
+		});
+	});
+</script>
+<c:if test="${registerResult != null }"> <!-- 게시글 등록 시 null값이 아니게됨  -->
+	<script>
+		$(function(){
+			var result = '${registerResult}';
+			alert(result + " 게시글이 등록되었습니다");
+		});
+	</script>
+</c:if>
 </body>
 </html>

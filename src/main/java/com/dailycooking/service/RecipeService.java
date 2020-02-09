@@ -15,4 +15,6 @@ public interface RecipeService {
 	public boolean remove(Long recipenum); // 레시피 게시글 삭제
 	
 	public List<RecipeBoardVO> getList(); // 레시피 전체 목록 
-}
+	/*
+	 * public List<String> cookingTags(); // 레시피 태그 목록
+	 */}

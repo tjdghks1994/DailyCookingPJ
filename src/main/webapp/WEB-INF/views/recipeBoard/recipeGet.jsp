@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,11 +19,12 @@
 	<div class="recipeInsert">
 		<div class="getRecipeDiv">
 			<div class="recipeDate">
-				<span class="dateLetter">등록일 :</span> <span>xxxx-xx-xx</span> <span class="dateLetter">수정일 :</span><span>xxxx-xx-xx</span>
+				<span class="dateLetter">등록일 :</span> <span><fmt:formatDate value="${recipe.regdate }" pattern="yyyy-MM-dd"/> </span>
+				<span class="dateLetter">수정일 :</span><span><fmt:formatDate value="${recipe.updateDate }" pattern="yyyy-MM-dd"/></span>
 			</div>
 			<img src="/resources/images/gooksu.jpg" width="60%;" height="50%;">
-			<p class="recipeWriter">작성자 : 유도건zzz</p>
-			<p class="recipeTitle">레시피 제목 나오는 공간 이다</p>
+			<p class="recipeWriter">작성자 : <c:out value="${recipe.userid }"></c:out> </p>
+			<p class="recipeTitle"><c:out value="${recipe.title }"></c:out> </p>
 			<div class="recipeImgDiv">
 				<span class="recipeInfo"><img src="/resources/images/people.png" class="infoImg1"> 1인분</span>
 				<span class="recipeInfo"><img src="/resources/images/time.png" class="infoImg2"> 30분 이내</span>
@@ -30,15 +33,15 @@
 			<div>
 				<a class="recipeSc">
 					<img src="/resources/images/favorite.png" class="iconImg">
-					<span style="font-size: 14px;">스크랩 10</span>
+					<span style="font-size: 14px;">스크랩 <c:out value="${recipe.scrapCnt }"></c:out> </span>
 				</a>
 				<a class="recipeSc" href="#replySpace">
 					<img src="/resources/images/comment.png" class="iconImg">
-					<span style="font-size: 14px;">댓글 0</span>
+					<span style="font-size: 14px;">댓글 <c:out value="${recipe.replyCnt }"></c:out> </span>
 				</a>
 				<a class="recipeSc">
 					<img src="/resources/images/good.png" class="iconImg">
-					<span style="font-size: 14px;">추천 0</span>
+					<span style="font-size: 14px;">추천 <c:out value="${recipe.likeCnt }"></c:out> </span>
 				</a>
 			</div>
 			
@@ -53,7 +56,7 @@
 	<div class="recipeInsert">
 		<div class="getRecipeDiv2">
 			<p style="font-size: 16px; font-weight: bold; margin-bottom: 20px;">[주 재료]</p>
-			<p style="font-size: 18px;">주 재료 디비 값 가져와서 출력 할 공간</p>
+			<p style="font-size: 18px;"><c:out value="${recipe.material }"></c:out> </p>
 		</div>
 	</div>
 	
@@ -61,25 +64,15 @@
 		<div class="getRecipeDiv2">
 			<p style="font-size: 16px; font-weight: bold; margin-bottom: 20px;">조리 순서 
 			<span style="color: lightgray; font-size: 16px;">Steps</span> </p>
-			<div class="cookingOrder"> <!-- db에서 값 가져올 때 for문을 통해서 생성할 div 태그  -->
-				<span id="orderValue">1.</span>
-				<span id="orderContent" style="font-size: 18px; margin-left: 10px;">조리 순서 내용 디비 값 가져와서 출력 할 공간</span>
-				<br>
+		
+			<div class="orderDiv">	<!-- jQuery로 동적태그 생성해서 조리순서 값 넣었음  -->
+				
 			</div>
-			<div class="cookingOrder">
-				<span id="orderValue">2.</span>
-				<span id="orderContent" style="font-size: 18px; margin-left: 10px;">조리 순서 내용 디비 값 가져와서 출력 할 공간</span>
-				<br>
-			</div>
-			<div class="cookingOrder">
-				<span id="orderValue">3.</span>
-				<span id="orderContent" style="font-size: 18px; margin-left: 10px;">조리 순서 내용 디비 값 가져와서 출력 할 공간</span>
-				<br>
-			</div>
+			
 			<div style="margin-bottom: 15px;">
 				<span style="font-size: 16px; font-weight: bold; color: red;" >* 조리 팁/ 주의사항</span>
 			</div>
-			<p style="font-size: 18px;">조리 팁/ 주의사항 내용 디비 값 가져와서 출력 할 공간</p>
+			<p style="font-size: 18px;"><c:out value="${recipe.cookingTip }"></c:out> </p>
 		</div> <!-- End getRecipeDiv2 -->
 	</div> <!-- End recipeInsert  -->
 	
@@ -224,6 +217,20 @@
 		e.preventDefault();
 		confirm('정말 게시글을 신고하시겠습니까?');
 	});
+	
+	var order = '${recipe.cookingOrder}'; // 게시물 재료 순서 모든 값
+	var orderArray = order.split("@"); // 게시물 재료 순서를 @ 기준으로 잘라서 배열에 담음
+	var orderArrayLength = orderArray.length; // 게시물 재료 순서 배열의 총 길이
+	
+	var orderDiv = $(".orderDiv"); // 조리순서 div 태그
+	var orderText = ""; // 동적으로 태그 생성하기위해 변수 생성
+	for(var i=0; i<orderArrayLength; i++){
+		orderText += '<div class="cookingOrder">';
+		orderText += '<span id="orderValue">' + (i+1) + '.</span>';
+		orderText += '<span id="orderContent" style="font-size: 18px; margin-left: 10px;">' + orderArray[i] + '</span>';
+		orderText += '<br></div>';
+	}
+	orderDiv.append(orderText); // 조리순서 view 페이지에 부착
 </script>
 </body>
 </html>
