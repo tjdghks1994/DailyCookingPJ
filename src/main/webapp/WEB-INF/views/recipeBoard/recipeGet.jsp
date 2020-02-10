@@ -285,7 +285,10 @@
 	removeTag.on("click", function(e){ // 글 삭제하기 클릭시 진행
 		e.preventDefault();
 		
-		$("form[name='deleteForm']").submit(); // 폼 전송
+		var removeAnswer = confirm('정말 게시글을 삭제하시겠습니까?');
+		if(removeAnswer){ 
+			$("form[name='deleteForm']").submit(); // 폼 전송
+		}
 	});
 	
 	var modifyTag = $("#recipeModifyTag"); // 글 수정하기 태그
