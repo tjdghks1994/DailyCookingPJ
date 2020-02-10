@@ -75,7 +75,7 @@
 								<a href="#" class="hyper" id="menuRec"><span>메뉴 추천</span></a>
 							</li>
 							<li class="dropdown">
-								<a href="/recipeList" class="hyper"><span> 음식 레시피  </span></a>
+								<a href="/recipe/list" class="hyper"><span> 음식 레시피  </span></a>
 							</li>
 							<li class="dropdown">
 								<a href="#" class="hyper"><span>추천 음식점</span></a>

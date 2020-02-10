@@ -58,4 +58,13 @@ public class RecipeController {
 		
 		return "/recipeBoard/recipeGet";
 	}
+	
+	@PostMapping("/remove")
+	public String remove(@RequestParam("recipenum") Long recipenum, RedirectAttributes rttr) {
+		log.info("컨트롤러 remove....." + recipenum);
+		if(service.remove(recipenum)) {
+			rttr.addFlashAttribute("removeResult", "게시물을 삭제하였습니다");
+		}
+		return "redirect:/recipe/list";
+	}
 }

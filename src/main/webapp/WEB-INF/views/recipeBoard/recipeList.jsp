@@ -113,5 +113,13 @@
 		});
 	</script>
 </c:if>
+<c:if test="${removeResult != null }"> <!-- 게시글 등록 시 null값이 아니게됨  -->
+	<script>
+		$(function(){
+			var result = '${removeResult}';
+			alert(result);
+		});
+	</script>
+</c:if>
 </body>
 </html>
