@@ -65,7 +65,15 @@ public class RecipeController {
 		model.addAttribute("recipe", service.get(recipenum));
 		return "/recipeBoard/recipeModify";
 	}
-	
+
+	@PostMapping("/modify")
+	public String modifyPost(RecipeBoardVO rvo, RedirectAttributes rttr) {
+		log.info("컨트롤러 modifyPost.." + rvo);
+		if(service.modify(rvo)) {
+			rttr.addFlashAttribute("modifyResult", "게시물을 수정하였습니다");
+		}
+		return "redirect:/recipe/list";
+	}
 	@PostMapping("/remove")
 	public String remove(@RequestParam("recipenum") Long recipenum, RedirectAttributes rttr) {
 		log.info("컨트롤러 remove....." + recipenum);

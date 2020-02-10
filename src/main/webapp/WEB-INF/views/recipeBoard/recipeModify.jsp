@@ -25,7 +25,7 @@
 
 <div style="background-color: lightgray;">
 	<div class="recipeInsert">
-	<form action="/recipe/modify" method="post" name="formModify">
+	<form action="/recipe/modify" method="post" name="formModify" role="form">
 	<div class="recipeDiv">
 	    <div class="recipeSemiDiv">
 	      <div>
@@ -77,9 +77,7 @@
 	  	<div class="recipeSemiDiv2">
 	  	<div class="cookorder">
 	  		<p class="titles">조리 순서</p>
-	  		<span style="color: green; font-weight: bold;">1 번째 순서</span>
-	  		<input type="text" class="form-control" placeholder="예) 고기는(500g) 적당크기 썰어 물을 갈아가며 2시간 이상 핏물을 빼주세요"
-	  				style="margin-top: 10px; margin-bottom: 10px;">
+	  		
 	  	</div>
 	  	<div style="width: 60%; text-align: center;">	
 	  		<a class="seqAdd">+ 순서 추가</a>
@@ -110,10 +108,13 @@
 			
 		</div><!--recipeSemiDiv2-->
 		<div class="recipeBtn">
-			<input type="submit" value="수정 완료">
+			<input type="submit" id="modifyRecipeBtn" value="수정 완료">
 			<input type="button" value="취소" id="cancleBtn">
 		</div>
     </div><!--/recipe Div -->
+    <input type="hidden" name="recipenum" value="${recipe.recipenum }">
+    <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+    <input type="hidden" name="userid" value="${recipe.userid }">
 	</form>
 	</div>
 </div>
@@ -122,23 +123,53 @@
 	var addSeq = $('.seqAdd'); // 순서 추가 a태그
 	var cookOrder = $('.cookorder'); // 조리 순서 div 태그
 	var cancleBtn = $('#cancleBtn'); // 취소 버튼
-	var i = 1;
+	
+	var orderDbValue = '${recipe.cookingOrder}'; // 조리순서 db에서 가져온값
+	var orderArrays = orderDbValue.split("@"); // 조리순서 @기준으로 배열에 담은 변수
+	var orderLength = orderArrays.length; // 조리순서 배열의 길이 값
+	var i = orderLength-1; // 조리 순서의 순서를 나타내는 변수
+	var orderTagText = ""; 
 	
 	addSeq.on("click", function(e) { // 순서 추가 클릭시 진행(태그 추가함)
 		e.preventDefault();
+		i = i +1;
 		var addSpan2 = $('<span style="color: green; font-weight: bold;"></span>');
-		var addInput = $('<input type="text" class="form-control" placeholder="예) 고기는(500g) 적당크기 썰어 물을 갈아가며 2시간 이상 핏물을 빼주세요" style="margin-top: 10px; margin-bottom: 10px;">');
-		i = i + 1;
+		var addInput = $('<input type="text" id="cookOrder" name="cookOrder'+i+'" class="form-control" placeholder="예) 고기는(500g) 적당크기 썰어 물을 갈아가며 2시간 이상 핏물을 빼주세요" style="margin-top: 10px; margin-bottom: 10px;">');
+		
 		var text = i + ' 번째 순서';
 		
-		cookOrder.append(addSpan2.text(text));
-		cookOrder.append(addInput);
+		cookOrder.append(addSpan2.text(text)); // 동적 span태그 착
+		cookOrder.append(addInput); // 동적 input태그 부착
+	});
+	
+	for (var j = 1; j < orderLength; j++) { // 조리순서 태그 동적으로 생성(기존 게시물의 내용 그대로)
+		orderTagText += '<span style="color: green; font-weight: bold;">'+j+' 번째 순서</span>';
+		orderTagText += '<input type="text" id="cookOrder" name="cookOrder'+j+'" value="'+orderArrays[j-1]+'" class="form-control" placeholder="예) 고기는(500g) 적당크기 썰어 물을 갈아가며 2시간 이상 핏물을 빼주세요" style="margin-top: 10px; margin-bottom: 10px;">';
+    }
+	cookOrder.append(orderTagText); // 조리순서 태그 view에 부착
+	
+	var modifyBtn = $("#modifyRecipeBtn"); // 수정완료 버튼
+	
+	modifyBtn.on("click",function(e){ // 수정완료 버튼 클릭시 진행
+		
+		var order = $("input[id=cookOrder]").length; // 조리순서 생성된 태그 갯수
+		var textOrder = "";
+		for (var o = 1; o <= order; o++) {
+			textOrder += $("input[name=cookOrder"+o+"]").val() + "@";
+        }
+		
+		var addOrder = $('<input type="hidden" name="cookingOrder">'); // 동적 태그생성 vo변수와 같은 name값을 가진 조리순서 
+		addOrder.val(textOrder); // 조리순서 모든 값들을 태그에 부착
+		cookOrder.append(addOrder); // view페이지에 태그 부착 - 조리순서 값을 전부 합쳐서 vo값에 넣기위함
+		
+		$("form[role='form']").submit(); // 폼 전송
 	});
 	
 	cancleBtn.on('click', function(e) { // 취소 버튼 클릭 시 진행
 		e.preventDefault();
 		history.back();
 	});
+	
 </script>
 </body>
 

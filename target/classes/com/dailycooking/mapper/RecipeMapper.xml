@@ -27,7 +27,7 @@
 	<update id="update">
 		update recipe_board set title = #{title}, material = #{material}, personnel = #{personnel},
 		cookingtime = #{cookingTime}, cookinglevel = #{cookingLevel}, cookingorder = #{cookingOrder},
-		cookingtip = #{cookingTip}, updateDate = sysdate where recipenum = #{recipenum}
+		cookingtip = #{cookingTip}, cookingTag = #{cookingTag}, updateDate = sysdate where recipenum = #{recipenum}
 	</update>
 	
 </mapper>
