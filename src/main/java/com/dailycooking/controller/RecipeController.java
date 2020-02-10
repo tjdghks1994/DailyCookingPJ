@@ -59,6 +59,13 @@ public class RecipeController {
 		return "/recipeBoard/recipeGet";
 	}
 	
+	@GetMapping("/modify")
+	public String modify(@RequestParam("recipenum") Long recipenum, Model model) {
+		log.info("수정 view 페이지로 이동" + recipenum);
+		model.addAttribute("recipe", service.get(recipenum));
+		return "/recipeBoard/recipeModify";
+	}
+	
 	@PostMapping("/remove")
 	public String remove(@RequestParam("recipenum") Long recipenum, RedirectAttributes rttr) {
 		log.info("컨트롤러 remove....." + recipenum);

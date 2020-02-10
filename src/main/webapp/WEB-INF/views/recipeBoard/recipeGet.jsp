@@ -74,12 +74,17 @@
 			
 			<div class="managerBtn">
 			<sec:authorize access="isAuthenticated()">
-				<a class="managerText" href="/recipeModify">글 수정하기</a> <!-- 해당 게시물을 작성한 유저만 보이게 -->
+				<form action="/recipe/modify" name="modifyForm" style="display: inline;">
+					<a class="managerText" href="#" id="recipeModifyTag">글 수정하기</a> <!-- 해당 게시물을 작성한 유저만 보이게 -->
+					<input type="hidden" name="recipenum" value="${recipe.recipenum }">
+				</form>
+				
 				<form action="/recipe/remove" method="post" name="deleteForm" style="display: inline;">
 					<a class="managerText" href="#" id="recipeRemoveTag">글 삭제하기</a> <!-- 해당 게시물을 작성한 유저만 보이게 -->
 					<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 					<input type="hidden" name="recipenum" value="${recipe.recipenum }">
 				</form>
+				
 				<a class="reportText">글 신고하기</a> <!-- 로그인 한 유저만 보이게 -->
 			</sec:authorize>
 			</div>
@@ -276,11 +281,18 @@
 	}
 	tagDiv.append(tagText); // 게시물의 태그값 view 페이지에 부착
 	
-	var removeTag = $("#recipeRemoveTag");
-	removeTag.on("click", function(e){
+	var removeTag = $("#recipeRemoveTag"); // 글 삭제하기 태그
+	removeTag.on("click", function(e){ // 글 삭제하기 클릭시 진행
 		e.preventDefault();
 		
-		$("form[name='deleteForm']").submit();
+		$("form[name='deleteForm']").submit(); // 폼 전송
+	});
+	
+	var modifyTag = $("#recipeModifyTag"); // 글 수정하기 태그
+	modifyTag.on("click", function(e){
+		e.preventDefault();
+		
+		$("form[name='modifyForm']").submit();
 	});
 </script>
 </body>
