@@ -104,6 +104,10 @@
 			location.href = '/recipe/register'; 
 		});
 	});
+	
+	var recipeBoardCnt = $(".col-m").length; // 게시물의 div태그 갯수 저장
+	$(".recipeBoardCount").html(recipeBoardCnt); // 게시물의 전체 갯수를 알리는 span태그의 내용을 변경
+	
 </script>
 <c:if test="${registerResult != null }"> <!-- 게시글 등록 시 null값이 아니게됨  -->
 	<script>
@@ -117,6 +121,14 @@
 	<script>
 		$(function(){
 			var result = '${removeResult}';
+			alert(result);
+		});
+	</script>
+</c:if>
+<c:if test="${modifyResult != null }"> <!-- 게시글 등록 시 null값이 아니게됨  -->
+	<script>
+		$(function(){
+			var result = '${modifyResult}';
 			alert(result);
 		});
 	</script>

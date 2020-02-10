@@ -74,6 +74,7 @@ public class RecipeController {
 		}
 		return "redirect:/recipe/list";
 	}
+	
 	@PostMapping("/remove")
 	public String remove(@RequestParam("recipenum") Long recipenum, RedirectAttributes rttr) {
 		log.info("컨트롤러 remove....." + recipenum);
