@@ -4,4 +4,25 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dailycooking.mapper.RecipeReplyMapper">
 	
+	<insert id="insert">
+		insert into recipe_reply (replynum, recipenum, reply, userid)
+		values(seq_recipe_replynum.nextval, #{recipenum}, #{reply}, #{userid})
+	</insert>
+	
+	<select id="read" resultType="com.dailycooking.domain.RecipeReplyVO">
+		select * from recipe_reply where replynum = #{replynum}
+	</select>
+	
+	<delete id="delete">
+		delete from recipe_reply where replynum = #{replynum}
+	</delete>
+	
+	<update id="update">
+		update recipe_reply set reply = #{reply}, updatedate = sysdate where replynum = #{replynum}
+	</update>
+	
+	<select id="getListWithPaging" resultType="com.dailycooking.domain.RecipeReplyVO">
+		select replynum, recipenum, reply, userid, regDate, updatedate
+		from recipe_reply where recipenum = #{recipenum} order by replynum asc
+	</select>
 </mapper>
