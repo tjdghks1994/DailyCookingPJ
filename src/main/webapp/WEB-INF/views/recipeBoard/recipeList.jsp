@@ -52,7 +52,7 @@
 				<c:forEach items="${list }" var="recipe">
 					<div class="col-md-3 m-wthree" style="margin-bottom : 20px; height: 340px;">
 						<div class="col-m" style="margin-bottom: 20px; height: 340px;">
-							<a href="/recipe/get" class="offer-img">
+							<a href="/recipe/get?recipenum=${recipe.recipenum }" class="offer-img">
 							 <img src="/resources/images/gooksu.jpg" class="img-responsive">
 							</a>
 							<div class="mid-1">
