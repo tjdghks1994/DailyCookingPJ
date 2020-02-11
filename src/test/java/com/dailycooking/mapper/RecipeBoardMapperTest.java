@@ -70,12 +70,27 @@ public class RecipeBoardMapperTest {
 		log.info("수정 결과 : " + result);
 	}
 	
-	@Test
 	public void testPaging() {
 		Criteria cri = new Criteria();
 		cri.setPageNum(3);
 		cri.setAmount(2);
 		List<RecipeBoardVO> list = mapper.getListWithPaging(cri);
 		list.forEach(recipe -> log.info(recipe));
+	}
+
+	public void testSearch() {
+		Criteria cri = new Criteria();
+		cri.setKeyword("123");
+		cri.setType("C");
+		
+		List<RecipeBoardVO> list = mapper.getListWithPaging(cri);
+		
+		list.forEach(recipe -> log.info(recipe));
+	}
+
+	@Test
+	public void testUpdateLookCnt() {
+		Long recipenum = 1L;
+		mapper.recipeLookCntUp(recipenum);
 	}
 }

@@ -3,6 +3,26 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dailycooking.mapper.RecipeMapper">
+	<sql id="criteria">
+		<trim prefix="(" suffix=") AND" prefixOverrides="OR">
+			<foreach item="type" collection="typeArr">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'T'.toString()">
+							title like '%'||#{keyword}||'%'
+						</when>
+						<when test="type == 'I'.toString()">
+							userid like '%'||#{keyword}||'%'
+						</when>
+						<when test="type == 'C'.toString()">
+							cookingTag like '%'||#{keyword}||'%'
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
+
 	<select id="getList" resultType="com.dailycooking.domain.RecipeBoardVO">
 		select * from recipe_board where recipenum > 0
 	</select>
@@ -12,7 +32,7 @@
 			select seq_recipenum.nextval from dual
 		</selectKey>
 		insert into recipe_board(recipenum,title,material,personnel,cookingtime,cookinglevel,cookingorder,cookingtip,cookingtag,userid)
-		values (seq_recipenum.nextval, #{title}, #{material},#{personnel},#{cookingTime},#{cookingLevel},
+		values (#{recipenum}, #{title}, #{material},#{personnel},#{cookingTime},#{cookingLevel},
 		#{cookingOrder},#{cookingTip},#{cookingTag},#{userid})
 	</insert>
 	
@@ -36,12 +56,24 @@
 		from ( select /*+ INDEX_DESC(recipe_board sys_c007814) */
     			rownum rn, recipenum, title, material, personnel, cookingtime, cookinglevel, cookingorder, cookingtip,
     			cookingtag, replycnt, likecnt, scrapcnt, userid
-			   from recipe_board where rownum <= #{pageNum} * #{amount}
+			   from recipe_board where
+		]]>
+		
+		<include refid="criteria"></include>
+		   
+		<![CDATA[	   
+			    rownum <= #{pageNum} * #{amount}
 			  )
 		where rn > (#{pageNum} -1) * #{amount}
 	]]>
 	</select>
 	<select id="getTotalCount" resultType="int">
-		select count(*) from recipe_board where recipenum > 0
+		select count(*) from recipe_board where
+		<include refid="criteria"></include>
+		recipenum > 0
 	</select>
+	
+	<update id="recipeLookCntUp">
+		update recipe_board set lookcnt = lookcnt+1 where recipenum = #{recipenum}
+	</update>
 </mapper>

@@ -29,7 +29,7 @@ public class RecipeController {
 	private RecipeService service;
 	
 	@GetMapping("/list")
-	public String recipeMenu(Criteria cri, Model model) { // 레시피 전체 목록
+	public String recipeMenu(Criteria cri, Model model) { // 레시피 전체 목록 페이징처리
 		log.info("레시피 게시판 리스트 페이지" + cri);
 		List<RecipeBoardVO> list = service.getList(cri);
 		
@@ -37,6 +37,7 @@ public class RecipeController {
 		log.info("전체 게시물의 수 : " + total);
 		
 		model.addAttribute("pageMaker", new PageDTO(cri, total));
+		log.info(list.size());
 		model.addAttribute("list", service.getList(cri));
 		return "/recipeBoard/recipeList";
 	}
@@ -62,6 +63,7 @@ public class RecipeController {
 	public String get(@RequestParam("recipenum") Long recipenum, @ModelAttribute("cri") Criteria cri,
 						Model model) {
 		log.info("컨트롤러 get...." + recipenum);
+		service.recipeLookCntUp(recipenum);
 		model.addAttribute("recipe", service.get(recipenum));
 		
 		return "/recipeBoard/recipeGet";
@@ -85,6 +87,8 @@ public class RecipeController {
 		
 		rttr.addAttribute("pageNum", cri.getPageNum());
 		rttr.addAttribute("amount", cri.getAmount());
+		rttr.addAttribute("type", cri.getType());
+		rttr.addAttribute("keyword", cri.getKeyword());
 		
 		return "redirect:/recipe/list";
 	}
@@ -98,6 +102,8 @@ public class RecipeController {
 		}
 		rttr.addAttribute("pageNum", cri.getPageNum());
 		rttr.addAttribute("amount", cri.getAmount());
+		rttr.addAttribute("type", cri.getType());
+		rttr.addAttribute("keyword", cri.getKeyword());
 		
 		return "redirect:/recipe/list";
 	}

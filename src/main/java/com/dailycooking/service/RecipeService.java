@@ -18,4 +18,6 @@ public interface RecipeService {
 	public List<RecipeBoardVO> getList(Criteria cri); // 레시피 전체 목록 
 	
 	public int getTotal(Criteria cri); // 게시물 전체 갯수
+	
+	public boolean recipeLookCntUp(Long recipenum); // 레시피 조회시 조회수 증가
 }

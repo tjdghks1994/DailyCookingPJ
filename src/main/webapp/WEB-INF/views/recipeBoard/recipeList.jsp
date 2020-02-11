@@ -18,7 +18,7 @@
 				<div class="container ">
 					<div style="margin-bottom: 20px;">
 						<span style="font-size: 18px;">총 
-						 <span class="recipeBoardCount">35</span>
+						 <span class="recipeBoardCount"></span>
 						개의 레시피가 있습니다 </span>
 						<button id="regWriteBtn" type="button" class="btn btn-success btn-sm pull-right">레시피 작성하기</button>
 					</div>
@@ -34,14 +34,16 @@
 							<li style="font-size: 14px;"><a href="">인기순</a></li>
 						</ul>
 						<div style="width: 100%; text-align: right; margin-bottom: 20px;">
-					      	<form id="searchForm" action="" method="get">
+					      	<form id="searchForm" action="/recipe/list" method="get">
 					            <select name="type" style="height: 26px;">
-					               <option value="">--------</option>
-					               <option value="">닉네임</option>
-					               <option value="">제목</option>
-					               <option value="">태그</option>
+					               <option value="" ${pageMaker.cri.type == null?'selected':'' }>--------</option>
+					               <option value="I" ${pageMaker.cri.type eq 'I'?'selected':'' }>아이디</option>
+					               <option value="T" ${pageMaker.cri.type eq 'T'?'selected':'' }>제목</option>
+					               <option value="C" ${pageMaker.cri.type eq 'C'?'selected':'' }>태그</option>
 					            </select>
-					            <input type="text" name="keyword" style="width: 200px;">
+					            <input type="text" name="keyword" value="${pageMaker.cri.keyword }" style="width: 200px;">
+					            <input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
+					            <input type="hidden" name="amount" value="${pageMaker.cri.amount }">
 					           <button class="btn btn-default" style="height: 30px; padding: 1px 5px;">검색</button>
 					        </form>
 					    </div>
@@ -49,6 +51,9 @@
 					<!-- 게시물 목록 뿌려주는곳 -->
 			
 				<div>	
+				<c:if test="${list.size() == 0 }">
+					<h3 style="color: red; margin: 30px;">해당 검색 결과에 맞는 게시물이 존재 하지 않습니다</h3>
+				</c:if>
 				<c:forEach items="${list }" var="recipe">
 					<div class="col-md-3 m-wthree" style="margin-bottom : 20px; height: 340px;">
 						<div class="col-m" style="margin-bottom: 20px; height: 340px;">
@@ -100,7 +105,8 @@
                  <form id="actionForm" action="/recipe/list" method="get">
                      <input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
                      <input type="hidden" name="amount" value="${pageMaker.cri.amount }">
-     
+     				 <input type="hidden" name="type" value="${pageMaker.cri.type }">
+     				 <input type="hidden" name="keyword" value="${pageMaker.cri.keyword }">
                  </form>
                  
 			</div>
@@ -138,6 +144,25 @@
 		actionForm.append("<input type='hidden' name='recipenum' value='"+$(this).attr("href")+"'>");
 		actionForm.attr("action","/recipe/get");
 		actionForm.submit();
+	});
+	
+	var searchForm = $("#searchForm"); // 검색 form 태그
+	
+	$("#searchForm button").on("click",function(e){ // 검색 버튼 클릭 시 진행
+		if(!searchForm.find("option:selected").val()){ // 검색 종류가 선택되어있지 않을 때
+			alert("검색 종류를 선택하세요");
+			return false;
+		}
+	
+		if(!searchForm.find("input[name='keyword']").val()) { // 키워드 입력이 안되었을 때
+			alert("키워드를 입력하세요");
+			return false;
+		}
+		
+		searchForm.find("input[name='pageNum']").val("1"); // 검색후 페이지 번호는 1로 이동시키기위해
+		e.preventDefault();
+		
+		searchForm.submit(); // 폼 전송
 	});
 	
 </script>

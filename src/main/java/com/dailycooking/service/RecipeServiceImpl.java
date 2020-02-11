@@ -57,4 +57,10 @@ public class RecipeServiceImpl implements RecipeService {
 		return mapper.getTotalCount(cri);
 	}
 
+	@Override
+	public boolean recipeLookCntUp(Long recipenum) {
+		log.info("service lookCnt up : " + recipenum);
+		return mapper.recipeLookCntUp(recipenum) ==1;
+	}
+
 }

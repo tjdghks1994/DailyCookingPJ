@@ -14,4 +14,5 @@ public interface RecipeMapper {
 	public int update(RecipeBoardVO recipe); // 게시물 수정
 	public List<RecipeBoardVO> getListWithPaging(Criteria cri); // 게시물 전체목록 페이징 처리
 	public int getTotalCount(Criteria cri); // 전체 게시물의 갯수
+	public int recipeLookCntUp(Long recipenum); // 게시물 조회 시 게시물 조회수 증가
 }

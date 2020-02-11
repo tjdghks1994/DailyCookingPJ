@@ -79,6 +79,8 @@
 					<input type="hidden" name="recipenum" value="${recipe.recipenum }">
 					<input type="hidden" name="pageNum" value="${cri.pageNum }">
 					<input type="hidden" name="amount" value="${cri.amount }">
+					<input type="hidden" name="type" value="${cri.type }">
+					<input type="hidden" name="keyword" value="${cri.keyword }">
 				</form>
 				
 				<form action="/recipe/remove" method="post" name="deleteForm" style="display: inline;">
@@ -87,6 +89,8 @@
 					<input type="hidden" name="recipenum" value="${recipe.recipenum }">
 					<input type="hidden" name="pageNum" value="${cri.pageNum }">
 					<input type="hidden" name="amount" value="${cri.amount }">
+					<input type="hidden" name="type" value="${cri.type }">
+					<input type="hidden" name="keyword" value="${cri.keyword }">
 				</form>
 				
 				<a class="reportText">글 신고하기</a> <!-- 로그인 한 유저만 보이게 -->
@@ -95,6 +99,8 @@
 				<a class="managerText" href="#" id="recipeListTag">게시글 목록으로</a>
 				<input type="hidden" name="pageNum" value="${cri.pageNum }">
 				<input type="hidden" name="amount" value="${cri.amount }">
+				<input type="hidden" name="type" value="${cri.type }">
+				<input type="hidden" name="keyword" value="${cri.keyword }">
 			</form>
 			</div>
 		</div>
