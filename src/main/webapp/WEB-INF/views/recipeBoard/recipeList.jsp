@@ -52,13 +52,13 @@
 				<c:forEach items="${list }" var="recipe">
 					<div class="col-md-3 m-wthree" style="margin-bottom : 20px; height: 340px;">
 						<div class="col-m" style="margin-bottom: 20px; height: 340px;">
-							<a href="/recipe/get?recipenum=${recipe.recipenum }" class="offer-img">
+							<a href="${recipe.recipenum }" class="offer-img">
 							 <img src="/resources/images/gooksu.jpg" class="img-responsive">
 							</a>
 							<div class="mid-1">
 								<div class="women">
 									<h6>
-										<a href="/recipe/get?recipenum=${recipe.recipenum }"><c:out value="${recipe.title }"></c:out> </a>
+										<a href="${recipe.recipenum }" class="move"><c:out value="${recipe.title }"></c:out> </a>
 									</h6>
 								</div>
 								<div class="mid-2">
@@ -82,17 +82,27 @@
 				
 				<nav style="text-align: center;">
 					<ul class="pagination">
-						<li><a href="#" aria-label="Previous"> <span
+					<c:if test="${pageMaker.prev }">
+						<li class="pagePrevBtn"><a href="${pageMaker.startPage -1}" aria-label="Previous"> <span
 								aria-hidden="true">«</span></a></li>
-						<li><a href="#">1</a></li>
-						<li><a href="#">2</a></li>
-						<li><a href="#">3</a></li>
-						<li><a href="#">4</a></li>
-						<li><a href="#">5</a></li>
-						<li><a href="#" aria-label="Next"><span
+					</c:if>
+					<c:forEach var="num" begin="${pageMaker.startPage }" end="${pageMaker.endPage }">
+						<li class="pageBtn ${pageMaker.cri.pageNum == num ? "active" : "" }"><a href="${num }">${num }</a></li>
+					</c:forEach>
+					<c:if test="${pageMaker.next }">
+						<li class="pageNextBtn"><a href="${pageMaker.endPage +1}" aria-label="Next"><span
 								aria-hidden="true">»</span></a></li>
+					</c:if>
+						
 					</ul>
 				</nav>
+				 <!-- 실제 페이지를 클릭하면 동작을 하는 부분  -->
+                 <form id="actionForm" action="/recipe/list" method="get">
+                     <input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
+                     <input type="hidden" name="amount" value="${pageMaker.cri.amount }">
+     
+                 </form>
+                 
 			</div>
 		</div>
 	</div>
@@ -105,8 +115,30 @@
 		});
 	});
 	
-	var recipeBoardCnt = $(".col-m").length; // 게시물의 div태그 갯수 저장
+	var recipeBoardCnt = '${pageMaker.total}';// 게시물의 div태그 갯수 저장
 	$(".recipeBoardCount").html(recipeBoardCnt); // 게시물의 전체 갯수를 알리는 span태그의 내용을 변경
+	
+	var actionForm = $("#actionForm"); // 페이징 처리를 위해 전송할 폼 태그
+	$(".pageBtn a").on("click", function(e){ // 페이징 버튼 숫자를 클릭시 진행
+		e.preventDefault();
+		console.log("click");
+		actionForm.find("input[name='pageNum']").val($(this).attr("href")); // hidden태그의 페이지 번호를 클릭한 번호의 href속성값으로 변경
+		actionForm.submit(); // 폼 전송
+	});
+	
+	$(".offer-img").on("click",function(e){ // 게시물의 이미지 클릭 시 진행
+		e.preventDefault();
+		actionForm.append("<input type='hidden' name='recipenum' value='"+$(this).attr("href")+"'>");
+		actionForm.attr("action","/recipe/get");
+		actionForm.submit();
+	});
+	
+	$(".move").on("click",function(e){ // 게시물의 제목 클릭 시 진행
+		e.preventDefault();
+		actionForm.append("<input type='hidden' name='recipenum' value='"+$(this).attr("href")+"'>");
+		actionForm.attr("action","/recipe/get");
+		actionForm.submit();
+	});
 	
 </script>
 <c:if test="${registerResult != null }"> <!-- 게시글 등록 시 null값이 아니게됨  -->

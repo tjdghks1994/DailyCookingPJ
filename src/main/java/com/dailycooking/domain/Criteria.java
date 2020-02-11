@@ -10,14 +10,14 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Criteria {
-	private int pageNum;
-	private int amount;
+	private int pageNum; // 페이지 번호
+	private int amount; // 1페이지당 보여줄 게시물 갯수
 	
-	private String type;
-	private String keyword;
+	private String type; // 검색 조건
+	private String keyword; // 검색 키워드
 	
-	public Criteria() {
-		this(1,10);
+	public Criteria() { // 기본 1페이지당 12개씩
+		this(1,12);
 	}
 	public Criteria(int pageNum,int amount) {
 		this.pageNum = pageNum;

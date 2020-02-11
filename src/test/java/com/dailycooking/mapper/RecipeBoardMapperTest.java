@@ -1,11 +1,14 @@
 package com.dailycooking.mapper;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.dailycooking.domain.Criteria;
 import com.dailycooking.domain.RecipeBoardVO;
 
 import lombok.Setter;
@@ -51,7 +54,6 @@ public class RecipeBoardMapperTest {
 		log.info("삭제 결과 여부 : " + mapper.delete(6L)); // 성공시 1 반환
 	}
 
-	@Test
 	public void testUpdate() {
 		RecipeBoardVO rvo = new RecipeBoardVO();
 		rvo.setRecipenum(4L);
@@ -66,5 +68,14 @@ public class RecipeBoardMapperTest {
 		
 		int result = mapper.update(rvo);
 		log.info("수정 결과 : " + result);
+	}
+	
+	@Test
+	public void testPaging() {
+		Criteria cri = new Criteria();
+		cri.setPageNum(3);
+		cri.setAmount(2);
+		List<RecipeBoardVO> list = mapper.getListWithPaging(cri);
+		list.forEach(recipe -> log.info(recipe));
 	}
 }

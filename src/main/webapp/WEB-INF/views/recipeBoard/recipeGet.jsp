@@ -77,16 +77,25 @@
 				<form action="/recipe/modify" name="modifyForm" style="display: inline;">
 					<a class="managerText" href="#" id="recipeModifyTag">글 수정하기</a> <!-- 해당 게시물을 작성한 유저만 보이게 -->
 					<input type="hidden" name="recipenum" value="${recipe.recipenum }">
+					<input type="hidden" name="pageNum" value="${cri.pageNum }">
+					<input type="hidden" name="amount" value="${cri.amount }">
 				</form>
 				
 				<form action="/recipe/remove" method="post" name="deleteForm" style="display: inline;">
 					<a class="managerText" href="#" id="recipeRemoveTag">글 삭제하기</a> <!-- 해당 게시물을 작성한 유저만 보이게 -->
 					<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 					<input type="hidden" name="recipenum" value="${recipe.recipenum }">
+					<input type="hidden" name="pageNum" value="${cri.pageNum }">
+					<input type="hidden" name="amount" value="${cri.amount }">
 				</form>
 				
 				<a class="reportText">글 신고하기</a> <!-- 로그인 한 유저만 보이게 -->
 			</sec:authorize>
+			<form action="/recipe/list" method="get" name="listForm" style="display: inline;">
+				<a class="managerText" href="#" id="recipeListTag">게시글 목록으로</a>
+				<input type="hidden" name="pageNum" value="${cri.pageNum }">
+				<input type="hidden" name="amount" value="${cri.amount }">
+			</form>
 			</div>
 		</div>
 	</div>
@@ -297,6 +306,14 @@
 		
 		$("form[name='modifyForm']").submit();
 	});
+	
+	var listTag = $("#recipeListTag"); // 글 목록으로 태그
+	listTag.on("click", function(e){
+		e.preventDefault();
+		
+		$("form[name='listForm']").submit();
+	});
+	
 </script>
 </body>
 </html>

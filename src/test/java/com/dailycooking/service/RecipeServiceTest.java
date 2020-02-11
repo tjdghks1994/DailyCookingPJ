@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.dailycooking.domain.Criteria;
 import com.dailycooking.domain.RecipeBoardVO;
 
 import lombok.Setter;
@@ -37,8 +38,12 @@ public class RecipeServiceTest {
 		log.info("생성된 게시물의 번호 : " + rvo.getRecipenum());
 	}
 	
+	@Test
 	public void testGetList() {
-		service.getList().forEach(recipe -> log.info(recipe));
+		Criteria cri = new Criteria();
+		cri.setPageNum(2);
+		cri.setAmount(3);
+		service.getList(cri).forEach(recipe -> log.info(recipe));
 	}
 
 	public void testGetOne() {

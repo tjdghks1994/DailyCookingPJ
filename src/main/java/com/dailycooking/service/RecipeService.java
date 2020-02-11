@@ -2,6 +2,7 @@ package com.dailycooking.service;
 
 import java.util.List;
 
+import com.dailycooking.domain.Criteria;
 import com.dailycooking.domain.RecipeBoardVO;
 
 public interface RecipeService {
@@ -14,7 +15,7 @@ public interface RecipeService {
 	
 	public boolean remove(Long recipenum); // 레시피 게시글 삭제
 	
-	public List<RecipeBoardVO> getList(); // 레시피 전체 목록 
-	/*
-	 * public List<String> cookingTags(); // 레시피 태그 목록
-	 */}
+	public List<RecipeBoardVO> getList(Criteria cri); // 레시피 전체 목록 
+	
+	public int getTotal(Criteria cri); // 게시물 전체 갯수
+}

@@ -115,6 +115,8 @@
     <input type="hidden" name="recipenum" value="${recipe.recipenum }">
     <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
     <input type="hidden" name="userid" value="${recipe.userid }">
+    <input type="hidden" name="pageNum" value="${cri.pageNum }">
+    <input type="hidden" name="amount" value="${cri.amount }">
 	</form>
 	</div>
 </div>

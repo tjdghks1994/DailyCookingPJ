@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dailycooking.domain.Criteria;
 import com.dailycooking.domain.RecipeBoardVO;
 import com.dailycooking.mapper.RecipeMapper;
 
@@ -44,18 +45,16 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	@Override
-	public List<RecipeBoardVO> getList() {
-		log.info("service getList....");
+	public List<RecipeBoardVO> getList(Criteria cri) {
+		log.info("service getList...." + cri);
 		
-		return mapper.getList();
+		return mapper.getListWithPaging(cri);
 	}
 
-	/*
-	 * @Override public List<String> cookingTags() { List<RecipeBoardVO> list =
-	 * mapper.getList(); List<String> tag = new ArrayList<String>();
-	 * 
-	 * for(int i=0; i<list.size(); i++) { String[] tags =
-	 * list.get(i).getCookingTag().split("#"); for(int j=0; j<tags.length; j++) {
-	 * tag.add(tags[j]); } } return tag; }
-	 */
+	@Override
+	public int getTotal(Criteria cri) {
+		log.info("service getTotal.....");
+		return mapper.getTotalCount(cri);
+	}
+
 }

@@ -7,11 +7,11 @@ import lombok.ToString;
 @ToString
 public class PageDTO {
 	
-	private int startPage;
-	private int endPage;
-	private int total;
-	private Criteria cri;
-	private boolean pre,next;
+	private int startPage; // 페이징 시작번호
+	private int endPage; // 페이징 끝 번호
+	private int total; // 전체 데이터 수
+	private Criteria cri; 
+	private boolean prev,next; // 이전 , 다음 버튼 유무
 	
 	public PageDTO(Criteria cri,int total) {
 		this.cri = cri;
@@ -23,7 +23,7 @@ public class PageDTO {
 		if(realEnd<this.endPage) {
 			this.endPage=realEnd;
 		}
-		this.pre = this.startPage>1;
+		this.prev = this.startPage>1;
 		this.next = this.endPage<realEnd;
 	}
 
