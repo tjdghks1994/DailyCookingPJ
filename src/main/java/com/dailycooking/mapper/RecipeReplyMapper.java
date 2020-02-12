@@ -20,4 +20,6 @@ public interface RecipeReplyMapper {
 	public List<RecipeReplyVO> getListWithPaging(@Param("cri") Criteria cri,
 											@Param("recipenum") Long recipenum); // 댓글 페이징
 	
+	public int replyCnt(Long recipenum); // 해당 게시판의 댓글 갯수
+	
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.dailycooking.domain.Criteria;
 import com.dailycooking.domain.RecipeReplyVO;
+import com.dailycooking.domain.ReplyPageDTO;
 
 public interface RecipeRelpyService {
 
@@ -16,4 +17,6 @@ public interface RecipeRelpyService {
 	public int remove(Long replynum); // 댓글 삭제
 	
 	public List<RecipeReplyVO> getList(Criteria cri, Long recipenum); // 해당 게시물의 댓글 전체 목록
+	
+	public ReplyPageDTO getListPage(Criteria cri, Long recipenum); // 해당 게시물의 댓글 전체목록과 댓글 갯수
 }

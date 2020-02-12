@@ -409,6 +409,9 @@ ul{
 	color: orange; font-size: 22px; font-weight: bold;
 }
 
+.replyFooter {
+	width: 100%; height: 40px;
+}
 /* 내가 추가한 style.css 끝 */
 
 /*--popup--*/

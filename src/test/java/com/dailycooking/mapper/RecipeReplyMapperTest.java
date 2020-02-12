@@ -62,11 +62,20 @@ public class RecipeReplyMapperTest {
 		log.info("댓글 수정 결과 : " + result);
 	}
 
-	@Test
 	public void testList() {
 		Criteria cri = new Criteria();
 		
 		List<RecipeReplyVO> list = mapper.getListWithPaging(cri, 64L);
+		
+		list.forEach(reply -> log.info(reply));
+	}
+	
+	@Test
+	public void testList2() {
+		
+		Criteria cri = new Criteria(1,10);
+		
+		List<RecipeReplyVO> list = mapper.getListWithPaging(cri, 65L);
 		
 		list.forEach(reply -> log.info(reply));
 	}

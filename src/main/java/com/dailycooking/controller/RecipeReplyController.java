@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dailycooking.domain.Criteria;
 import com.dailycooking.domain.RecipeReplyVO;
+import com.dailycooking.domain.ReplyPageDTO;
 import com.dailycooking.service.RecipeRelpyService;
 
 import lombok.AllArgsConstructor;
@@ -44,15 +45,16 @@ public class RecipeReplyController {
 	@GetMapping(value = "/pages/{recipenum}/{page}",
 			produces = {MediaType.APPLICATION_XML_VALUE,
 					MediaType.APPLICATION_JSON_UTF8_VALUE})
-	public ResponseEntity<List<RecipeReplyVO>> getList(
+	public ResponseEntity<ReplyPageDTO> getList(
 			@PathVariable("page") int page,
 			@PathVariable("recipenum") Long recipenum) {
 		
 		log.info("getList............");
 		Criteria cri = new Criteria(page, 10);
+		log.info("get Reply List recipenum : " + recipenum);
 		log.info(cri);
 		
-		return new ResponseEntity<>(service.getList(cri, recipenum), HttpStatus.OK);
+		return new ResponseEntity<>(service.getListPage(cri, recipenum), HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/{replynum}",

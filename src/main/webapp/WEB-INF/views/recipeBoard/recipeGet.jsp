@@ -64,7 +64,7 @@
 				</a>
 				<a class="recipeSc" href="#replySpace">
 					<img src="/resources/images/comment.png" class="iconImg">
-					<span style="font-size: 14px;">댓글 <c:out value="${recipe.replyCnt }"></c:out> </span>
+					<span style="font-size: 14px;">댓글 <span class="replyCount">0</span></span>
 				</a>
 				<a class="recipeSc">
 					<img src="/resources/images/good.png" class="iconImg">
@@ -152,26 +152,20 @@
              <div class="recipeInsert" id="replySpace">
              	<div class="getRecipeDiv2">
               		<div style="border-bottom: 1px solid lightgray; padding-bottom: 10px;">
-              			<span style="font-size: 16px;">댓글</span>
+              			<span style="font-size: 16px; font-weight: bold;">댓글</span>
               			<button type="button" class="btn btn-info btn-sm pull-right" id="addReplyBtn">댓글 등록</button>
               		</div>
               		<div class="replyDiv">
               			<ul class="chat">
-              				<li class="replyList" data-rno='12'>
+              				<li class="replyList" data-replynum='4'>
               					<div>
-              						<strong class="primary-font">user00</strong>
-              						<small class="pull-right text-muted">2020-01-10 10:20</small>
+              						<strong class="primary-font">댓글이 존재하지않습니다.</strong>
               					</div>
-              					<p>댓글 내용 디비에서 가져와 출력 할 공간</p>
-              				</li>
-              				<li class="replyList">
-              					<div>
-              						<strong class="primary-font">user01</strong>
-              						<small class="pull-right text-muted">2019-11-29 15:43</small>
-              					</div>
-              					<p>댓글 내용 디비에서 가져와 출력 할 공간</p>
               				</li>
               			</ul>
+              		</div>
+              		<div class="replyFooter">
+              		
               		</div>
               	</div>
               </div>	
@@ -183,28 +177,28 @@
                       <div class="modal-content">
                           <div class="modal-header">
                               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                              <h4 class="modal-title" id="myModalLabel">댓글</h4>
+                              <h4 class="modal-title" id="myModalLabel">댓글 상세 정보</h4>
                           </div>
                           <div class="modal-body">
-                        		<form>
+                        		
 						          <div class="form-group">
 						            <label>댓글 내용</label>
 						            <input class="form-control" value="new Reply!!!" name="reply" id="reply">
 						          </div>
 						          <div class="form-group">
 						            <label>작성자</label>
-						            <input class="form-control" value="replyer" name="replyer" id="replyer" readonly="readonly">
+						            <input class="form-control" value="admin" name="userid" id="userid" readonly="readonly">
 						          </div>
 						          <div class="form-group">
 						            <label>댓글 등록 날짜</label>
-						            <input class="form-control" name="replyDate" id="replyDate" value="2019-12-02 09:45:15">
+						            <input class="form-control" name="regDate" id="regDate" value="2019-12-02 09:45:15">
 						          </div>
-						        </form>
+						        
                           </div>
                           <div class="modal-footer">
                               <button type="button" class="btn btn-warning" id="modalModBtn">수정</button>
                               <button type="button" class="btn btn-danger" id="modalRemoveBtn">삭제</button>
-                              <button type="button" class="btn btn-info" id="modalRegisterBtn">등록</button>
+                              <button type="button" class="btn btn-info" id="modalRegBtn">등록</button>
                               <button type="button" class="btn btn-default" id="modalCloseBtn" data-dismiss="modal">닫기</button>
                           </div>
                       </div>
@@ -217,7 +211,7 @@
               <div class="recipeInsert">
 	              <div class="getRecipeDiv2">
 	              	<div style="margin-bottom: 20px;">
-              			<span style="font-size: 16px;">태그</span>
+              			<span style="font-size: 16px; font-weight: bold;">태그</span>
               		</div>
               		<div style="margin-top: 10px;" class="tagDiv"> <!-- jQuery 이용해서 동적 태그생성 -->
               		
@@ -227,40 +221,173 @@
               
 </div> <!-- End 전체 감싼 div  -->
 
+<script src="/resources/js/recipeReply.js"></script>
+
 <script>
+$(function(){
 	var replyBtn = $('#addReplyBtn'); // 댓글 등록 버튼
 	var modal5 = $('#myModal5'); // 댓글 모달 창
 	var modalInputReply = modal5.find("input[name='reply']"); // 댓글 모달 창 - 댓글 내용
-	var modalInputReplyer = modal5.find("input[name='replyer']"); // 댓글 모달 창 - 작성자
-	var modalInputReplyDate = modal5.find("input[name='replyDate']"); // 댓글 모달 창 - 최종 수정 날짜
+	var modalInputReplyer = modal5.find("input[name='userid']"); // 댓글 모달 창 - 작성자
+	var modalInputReplyDate = modal5.find("input[name='regDate']"); // 댓글 모달 창 - 최종 수정 날짜
 	
 	var modalModBtn = $('#modalModBtn'); // 댓글 모달 창 - 수정 버튼
 	var modalRemoveBtn = $('#modalRemoveBtn'); // 댓글 모달 창 - 삭제 버튼
-	var modalRegisterBtn = $('#modalRegisterBtn'); // 댓글 모달 창 - 등록 버튼
+	var modalRegBtn = $('#modalRegBtn'); // 댓글 모달 창 - 등록 버튼
 	
 	replyBtn.on('click', function(e) { // 댓글 등록 버튼 클릭시 진행
 		e.preventDefault();
 		
 		modal5.find("input").val(""); // input태그의 값 전부 공백으로
 		modalInputReplyDate.closest("div").hide(); // 댓글 등록 날짜의 div를 숨김
-		modalModBtn.hide(); // 수정 버튼 숨김
-		modalRemoveBtn.hide(); // 삭제 버튼 숨김
-		modalRegisterBtn.show(); // 등록 버튼 보이게
+		modal5.find("button[id != 'modalCloseBtn']").hide(); // 닫기 버튼 제외 모두 숨기기 처리
+		modalRegBtn.show(); // 등록 버튼은 보이게처리
 		
 		modal5.modal('show'); // 모달창 보이게
 	});
 	
-	var replyList = $('.replyList'); // 댓글 목록 li태그
+	modalRegBtn.on("click", function(e){
+		var reply = {
+				reply : modalInputReply.val(),
+				userid : "admin", // modalInputReplyer.val() 로 변경
+				recipenum : recipeNum
+		};
+			replyService.add(reply, function(result){
+				alert("댓글 등록에 성공하였습니다");
+				
+				modal5.find("input").val("");
+				modal5.modal("hide");
+				
+				showList(-1);
+			}); 
+		});
 	
-	replyList.on('click', function(e) { // 댓글 목록 클릭시 진행
-		e.preventDefault();
-	
-		modalInputReplyDate.closest("div").show(); // 댓글 등록 날짜의 div 보이게
-		modal5.find("button[id != 'modalCloseBtn']").hide(); // 닫기 버튼이 아닌 버튼은 모드 숨김 처리
-		modalModBtn.show(); // 댓글 작성자와 사용자 아이디가 같으면 수정 버튼 보이게 할 것
-		modalRemoveBtn.show(); // 댓글 작성자와 사용자 아이디가 같으면 삭제 버튼 보이게 할 것
+	$(".chat").on("click", "li", function(e){ // 댓글 목록 한개 클릭시 진행 - 동적태그 이므로 이벤트 위임 처리
+		var replynum = $(this).data("replynum");
 		
-		modal5.modal('show');
+		replyService.get(replynum, function(reply){
+			modalInputReply.val(reply.reply); // 댓글 내용 칸에 값을 해당 댓글의 내용으로 변경
+			modalInputReplyer.val(reply.userid); // 댓글 작성자 칸을 작성자 아이디로 내용 변경
+			modalInputReplyDate.val(replyService.displayTime(reply.regDate)).attr("readonly","readonly");
+			modal5.data("replynum", reply.replynum); // 모달창의 속성 data-replynum을 해당 댓글의 번호로 지정
+			
+			modal5.find("button[id != 'modalCloseBtn']").hide();
+			modalModBtn.show(); // 수정 버튼 보이게
+			modalRemoveBtn.show(); // 삭제 버톤 보이게
+			
+			modal5.modal("show"); // 모달 창 보이게
+		});
+	});
+	
+	modalModBtn.on("click", function(e){ // 댓글 수정 버튼 클릭 시 진행
+		var reply = {replynum : modal5.data("replynum"), reply : modalInputReply.val()};
+		
+		replyService.update(reply, function(result){
+			alert("댓글 수정에 성공하였습니다");
+			modal5.modal("hide");
+			showList(pageNum);
+		}); 
+	});
+	
+	modalRemoveBtn.on("click", function(e){ // 댓글 삭제 버튼 클릭 시 진행
+		var replynum = modal5.data("replynum");
+		
+		var memberDeleteAnswer = confirm("정말 댓글을 삭제하시겠습니까?");	
+	
+		if(memberDeleteAnswer){ // 댓글을 정말 삭제한다고 하였을 때 진행
+			replyService.remove(replynum, function(result){
+		 		alert("댓글 삭제 하였습니다");
+		 		modal5.modal("hide");
+		 		showList(pageNum);
+		 	});
+		}	
+	});
+	
+});
+	
+	
+	var recipeNum = '${recipe.recipenum}'; // 레시피 게시물의 번호
+	var csrfHeaderName = "${_csrf.headerName}";
+	var csrfTokenValue = "${_csrf.token}";
+	var replyUL = $(".chat"); // 댓글 ul태그
+	showList(1);
+	
+	function showList(page){
+		replyService.getList({recipenum:recipeNum, page:page||1},function(replyCnt,list){
+			
+			console.log("댓글 갯수 : " + replyCnt);
+			
+			if(page == -1){ // 페이지 번호가 -1로 전달되면 마지막 페이지를 찾아서 다시 호출
+				pageNum = Math.ceil(replyCnt/10.0);
+				showList(pageNum);
+				return;
+			}
+			
+			var str = "";
+			if(list == null || list.length == 0){ // 댓글목록이 존재하지 않을 때
+				replyUL.html("");
+				return;
+			}
+			for(k=0, len=list.length || 0; k<len; k++){
+				str +="<li class='replyList' data-replynum='"+list[k].replynum+"'>";
+				str +="<div><strong class='primary-font'>"+list[k].userid+"</strong>";
+				str +="<small class='pull-right text-muted'>"+replyService.displayTime(list[k].regDate)+"</small></div>";
+				str +="<p>"+list[k].reply+"</p></li>";
+			}
+			
+			replyUL.html(str);
+			showReplyPage(replyCnt);
+		}); 
+	}
+	
+
+	var pageNum = 1;
+	var replyPageFooter = $(".replyFooter");
+	var replyCountSpanTag = $(".replyCount"); // 댓글 수를 보여주는 span태그
+	
+	function showReplyPage(replyCnt){ // 댓글 갯수로 댓글 페이징
+		var endNum = Math.ceil(pageNum / 10.0) * 10;
+		var startNum = endNum -9;
+		
+		var prev = startNum != 1;
+		var next = false;
+		
+		if(endNum * 10 >= replyCnt) {
+			endNum = Math.ceil(replyCnt/10.0);
+		}
+		if(endNum * 10 < replyCnt) {
+			next = true;
+		}
+		
+		var replyPageText = "<ul class='pagination pull-right'>";
+		
+		if(prev){
+			replyPageText += "<li class='page-item'><a class='page-link' href='"+(startNum -1)+"'>«</a></li>";
+		}
+		
+		for(var x=startNum; x<=endNum; x++){
+			var active = pageNum == x? " active":"";
+			
+			replyPageText += "<li class='page-item" + active+" '><a class='page-link' href='"+x+"'>"+x+"</a></li>";
+		}
+		
+		if(next){
+			replyPageText += "<li class='page-item'><a class='page-link' href='"+(endNum+1)+"'>»</a></li>";
+		}
+		
+		replyPageText += "</ul></div>";
+		
+		replyCountSpanTag.html(replyCnt); // 댓글 전체 숫자 값을 span태그에 반영시키기
+		replyPageFooter.html(replyPageText); // 페이징 처리 view에 반영시키기
+	} /* 댓글 페이징 함수 showReplyPage 끝 */
+	
+	replyPageFooter.on("click","li a", function(e){ // 댓글 페이징 번호 클릭 시 진행
+		e.preventDefault();
+		
+		var targetPageNum = $(this).attr("href");
+		
+		pageNum = targetPageNum;
+		showList(pageNum);
 	});
 	
 	var reportBtn = $('.reportText'); // 게시물 신고하기 a태그
@@ -319,7 +446,7 @@
 		
 		$("form[name='listForm']").submit();
 	});
-	
+		
 </script>
 </body>
 </html>

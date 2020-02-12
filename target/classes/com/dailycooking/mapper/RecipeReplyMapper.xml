@@ -22,7 +22,20 @@
 	</update>
 	
 	<select id="getListWithPaging" resultType="com.dailycooking.domain.RecipeReplyVO">
+		<![CDATA[
 		select replynum, recipenum, reply, userid, regDate, updatedate
-		from recipe_reply where recipenum = #{recipenum} order by replynum asc
+		from(
+		    select /*+ INDEX(recipe_reply idx_reply) */
+		        rownum rn, recipenum, replynum, reply, userid, regDate, updatedate
+		    from recipe_reply
+		    where recipenum = #{recipenum} and replynum > 0 and rownum <= #{cri.pageNum}*#{cri.amount}
+		) where rn > (#{cri.pageNum}-1) * #{cri.amount}
+		]]>
+	</select>
+	
+	<select id="replyCnt" resultType="int">
+		<![CDATA[
+		select count(recipenum) from recipe_reply where recipenum = #{recipenum}
+		]]>
 	</select>
 </mapper>

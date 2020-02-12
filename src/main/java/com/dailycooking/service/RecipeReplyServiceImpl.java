@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.dailycooking.domain.Criteria;
 import com.dailycooking.domain.RecipeReplyVO;
+import com.dailycooking.domain.ReplyPageDTO;
 import com.dailycooking.mapper.RecipeReplyMapper;
 
 import lombok.Setter;
@@ -47,6 +48,12 @@ public class RecipeReplyServiceImpl implements RecipeRelpyService{
 	public List<RecipeReplyVO> getList(Criteria cri, Long recipenum) {
 		log.info("getList reply...." + recipenum);
 		return mapper.getListWithPaging(cri, recipenum);
+	}
+
+	@Override
+	public ReplyPageDTO getListPage(Criteria cri, Long recipenum) {
+		
+		return new ReplyPageDTO(mapper.replyCnt(recipenum), mapper.getListWithPaging(cri, recipenum));
 	}
 
 }
