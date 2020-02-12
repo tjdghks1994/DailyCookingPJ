@@ -21,6 +21,21 @@
 	$(function(e){
 		var csrfHeaderName = "${_csrf.headerName}";
 		var csrfTokenValue = "${_csrf.token}";
+		var regex = new RegExp("(.*?)\.(exe|sh|zip|alz|pdf|doc|exe|xlsx|pptx|txt)$"); // 파일 정규표현식
+		var maxSize = 5242880;
+		
+		function checkExtension(fileName, fileSize){
+			if(fileSize >= maxSize){
+				alert("파일 사이즈 초과");
+				return false;
+			}
+			
+			if(regex.test(fileName)){
+				alert("이미지 파일만 첨부해주세요");
+				return false;
+			}
+			return true;
+		}
 				
 		$("#uploadBtn").on("click", function(e){
 			var formData = new FormData();
@@ -31,6 +46,9 @@
 			console.log(files);
 			
 			for(var i=0; i< files.length; i++){
+				if(!checkExtension(files[i].name, files[i].size)){
+					return false;
+				}
 				formData.append("uploadFile", files[i]);
 			}
 			
