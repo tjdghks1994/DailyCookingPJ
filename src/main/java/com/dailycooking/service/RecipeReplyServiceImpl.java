@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dailycooking.domain.Criteria;
 import com.dailycooking.domain.RecipeReplyVO;
 import com.dailycooking.domain.ReplyPageDTO;
+import com.dailycooking.mapper.RecipeMapper;
 import com.dailycooking.mapper.RecipeReplyMapper;
 
 import lombok.Setter;
@@ -20,9 +22,14 @@ public class RecipeReplyServiceImpl implements RecipeRelpyService{
 	@Setter(onMethod_ = @Autowired)
 	private RecipeReplyMapper mapper;
 	
+	@Setter(onMethod_ = @Autowired)
+	private RecipeMapper recipeMapper;
+	
 	@Override
+	@Transactional
 	public int register(RecipeReplyVO vo) {
 		log.info("register reply ... " + vo);
+		recipeMapper.updateReplyCnt(vo.getRecipenum(), 1);
 		return mapper.insert(vo);
 	}
 
@@ -39,8 +46,11 @@ public class RecipeReplyServiceImpl implements RecipeRelpyService{
 	}
 
 	@Override
+	@Transactional
 	public int remove(Long replynum) {
 		log.info("remove reply..." + replynum);
+		RecipeReplyVO vo = mapper.read(replynum);
+		recipeMapper.updateReplyCnt(vo.getRecipenum(), -1);
 		return mapper.delete(replynum);
 	}
 

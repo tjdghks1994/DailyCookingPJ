@@ -76,4 +76,8 @@
 	<update id="recipeLookCntUp">
 		update recipe_board set lookcnt = lookcnt+1 where recipenum = #{recipenum}
 	</update>
+	
+	<update id="updateReplyCnt">
+		update recipe_board set replycnt = replycnt + #{amount} where recipenum = #{recipenum}
+	</update>
 </mapper>

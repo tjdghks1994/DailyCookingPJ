@@ -60,7 +60,9 @@ public class RecipeServiceImpl implements RecipeService {
 	@Override
 	public boolean recipeLookCntUp(Long recipenum) {
 		log.info("service lookCnt up : " + recipenum);
-		return mapper.recipeLookCntUp(recipenum) ==1;
+		int result = mapper.recipeLookCntUp(recipenum);
+		log.info("service lookCnt up result : " + result);
+		return result ==1;
 	}
 
 }

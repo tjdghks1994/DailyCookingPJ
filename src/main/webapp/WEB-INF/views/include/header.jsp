@@ -34,9 +34,11 @@
 
 </head>
 <div class="header">
+		<sec:authorize access="isAuthenticated()">
 		<div class="small-menu2">
 			<h5><a id="questionLink">관리자에게 문의/건의 하기</a> </h5>
 		</div>
+		</sec:authorize>
 		<div class="small-menu">
 			<sec:authorize access="isAnonymous()">
 				<h5><a href="/customLogin">로그인</a><label>/</label><a href="#" id="joinLink2">회원가입</a></h5>
