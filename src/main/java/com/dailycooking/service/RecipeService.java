@@ -23,4 +23,9 @@ public interface RecipeService {
 	public boolean recipeLookCntUp(Long recipenum); // 레시피 조회시 조회수 증가
 	
 	public List<RecipeAttachVO> getAttachList(Long recipenum); // 게시물의 첨부파일 목록
-}
+	
+	/*
+	 * public List<RecipeAttachVO> allAttachList(); // 모든 첨부파일 목록
+	 * 
+	 * public List<RecipeBoardVO> getAllList(); // 페이징 처리 안한 게시물 전체목록
+	 */}

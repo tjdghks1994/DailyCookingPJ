@@ -99,4 +99,13 @@ public class RecipeServiceImpl implements RecipeService {
 		return attachMapper.findByRecipenum(recipenum);
 	}
 
+	/*
+	 * @Override public List<RecipeAttachVO> allAttachList() {
+	 * log.info("get All Attach List Service........"); return
+	 * attachMapper.allAttachList(); }
+	 * 
+	 * @Override public List<RecipeBoardVO> getAllList() {
+	 * log.info("페이징 처리 없이 모든 게시물 가져오기 Service"); return mapper.getList(); }
+	 */
+
 }

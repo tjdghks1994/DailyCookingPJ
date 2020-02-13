@@ -118,7 +118,7 @@
 		var register = $("#regWriteBtn"); // 레시피 작성하기 버튼
 		register.on("click",function(){ // 레시피 작성하기 버튼 클릭 시 진행
 			location.href = '/recipe/register'; 
-		});
+		});	
 	});
 	
 	var recipeBoardCnt = '${pageMaker.total}';// 게시물의 div태그 갯수 저장
@@ -164,7 +164,7 @@
 		
 		searchForm.submit(); // 폼 전송
 	});
-	
+
 </script>
 <c:if test="${registerResult != null }"> <!-- 게시글 등록 시 null값이 아니게됨  -->
 	<script>

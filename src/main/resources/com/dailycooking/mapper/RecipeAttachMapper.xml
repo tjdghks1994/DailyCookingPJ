@@ -24,4 +24,8 @@
 	<select id="getOldFiles" resultType="com.dailycooking.domain.RecipeAttachVO">
 		select * from recipe_attach where uploadpath = to_char(sysdate, 'yyyy\mm\dd')
 	</select>
+	
+	<select id="allAttachList" resultType="com.dailycooking.domain.RecipeAttachVO">
+		select * from recipe_attach
+	</select>
 </mapper>

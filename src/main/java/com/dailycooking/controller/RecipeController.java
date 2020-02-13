@@ -48,7 +48,7 @@ public class RecipeController {
 		
 		model.addAttribute("pageMaker", new PageDTO(cri, total));
 		log.info(list.size());
-		model.addAttribute("list", service.getList(cri));
+		model.addAttribute("list", list);
 		return "/recipeBoard/recipeList";
 	}
 	
@@ -135,6 +135,24 @@ public class RecipeController {
 		
 		return new ResponseEntity<>(service.getAttachList(recipenum), HttpStatus.OK);
 	}
+	
+	/*
+	 * @GetMapping(value = "/getAllRecipe", produces =
+	 * MediaType.APPLICATION_JSON_UTF8_VALUE)
+	 * 
+	 * @ResponseBody public ResponseEntity<List<RecipeBoardVO>> getRecipeList(){
+	 * log.info("get All Recipe 컨트롤러...");
+	 * 
+	 * return new ResponseEntity<>(service.getAllList(),HttpStatus.OK); }
+	 * 
+	 * @GetMapping(value = "/allAttach", produces =
+	 * MediaType.APPLICATION_JSON_UTF8_VALUE)
+	 * 
+	 * @ResponseBody public ResponseEntity<List<RecipeAttachVO>> getAllAttach(){
+	 * log.info("모든 첨부파일 목록 가져오기 컨트롤러 ....... ");
+	 * 
+	 * return new ResponseEntity<>(service.allAttachList(),HttpStatus.OK); }
+	 */
 	
 	private void deleteFiles(List<RecipeAttachVO> attachList) {
 		if(attachList == null || attachList.size() == 0) {
