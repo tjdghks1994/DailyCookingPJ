@@ -5,9 +5,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dailycooking.domain.Criteria;
+import com.dailycooking.domain.RecipeAttachVO;
 import com.dailycooking.domain.RecipeBoardVO;
+import com.dailycooking.mapper.RecipeAttachMapper;
 import com.dailycooking.mapper.RecipeMapper;
 
 import lombok.Setter;
@@ -20,10 +23,22 @@ public class RecipeServiceImpl implements RecipeService {
 	@Setter(onMethod_ = @Autowired)
 	private RecipeMapper mapper;
 	
+	@Setter(onMethod_ = @Autowired)
+	private RecipeAttachMapper attachMapper;
+	
 	@Override
+	@Transactional
 	public void register(RecipeBoardVO rvo) {
 		log.info("service register....." + rvo);
 		mapper.insertSelectKey(rvo);
+		if(rvo.getAttachList() == null || rvo.getAttachList().size() <= 0) {
+			return;
+		}
+		
+		rvo.getAttachList().forEach(attach -> {
+			attach.setRecipenum(rvo.getRecipenum());
+			attachMapper.insert(attach);
+		});
 	}
 
 	@Override
@@ -39,8 +54,10 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	@Override
+	@Transactional
 	public boolean remove(Long recipenum) {
 		log.info("service remove...." + recipenum);
+		attachMapper.deleteAll(recipenum);
 		return mapper.delete(recipenum) == 1;
 	}
 
@@ -63,6 +80,12 @@ public class RecipeServiceImpl implements RecipeService {
 		int result = mapper.recipeLookCntUp(recipenum);
 		log.info("service lookCnt up result : " + result);
 		return result ==1;
+	}
+
+	@Override
+	public List<RecipeAttachVO> getAttachList(Long recipenum) {
+		log.info("get Attach List Service : " + recipenum);
+		return attachMapper.findByRecipenum(recipenum);
 	}
 
 }

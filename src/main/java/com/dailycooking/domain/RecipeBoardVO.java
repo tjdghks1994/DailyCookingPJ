@@ -1,6 +1,7 @@
 package com.dailycooking.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -22,5 +23,7 @@ public class RecipeBoardVO {
 	private int likeCnt; // 좋아요 수
 	private int scrapCnt; // 스크랩 수
 	private String userid; // 게시물 작성한 회원 아이디
+	
+	private List<RecipeAttachVO> attachList; // 이미지 파일(시진) 목록 
 	
 }

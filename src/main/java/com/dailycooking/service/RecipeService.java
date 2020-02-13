@@ -3,6 +3,7 @@ package com.dailycooking.service;
 import java.util.List;
 
 import com.dailycooking.domain.Criteria;
+import com.dailycooking.domain.RecipeAttachVO;
 import com.dailycooking.domain.RecipeBoardVO;
 
 public interface RecipeService {
@@ -20,4 +21,6 @@ public interface RecipeService {
 	public int getTotal(Criteria cri); // 게시물 전체 갯수
 	
 	public boolean recipeLookCntUp(Long recipenum); // 레시피 조회시 조회수 증가
+	
+	public List<RecipeAttachVO> getAttachList(Long recipenum); // 게시물의 첨부파일 목록
 }

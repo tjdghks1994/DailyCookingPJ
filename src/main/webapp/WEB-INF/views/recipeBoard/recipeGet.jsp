@@ -23,7 +23,9 @@
 				<span class="dateLetter">등록일 :</span> <span><fmt:formatDate value="${recipe.regdate }" pattern="yyyy-MM-dd"/> </span>
 				<span class="dateLetter">수정일 :</span><span><fmt:formatDate value="${recipe.updateDate }" pattern="yyyy-MM-dd"/></span>
 			</div>
-			<img src="/resources/images/gooksu.jpg" width="60%;" height="50%;">
+			<div class="mainImgDiv"> <!-- 첨부 사진 중 1번째 사진을 대표사진으로 보이게 -->
+				
+			</div>
 			<p class="recipeWriter">작성자 : <c:out value="${recipe.userid }"></c:out> </p>
 			<p class="recipeTitle"><c:out value="${recipe.title }"></c:out> </p>
 			<div class="recipeImgDiv">
@@ -129,7 +131,7 @@
 		</div> <!-- End getRecipeDiv2 -->
 	</div> <!-- End recipeInsert  -->
 	
-	<div class="recipeInsert">
+	<div class="recipeInsert"> <!-- 요리 사진 첨부파일  -->
 		<div class="getRecipeDiv2">
 			<p style="font-size: 16px; font-weight: bold; margin-bottom: 20px;">요리 완성 사진</p>
 			<div class="uploadResult">
@@ -303,7 +305,32 @@ $(function(){
 		}	
 	});
 	
-});
+	// 첨부파일 ajax 처리
+	$.getJSON("/recipe/getAttachList", {recipenum:"${recipe.recipenum}"}, function(arr){
+/* 		console.log(arr);
+		console.log(arr[0].uploadPath); */
+		// 첫번 째 첨부파일 경로명
+		var firstAttachPath = encodeURIComponent(arr[0].uploadPath+ "/s_"+arr[0].uuid+"_"+arr[0].fileName);
+		var firstImg = "";
+		firstImg += "<img src='/display?fileName="+firstAttachPath+"'>";
+		$(".mainImgDiv").html(firstImg); // 대표 이미지 사진으로 변경시키기
+		
+		var attachList = "";
+		
+		$(arr).each(function(i, attach){
+			var fileCallPath = encodeURIComponent(attach.uploadPath+ "/s_"+attach.uuid+"_"+attach.fileName);
+			attachList += "<li data-path='"+attach.uploadPath+"'";
+			attachList += " data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.image+"'";
+			attachList += " ><div>";
+			attachList += "<img class='attachImg' src='/display?fileName="+fileCallPath+"'>";
+			attachList += "</div></li>";
+		});
+		
+		$(".uploadResult ul").html(attachList);
+		
+	});
+	
+}); // end function()
 	
 	
 	var recipeNum = '${recipe.recipenum}'; // 레시피 게시물의 번호

@@ -412,6 +412,18 @@ ul{
 .replyFooter {
 	width: 100%; height: 40px;
 }
+.attachImg { /* 레시피 등록 페이지 에서 첨부파일 등록 시 보여주는 이미지 크기 */
+	width: 300px;
+	height: 100px;
+}
+.attachName {
+	margin-right: 10px;
+}
+.mainImgDiv img{
+	width: 350px;
+	height: 250px;;
+}
+
 /* 내가 추가한 style.css 끝 */
 
 /*--popup--*/

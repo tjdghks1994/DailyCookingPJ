@@ -4,4 +4,20 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dailycooking.mapper.RecipeAttachMapper">
 	
+	<insert id="insert">
+		insert into recipe_attach (uuid, uploadpath, filename, recipenum)
+		values (#{uuid}, #{uploadPath}, #{fileName}, #{recipenum})
+	</insert>
+	
+	<delete id="delete">
+		delete from recipe_attach where uuid = #{uuid}
+	</delete>
+	
+	<select id="findByRecipenum" resultType="com.dailycooking.domain.RecipeAttachVO">
+		select * from recipe_attach where recipenum = #{recipenum}
+	</select>
+	
+	<delete id="deleteAll">
+		delete recipe_attach where recipenum = #{recipenum}
+	</delete>
 </mapper>
