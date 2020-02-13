@@ -108,8 +108,13 @@
 			
 		</div><!--recipeSemiDiv2-->
 		<div class="recipeBtn">
+		<sec:authentication property="principal" var="principal"/>
+		<sec:authorize access="isAuthenticated()">
+		<c:if test="${principal.username eq recipe.userid }">
 			<input type="submit" id="modifyRecipeBtn" value="수정 완료">
 			<input type="button" value="취소" id="cancleBtn">
+		</c:if>
+		</sec:authorize>
 		</div>
     </div><!--/recipe Div -->
     <input type="hidden" name="recipenum" value="${recipe.recipenum }">
@@ -166,12 +171,135 @@
 		addOrder.val(textOrder); // 조리순서 모든 값들을 태그에 부착
 		cookOrder.append(addOrder); // view페이지에 태그 부착 - 조리순서 값을 전부 합쳐서 vo값에 넣기위함
 		
+		var attachLists = "";
+		
+		$(".uploadResult ul li").each(function(i,obj){
+			var jobj = $(obj);
+			console.dir(jobj);
+			
+			attachLists += "<input type='hidden' name='attachList["+i+"].fileName' value='"+jobj.data("filename")+"'>";
+			attachLists += "<input type='hidden' name='attachList["+i+"].uuid' value='"+jobj.data("uuid")+"'>";
+			attachLists += "<input type='hidden' name='attachList["+i+"].uploadPath' value='"+jobj.data("path")+"'>";
+			attachLists += "<input type='hidden' name='attachList["+i+"].fileType' value='"+jobj.data("type")+"'>";
+		});
+		
+		$("form[role='form']").append(attachLists);
+		
 		$("form[role='form']").submit(); // 폼 전송
 	});
 	
 	cancleBtn.on('click', function(e) { // 취소 버튼 클릭 시 진행
 		e.preventDefault();
 		history.back();
+	});
+	
+	$(function(e){
+		var recipenum = '${recipe.recipenum}';
+		
+		$.getJSON("/recipe/getAttachList", {recipenum : recipenum}, function(arr){
+			console.log(arr);
+			
+			var arrAttach = "";
+			
+			$(arr).each(function(i,attach){
+				var fileCallPath = encodeURIComponent(attach.uploadPath+ "/s_"+attach.uuid+"_"+attach.fileName);
+				arrAttach += "<li data-path='"+attach.uploadPath+"'";
+				arrAttach += " data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.image+"'";
+				arrAttach += " ><div>";
+				arrAttach += "<span class='attachName'>" + attach.fileName + "</span>";
+				arrAttach += "<button type='button' data-file=\'"+fileCallPath+"\ '";
+				arrAttach += "data-type='image' class='btn btn-warning btn-xs btn=circle'><i class='fa fa-times'>x</i></button><br>";
+				arrAttach += "<img class='attachImg' src='/display?fileName="+fileCallPath+"'>";
+				arrAttach += "</div></li>";
+			});
+			
+			$(".uploadResult ul").html(arrAttach);
+		});
+		
+		$(".uploadResult").on("click","button", function(e){ // 첨부파일 삭제를 위한 x버튼 클릭 시 진행
+			console.log("delete File");
+			if(confirm("정말 첨부파일을 삭제하시겠습니까?")){
+				var targetLi = $(this).closest("li");
+				targetLi.remove();
+			}
+		});
+		
+		var csrfHeaderName = "${_csrf.headerName}";
+		var csrfTokenValue = "${_csrf.token}";
+		var regex = new RegExp("(.*?)\.(exe|sh|zip|alz|pdf|doc|exe|xlsx|pptx|txt)$"); // 파일 정규표현식
+		var maxSize = 5242880; // 파일 최대 사이즈
+		
+		function checkExtension(fileName, fileSize){ // 파일 정규표현식과 최대 사이즈 체크 함수
+			if(fileSize >= maxSize){
+				alert("파일 사이즈 초과");
+				return false;
+			}
+			
+			if(regex.test(fileName)){
+				alert("이미지 파일만 첨부해주세요");
+				return false;
+			}
+			return true;
+		}
+		
+		var cloneObj = $(".uploadDiv").clone();
+		
+		$("input[type='file']").change(function(e){ // 파일 첨부 태그가 변경 될 시 진행
+			var formData = new FormData(); // formdata 객체 생성
+			
+			var inputFile = $("input[name='uploadFile']");
+			var files = inputFile[0].files;
+			
+			console.log(files);
+			
+			for(var i=0; i< files.length; i++){
+				if(!checkExtension(files[i].name, files[i].size)){ // 확장자명과 파일 체크 함수값이 false일 때 
+					return false;
+				}
+				formData.append("uploadFile", files[i]); // formdata 객체에 붙임
+			}
+			
+			$.ajax({
+				url : '/uploadAjaxAction',
+				processData : false,
+				contentType : false,
+				data : formData,
+				type : 'post',
+				dataType : 'json',
+				beforeSend : function(xhr)
+	            {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+	                xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+	            },
+				success : function(result){
+					console.log(result);
+					
+					showUploadResult(result);
+					
+					$(".uploadDiv").html(cloneObj.html());
+				}
+			});
+		}); // end change	
+		
+		function showUploadResult(uploadResultArr){
+			
+			if(!uploadResultArr || uploadResultArr.length == 0){return;}
+			
+			var uploadUL = $(".uploadResult ul");
+			var uploadLists = "";
+			
+			$(uploadResultArr).each(function(i,obj){
+				var fileCallPath = encodeURIComponent(obj.uploadPath+ "/s_"+obj.uuid+"_"+obj.fileName);
+				uploadLists += "<li data-path='"+obj.uploadPath+"'";
+				uploadLists += " data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"' data-type='"+obj.image+"'";
+				uploadLists += " ><div>";
+				uploadLists += "<span class='attachName'>" + obj.fileName + "</span>";
+				uploadLists += "<button type='button' data-file=\'"+fileCallPath+"\ '";
+				uploadLists += "data-type='image' class='btn btn-warning btn-xs btn=circle'><i class='fa fa-times'>x</i></button><br>";
+				uploadLists += "<img class='attachImg' src='/display?fileName="+fileCallPath+"'>";
+				uploadLists += "</div></li>";
+			});
+			uploadUL.append(uploadLists);
+		} // end showUploadResult
 	});
 	
 </script>

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,12 +53,14 @@ public class RecipeController {
 	}
 	
 	@GetMapping("/register")
+	@PreAuthorize("isAuthenticated()")
 	public String register() {
 		log.info("레시피 등록 페이지로");
 		return "/recipeBoard/recipeInsert";
 	}
 	
 	@PostMapping("/register")
+	@PreAuthorize("isAuthenticated()")
 	public String register(RecipeBoardVO rvo, RedirectAttributes rttr) { // 레시피 등록
 		log.info("컨트롤러 register..." + rvo);
 		

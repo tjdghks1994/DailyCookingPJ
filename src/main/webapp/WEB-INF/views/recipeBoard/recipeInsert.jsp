@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -110,7 +111,8 @@
 		</div>
     </div><!--/recipe Div -->
     <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
-    <input type="hidden" name="userid" value="admin">
+    <sec:authentication var="principal" property="principal" />
+    <input type="hidden" name="userid" value='${principal.username}'>
 	</form>
 	</div>
 </div>
@@ -263,6 +265,11 @@
 			});
 		});
 		
+		var cancleBtn = $('#cancleBtn'); // 취소 버튼
+		cancleBtn.on('click', function(e) { // 취소 버튼 클릭 시 진행
+			e.preventDefault();
+			history.back();
+		});
 	});
 </script>
 </body>

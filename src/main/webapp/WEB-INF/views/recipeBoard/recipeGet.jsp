@@ -75,7 +75,9 @@
 			</div>
 			
 			<div class="managerBtn">
+			<sec:authentication property="principal" var="principal"/>
 			<sec:authorize access="isAuthenticated()">
+			<c:if test="${principal.username eq recipe.userid }">
 				<form action="/recipe/modify" name="modifyForm" style="display: inline;">
 					<a class="managerText" href="#" id="recipeModifyTag">글 수정하기</a> <!-- 해당 게시물을 작성한 유저만 보이게 -->
 					<input type="hidden" name="recipenum" value="${recipe.recipenum }">
@@ -84,7 +86,7 @@
 					<input type="hidden" name="type" value="${cri.type }">
 					<input type="hidden" name="keyword" value="${cri.keyword }">
 				</form>
-				
+			
 				<form action="/recipe/remove" method="post" name="deleteForm" style="display: inline;">
 					<a class="managerText" href="#" id="recipeRemoveTag">글 삭제하기</a> <!-- 해당 게시물을 작성한 유저만 보이게 -->
 					<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
@@ -94,7 +96,7 @@
 					<input type="hidden" name="type" value="${cri.type }">
 					<input type="hidden" name="keyword" value="${cri.keyword }">
 				</form>
-				
+			</c:if>
 				<a class="reportText">글 신고하기</a> <!-- 로그인 한 유저만 보이게 -->
 			</sec:authorize>
 			<form action="/recipe/list" method="get" name="listForm" style="display: inline;">
@@ -136,15 +138,7 @@
 			<p style="font-size: 16px; font-weight: bold; margin-bottom: 20px;">요리 완성 사진</p>
 			<div class="uploadResult">
 				<ul>
-					<li>
-						<div><img src="/resources/images/gooksu.jpg"> </div>
-					</li>
-					<li>
-						<div><img src="/resources/images/gooksu.jpg"> </div>
-					</li>
-					<li>
-						<div><img src="/resources/images/gooksu.jpg"> </div>
-					</li>
+					
 				</ul>
 			</div>
 		</div>
@@ -155,7 +149,9 @@
              	<div class="getRecipeDiv2">
               		<div style="border-bottom: 1px solid lightgray; padding-bottom: 10px;">
               			<span style="font-size: 16px; font-weight: bold;">댓글</span>
-              			<button type="button" class="btn btn-info btn-sm pull-right" id="addReplyBtn">댓글 등록</button>
+              			<sec:authorize access="isAuthenticated()">
+              				<button type="button" class="btn btn-info btn-sm pull-right" id="addReplyBtn">댓글 등록</button>
+              			</sec:authorize>
               		</div>
               		<div class="replyDiv">
               			<ul class="chat">
@@ -189,7 +185,7 @@
 						          </div>
 						          <div class="form-group">
 						            <label>작성자</label>
-						            <input class="form-control" value="admin" name="userid" id="userid" readonly="readonly">
+						            <input class="form-control" value="" name="userid" id="userid" readonly="readonly">
 						          </div>
 						          <div class="form-group">
 						            <label>댓글 등록 날짜</label>
@@ -237,10 +233,19 @@ $(function(){
 	var modalRemoveBtn = $('#modalRemoveBtn'); // 댓글 모달 창 - 삭제 버튼
 	var modalRegBtn = $('#modalRegBtn'); // 댓글 모달 창 - 등록 버튼
 	
+	var replyer = null; // 댓글 작성자 변수
+	
+	<sec:authorize access="isAuthenticated()">
+	
+	replyer = '<sec:authentication property="principal.username"/>';
+	
+	</sec:authorize>
+	
 	replyBtn.on('click', function(e) { // 댓글 등록 버튼 클릭시 진행
 		e.preventDefault();
 		
 		modal5.find("input").val(""); // input태그의 값 전부 공백으로
+		modal5.find("input[name='userid']").val(replyer); // 댓글 작성자 칸에 값을 로그인 한 아이디로
 		modalInputReplyDate.closest("div").hide(); // 댓글 등록 날짜의 div를 숨김
 		modal5.find("button[id != 'modalCloseBtn']").hide(); // 닫기 버튼 제외 모두 숨기기 처리
 		modalRegBtn.show(); // 등록 버튼은 보이게처리
@@ -248,10 +253,10 @@ $(function(){
 		modal5.modal('show'); // 모달창 보이게
 	});
 	
-	modalRegBtn.on("click", function(e){
+	modalRegBtn.on("click", function(e){ // 댓글 모달 창에서 등록 버튼 클릭 시 진행
 		var reply = {
 				reply : modalInputReply.val(),
-				userid : "admin", // modalInputReplyer.val() 로 변경
+				userid : modalInputReplyer.val(),
 				recipenum : recipeNum
 		};
 			replyService.add(reply, function(result){
@@ -284,6 +289,20 @@ $(function(){
 	modalModBtn.on("click", function(e){ // 댓글 수정 버튼 클릭 시 진행
 		var reply = {replynum : modal5.data("replynum"), reply : modalInputReply.val()};
 		
+		if(!replyer){
+			alert("로그인 후 이용해 주세요");
+			modal5.modal("hide");
+			return;
+		}
+		
+		var replyWriter = modalInputReplyer.val();
+		
+		if(replyer != replyWriter){
+			alert("자신이 작성한 댓글만 수정 가능합니다");
+			modal5.modal("hide");
+			return;
+		}
+	
 		replyService.update(reply, function(result){
 			alert("댓글 수정에 성공하였습니다");
 			modal5.modal("hide");
@@ -293,6 +312,20 @@ $(function(){
 	
 	modalRemoveBtn.on("click", function(e){ // 댓글 삭제 버튼 클릭 시 진행
 		var replynum = modal5.data("replynum");
+	
+		if(!replyer){
+			alert("로그인 후 이용해 주세요");
+			modal5.modal("hide");
+			return;
+		}
+		
+		var replyWriter = modalInputReplyer.val();
+		
+		if(replyer != replyWriter){
+			alert("자신이 작성한 댓글만 삭제 가능합니다");
+			modal5.modal("hide");
+			return;
+		}
 		
 		var memberDeleteAnswer = confirm("정말 댓글을 삭제하시겠습니까?");	
 	

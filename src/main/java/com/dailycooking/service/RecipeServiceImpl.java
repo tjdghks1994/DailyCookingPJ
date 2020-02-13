@@ -48,9 +48,20 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	@Override
+	@Transactional
 	public boolean modify(RecipeBoardVO rvo) {
 		log.info("service modify...." + rvo);
-		return mapper.update(rvo) == 1;
+		attachMapper.deleteAll(rvo.getRecipenum());
+		boolean modifyResult = mapper.update(rvo) == 1;
+		
+		if(modifyResult && rvo.getAttachList() != null && rvo.getAttachList().size() > 0) {
+			rvo.getAttachList().forEach(attach -> {
+				attach.setRecipenum(rvo.getRecipenum());
+				attachMapper.insert(attach);
+			});
+		}
+		
+		return modifyResult;
 	}
 
 	@Override

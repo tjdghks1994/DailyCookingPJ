@@ -20,4 +20,8 @@
 	<delete id="deleteAll">
 		delete recipe_attach where recipenum = #{recipenum}
 	</delete>
+	
+	<select id="getOldFiles" resultType="com.dailycooking.domain.RecipeAttachVO">
+		select * from recipe_attach where uploadpath = to_char(sysdate, 'yyyy\mm\dd')
+	</select>
 </mapper>
