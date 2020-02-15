@@ -87,10 +87,17 @@
 		select /*+ INDEX_DESC(recipe_board sys_c007814) */
     	rownum rn, recipenum, title, material, personnel, cookingtime, cookinglevel, cookingorder, cookingtip,
     	cookingtag, replycnt, likecnt, scrapcnt, userid, lookcnt
-		from recipe_board where rownum <= #{pageNum} * #{amount} order by lookcnt desc
-		)
-	where rn > (#{pageNum} -1) * #{amount}
+		from recipe_board where 
+		]]>
+		
+		<include refid="criteria"></include>
+		   
+		<![CDATA[	   
+			    rownum <= #{pageNum} * #{amount} order by lookcnt desc
+			  )
+		where rn > (#{pageNum} -1) * #{amount}
 	]]>
+	
 	</select>
 	
 	<select id="getLikeList" resultType="com.dailycooking.domain.RecipeLikeVO">
@@ -109,4 +116,23 @@
 	<delete id="likeDelete">
 		delete from best_list where recipenum = #{recipenum} AND userid = #{userid}
 	</delete>
+	
+	<select id="getLikeBy" resultType="com.dailycooking.domain.RecipeBoardVO">
+	<![CDATA[
+	select * from(
+		select /*+ INDEX_DESC(recipe_board sys_c007814) */
+    		rownum rn, recipenum, title, material, personnel, cookingtime, cookinglevel, cookingorder, cookingtip,
+    		cookingtag, replycnt, likecnt, scrapcnt, userid, lookcnt
+		from recipe_board where
+		]]>
+		
+		<include refid="criteria"></include>
+		   
+		<![CDATA[	   
+			    rownum <= #{pageNum} * #{amount} order by likecnt desc
+			  )
+		where rn > (#{pageNum} -1) * #{amount}
+		]]>
+	
+	</select>
 </mapper>

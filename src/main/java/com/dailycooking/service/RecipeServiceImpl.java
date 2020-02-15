@@ -129,6 +129,12 @@ public class RecipeServiceImpl implements RecipeService {
 		return mapper.likeCntUpDown(recipenum, userid, -1) == 1;
 	}
 
+	@Override
+	public List<RecipeBoardVO> getLikeBy(Criteria cri) {
+		log.info("get Like By...." + cri);
+		return mapper.getLikeBy(cri);
+	}
+
 	/*
 	 * @Override public List<RecipeAttachVO> allAttachList() {
 	 * log.info("get All Attach List Service........"); return

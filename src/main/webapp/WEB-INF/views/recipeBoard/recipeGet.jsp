@@ -370,6 +370,12 @@ $(function(){
 	var likeCnt = "${recipe.likeCnt}";
 	
 	likeTag.on("click",function(e){
+		
+		if(replyer == null) { // 로그인이 되어있지 않다면
+			alert("추천은 로그인 후 이용 가능합니다");
+			return;
+		}
+		
 		 // like table 조회
 		$.getJSON("/recipe/likeList", {recipenum : '${recipe.recipenum}', userid : replyer}, function(arr){
 				

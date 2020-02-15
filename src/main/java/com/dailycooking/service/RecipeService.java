@@ -32,6 +32,8 @@ public interface RecipeService {
 	public boolean recipeLikeProc(Long recipenum, String userid); // 추천 처리
 	
 	public boolean recipeLikeCancle(Long recipenum, String userid); // 추천 취소 처리
+	
+	public List<RecipeBoardVO> getLikeBy(Criteria cri); // 레시피 추천 높은 순으로 전체 목록
 	/*
 	 * public List<RecipeAttachVO> allAttachList(); // 모든 첨부파일 목록
 	 * 

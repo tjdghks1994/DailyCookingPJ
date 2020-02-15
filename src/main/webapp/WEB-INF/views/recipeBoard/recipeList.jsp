@@ -31,10 +31,10 @@
 						<ul class="nav navbar-nav" style="float: left;">
 							<li style="font-size: 14px;"><a href="/recipe/list" style="font-weight: ${Newest}">최신순</a></li>
 							<li style="font-size: 14px;"><a href="/recipe/viewBy" style="font-weight: ${viewBy}">조회순</a></li>
-							<li style="font-size: 14px;"><a href="">인기순</a></li>
+							<li style="font-size: 14px;"><a href="/recipe/likeBy" style="font-weight: ${likeBy}">인기순</a></li>
 						</ul>
 						<div style="width: 100%; text-align: right; margin-bottom: 20px;">
-					      	<form id="searchForm" action="/recipe/list" method="get">
+					      	<form id="searchForm" action="${pagingBtn }" method="get">
 					            <select name="type" style="height: 26px;">
 					               <option value="" ${pageMaker.cri.type == null?'selected':'' }>--------</option>
 					               <option value="I" ${pageMaker.cri.type eq 'I'?'selected':'' }>아이디</option>
@@ -102,7 +102,7 @@
 					</ul>
 				</nav>
 				 <!-- 실제 페이지를 클릭하면 동작을 하는 부분  -->
-                 <form id="actionForm" action="/recipe/list" method="get">
+                 <form id="actionForm" action="${pagingBtn }" method="get">
                      <input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
                      <input type="hidden" name="amount" value="${pageMaker.cri.amount }">
      				 <input type="hidden" name="type" value="${pageMaker.cri.type }">

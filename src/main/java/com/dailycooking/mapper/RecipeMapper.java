@@ -21,8 +21,9 @@ public interface RecipeMapper {
 	// 게시물 댓글의 수 증가하거나 감소할 때 replyCnt 값을 변동
 	public void updateReplyCnt(@Param("recipenum") Long recipenum, @Param("amount") int amount);
 	public List<RecipeBoardVO> getViewBy(Criteria cri); // 조회가 높은 순으로 전체 게시물 목록 페이징 처리
-	public List<RecipeLikeVO> getLikeList(@Param("recipenum")Long recipenum, @Param("userid")String userid);
+	public List<RecipeLikeVO> getLikeList(@Param("recipenum")Long recipenum, @Param("userid")String userid); // 해당 게시물의 해당 유저 추천 여부 확인을 위한 리스트 가져오기
 	public int likeInsert(@Param("recipenum")Long recipenum, @Param("userid")String userid); // 추천 처리
 	public int likeCntUpDown(@Param("recipenum")Long recipenum, @Param("userid")String userid, @Param("amount")int amount); // 추천 증감 처리
 	public int likeDelete(@Param("recipenum")Long recipenum, @Param("userid")String userid); // 추천 취소 처리
+	public List<RecipeBoardVO> getLikeBy(Criteria cri);
 }

@@ -53,6 +53,7 @@ public class RecipeController {
 		log.info(list.size());
 		model.addAttribute("list", list);
 		model.addAttribute("Newest", "bold");
+		model.addAttribute("pagingBtn", "/recipe/list");
 		return "/recipeBoard/recipeList";
 	}
 	
@@ -68,6 +69,23 @@ public class RecipeController {
 		log.info(list.size());
 		model.addAttribute("list", list);
 		model.addAttribute("viewBy", "bold");
+		model.addAttribute("pagingBtn", "/recipe/viewBy");
+		return "/recipeBoard/recipeList";
+	}
+	
+	@GetMapping("/likeBy")
+	public String likeByHigh(Criteria cri, Model model) { // 레시피 추천 높은 순 전체 목록 페이징처리
+		log.info("레시피 게시판 리스트 페이지" + cri);
+		List<RecipeBoardVO> list = service.getLikeBy(cri);
+		
+		int total = service.getTotal(cri);
+		log.info("전체 게시물의 수 : " + total);
+		
+		model.addAttribute("pageMaker", new PageDTO(cri, total));
+		log.info(list.size());
+		model.addAttribute("list", list);
+		model.addAttribute("likeBy", "bold");
+		model.addAttribute("pagingBtn", "/recipe/likeBy");
 		return "/recipeBoard/recipeList";
 	}
 	
