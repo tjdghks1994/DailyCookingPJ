@@ -29,8 +29,8 @@
 					<!-- 검색설정 -->
 					<div>
 						<ul class="nav navbar-nav" style="float: left;">
-							<li style="font-size: 14px;"><a href="">최신순</a></li>
-							<li style="font-size: 14px;"><a href="">조회순</a></li>
+							<li style="font-size: 14px;"><a href="/recipe/list" style="font-weight: ${Newest}">최신순</a></li>
+							<li style="font-size: 14px;"><a href="/recipe/viewBy" style="font-weight: ${viewBy}">조회순</a></li>
 							<li style="font-size: 14px;"><a href="">인기순</a></li>
 						</ul>
 						<div style="width: 100%; text-align: right; margin-bottom: 20px;">
@@ -164,7 +164,6 @@
 		
 		searchForm.submit(); // 폼 전송
 	});
-
 </script>
 <c:if test="${registerResult != null }"> <!-- 게시글 등록 시 null값이 아니게됨  -->
 	<script>

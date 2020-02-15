@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,6 +26,8 @@ import com.dailycooking.domain.Criteria;
 import com.dailycooking.domain.PageDTO;
 import com.dailycooking.domain.RecipeAttachVO;
 import com.dailycooking.domain.RecipeBoardVO;
+import com.dailycooking.domain.RecipeLikeVO;
+import com.dailycooking.domain.RecipeReplyVO;
 import com.dailycooking.service.RecipeService;
 
 import lombok.Setter;
@@ -49,7 +52,52 @@ public class RecipeController {
 		model.addAttribute("pageMaker", new PageDTO(cri, total));
 		log.info(list.size());
 		model.addAttribute("list", list);
+		model.addAttribute("Newest", "bold");
 		return "/recipeBoard/recipeList";
+	}
+	
+	@GetMapping("/viewBy")
+	public String viewByHigh(Criteria cri, Model model) { // 레시피 조회 높은 순 전체 목록 페이징처리
+		log.info("레시피 게시판 리스트 페이지" + cri);
+		List<RecipeBoardVO> list = service.getViewBy(cri);
+		
+		int total = service.getTotal(cri);
+		log.info("전체 게시물의 수 : " + total);
+		
+		model.addAttribute("pageMaker", new PageDTO(cri, total));
+		log.info(list.size());
+		model.addAttribute("list", list);
+		model.addAttribute("viewBy", "bold");
+		return "/recipeBoard/recipeList";
+	}
+	
+	@GetMapping(value = "/likeList", produces = {MediaType.APPLICATION_XML_VALUE,
+					MediaType.APPLICATION_JSON_UTF8_VALUE})
+	public ResponseEntity<List<RecipeLikeVO>> getLikeList(Long recipenum, String userid, Model model){
+		log.info("get like list...");
+		List<RecipeLikeVO> likeList = service.getLikeList(recipenum, userid);
+		
+		model.addAttribute("likeOrNot", likeList);
+		
+		return new ResponseEntity<>(likeList,HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/likeInsert", produces = {MediaType.TEXT_PLAIN_VALUE})
+	public ResponseEntity<String> likeProc(Long recipenum, String userid){
+		
+		boolean insertResult = service.recipeLikeProc(recipenum, userid);		
+		log.info("Reply 등록 결과 - 컨트롤러 : " + insertResult);
+		
+		return insertResult ? new ResponseEntity<>("likeOk", HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@PostMapping(value = "/likeDelete", produces = {MediaType.TEXT_PLAIN_VALUE})
+	public ResponseEntity<String> likeCancle(Long recipenum, String userid){
+		boolean deleteResult = service.recipeLikeCancle(recipenum, userid);
+		
+		return deleteResult ? new ResponseEntity<>("likeDelete", HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@GetMapping("/register")

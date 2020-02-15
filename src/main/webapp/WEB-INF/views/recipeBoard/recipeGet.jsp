@@ -68,9 +68,9 @@
 					<img src="/resources/images/comment.png" class="iconImg">
 					<span style="font-size: 14px;">댓글 <span class="replyCount">0</span></span>
 				</a>
-				<a class="recipeSc">
+				<a class="recipeSc" id="likeTag">
 					<img src="/resources/images/good.png" class="iconImg">
-					<span style="font-size: 14px;">추천 <c:out value="${recipe.likeCnt }"></c:out> </span>
+					<span class="likeText" style="font-size: 14px;">추천 ${recipe.likeCnt } </span>
 				</a>
 			</div>
 			
@@ -363,6 +363,63 @@ $(function(){
 		
 	});
 	
+	console.log(replyer);
+	var likeTag = $("#likeTag");
+	var csrfHeaderName = "${_csrf.headerName}";
+	var csrfTokenValue = "${_csrf.token}";
+	var likeCnt = "${recipe.likeCnt}";
+	
+	likeTag.on("click",function(e){
+		 // like table 조회
+		$.getJSON("/recipe/likeList", {recipenum : '${recipe.recipenum}', userid : replyer}, function(arr){
+				
+				if(arr.length <= 0){ // 해당 게시물에 추천 태그를 누른적이 없다면
+					var userAnswer = confirm("해당 게시물을 추천 하시겠습니까?");
+					if(userAnswer){
+						$.ajax({
+							url : '/recipe/likeInsert',
+							data : {recipenum : '${recipe.recipenum}', userid : replyer},
+							type : 'post',
+							beforeSend : function(xhr)
+				            {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+				                xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+				            },
+							success : function(result){
+								likeCnt = likeCnt * 1; // 자동 타입 형변환을 위해 먼저 곱하기 1을 함 Number타입으로 변환
+								likeCnt = likeCnt + 1; // Number타입으로 변환된 후 1 더하기
+								$(".likeText").html('추천 ' + likeCnt);
+								alert('${recipe.title}' + " 게시글을  추천하였습니다");
+							}
+						});
+					}
+					
+				} // END arr.length <=0 
+				else {
+					var userAnswer = confirm("해당 게시물을 이미 추천하였습니다. 추천을 취소하시겠습니까?");
+					if(userAnswer){
+						$.ajax({
+							url : '/recipe/likeDelete',
+							data : {recipenum : '${recipe.recipenum}', userid : replyer},
+							type : 'post',
+							beforeSend : function(xhr)
+				            {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+				                xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+				            },
+							success : function(result){
+								likeCnt = likeCnt * 1; // 자동 타입 형변환을 위해 먼저 곱하기 1을 함 Number타입으로 변환
+								likeCnt = likeCnt -1;
+								$(".likeText").html('추천 ' + likeCnt);
+								alert('추천을 취소하였습니다');
+							}
+						});
+					}
+				}
+		
+		}); // END getJSON()
+	});
+		
+	
+	
 }); // end function()
 	
 	
@@ -506,6 +563,7 @@ $(function(){
 		
 		$("form[name='listForm']").submit();
 	});
+				
 		
 </script>
 </body>

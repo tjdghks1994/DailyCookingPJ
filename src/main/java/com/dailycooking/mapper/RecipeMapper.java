@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.dailycooking.domain.Criteria;
 import com.dailycooking.domain.RecipeBoardVO;
+import com.dailycooking.domain.RecipeLikeVO;
 
 public interface RecipeMapper {
 	
@@ -19,4 +20,9 @@ public interface RecipeMapper {
 	public int recipeLookCntUp(Long recipenum); // 게시물 조회 시 게시물 조회수 증가
 	// 게시물 댓글의 수 증가하거나 감소할 때 replyCnt 값을 변동
 	public void updateReplyCnt(@Param("recipenum") Long recipenum, @Param("amount") int amount);
+	public List<RecipeBoardVO> getViewBy(Criteria cri); // 조회가 높은 순으로 전체 게시물 목록 페이징 처리
+	public List<RecipeLikeVO> getLikeList(@Param("recipenum")Long recipenum, @Param("userid")String userid);
+	public int likeInsert(@Param("recipenum")Long recipenum, @Param("userid")String userid); // 추천 처리
+	public int likeCntUpDown(@Param("recipenum")Long recipenum, @Param("userid")String userid, @Param("amount")int amount); // 추천 증감 처리
+	public int likeDelete(@Param("recipenum")Long recipenum, @Param("userid")String userid); // 추천 취소 처리
 }

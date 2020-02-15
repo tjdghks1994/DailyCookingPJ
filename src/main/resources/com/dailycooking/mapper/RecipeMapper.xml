@@ -80,4 +80,33 @@
 	<update id="updateReplyCnt">
 		update recipe_board set replycnt = replycnt + #{amount} where recipenum = #{recipenum}
 	</update>
+	
+	<select id="getViewBy" resultType="com.dailycooking.domain.RecipeBoardVO">
+	<![CDATA[
+	select * from(
+		select /*+ INDEX_DESC(recipe_board sys_c007814) */
+    	rownum rn, recipenum, title, material, personnel, cookingtime, cookinglevel, cookingorder, cookingtip,
+    	cookingtag, replycnt, likecnt, scrapcnt, userid, lookcnt
+		from recipe_board where rownum <= #{pageNum} * #{amount} order by lookcnt desc
+		)
+	where rn > (#{pageNum} -1) * #{amount}
+	]]>
+	</select>
+	
+	<select id="getLikeList" resultType="com.dailycooking.domain.RecipeLikeVO">
+		select * from best_list where recipenum = #{recipenum} AND userid = #{userid}
+	</select>
+	
+	<insert id="likeInsert">
+		insert into best_list values(#{recipenum},#{userid})
+	</insert>
+	
+	<update id="likeCntUpDown">
+		update recipe_board set likecnt = likecnt + #{amount} 
+		where recipenum = #{recipenum}
+	</update>
+	
+	<delete id="likeDelete">
+		delete from best_list where recipenum = #{recipenum} AND userid = #{userid}
+	</delete>
 </mapper>

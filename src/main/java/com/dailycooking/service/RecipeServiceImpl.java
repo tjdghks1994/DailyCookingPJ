@@ -3,6 +3,7 @@ package com.dailycooking.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dailycooking.domain.Criteria;
 import com.dailycooking.domain.RecipeAttachVO;
 import com.dailycooking.domain.RecipeBoardVO;
+import com.dailycooking.domain.RecipeLikeVO;
 import com.dailycooking.mapper.RecipeAttachMapper;
 import com.dailycooking.mapper.RecipeMapper;
 
@@ -97,6 +99,34 @@ public class RecipeServiceImpl implements RecipeService {
 	public List<RecipeAttachVO> getAttachList(Long recipenum) {
 		log.info("get Attach List Service : " + recipenum);
 		return attachMapper.findByRecipenum(recipenum);
+	}
+
+	@Override
+	public List<RecipeBoardVO> getViewBy(Criteria cri) {
+		log.info("get View By.... Service : " + cri);
+		return mapper.getViewBy(cri);
+	}
+	
+	public List<RecipeLikeVO> getLikeList(@Param("recipenum")Long recipenum, @Param("userid")String userid){
+		log.info("get like list : " + recipenum + " - " + userid);
+		return mapper.getLikeList(recipenum, userid);
+	}
+
+	@Override
+	@Transactional
+	public boolean recipeLikeProc(Long recipenum, String userid) { // 해당 게시물 추천 처리
+		log.info("likeInsert .... db table : " + recipenum + " - " + userid);
+		mapper.likeInsert(recipenum, userid);
+		
+		return mapper.likeCntUpDown(recipenum, userid, 1) == 1;
+	}
+
+	@Override
+	@Transactional
+	public boolean recipeLikeCancle(Long recipenum, String userid) {
+		log.info("likeCancle .... db table : " + recipenum + " - " + userid);
+		mapper.likeDelete(recipenum, userid);
+		return mapper.likeCntUpDown(recipenum, userid, -1) == 1;
 	}
 
 	/*

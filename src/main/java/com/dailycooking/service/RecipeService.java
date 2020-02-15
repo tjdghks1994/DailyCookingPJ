@@ -5,6 +5,7 @@ import java.util.List;
 import com.dailycooking.domain.Criteria;
 import com.dailycooking.domain.RecipeAttachVO;
 import com.dailycooking.domain.RecipeBoardVO;
+import com.dailycooking.domain.RecipeLikeVO;
 
 public interface RecipeService {
 
@@ -24,6 +25,13 @@ public interface RecipeService {
 	
 	public List<RecipeAttachVO> getAttachList(Long recipenum); // 게시물의 첨부파일 목록
 	
+	public List<RecipeBoardVO> getViewBy(Criteria cri); // 레시피 조회 높은 순으로 전체 목록
+	
+	public List<RecipeLikeVO> getLikeList(Long recipenum, String userid); // 좋아요 해당 유저가 해당 게시물을 좋아요 눌렀는지 목록 가져오기
+	
+	public boolean recipeLikeProc(Long recipenum, String userid); // 추천 처리
+	
+	public boolean recipeLikeCancle(Long recipenum, String userid); // 추천 취소 처리
 	/*
 	 * public List<RecipeAttachVO> allAttachList(); // 모든 첨부파일 목록
 	 * 
