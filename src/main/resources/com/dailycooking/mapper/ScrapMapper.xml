@@ -3,5 +3,17 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dailycooking.mapper.ScrapMapper">
-
+	<insert id="insertScrap">
+		insert into scrap_list values(#{recipenum},#{title},#{writer},#{userid},1,sysdate)
+	</insert>
+	<select id="getScrapList" resultType="com.dailycooking.domain.ScrapVO">
+		select * from scrap_list where recipenum = #{recipenum} AND userid = #{userid}
+	</select>
+	<delete id="deleteScrap">
+		delete from scrap_list where recipenum = #{recipenum} AND userid = #{userid}
+	</delete>
+	<update id="scrapCntUpDown">
+		update recipe_board set scrapcnt = scrapcnt + #{amount} 
+		where recipenum = #{recipenum}
+	</update>
 </mapper>

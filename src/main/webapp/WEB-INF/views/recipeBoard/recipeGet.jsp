@@ -60,9 +60,9 @@
 				</span>
 			</div>
 			<div>
-				<a class="recipeSc">
+				<a class="recipeSc" id="scrapTag">
 					<img src="/resources/images/favorite.png" class="iconImg">
-					<span style="font-size: 14px;">스크랩 <c:out value="${recipe.scrapCnt }"></c:out> </span>
+					<span class="scrapText" style="font-size: 14px;">스크랩 <c:out value="${recipe.scrapCnt }"></c:out> </span>
 				</a>
 				<a class="recipeSc" href="#replySpace">
 					<img src="/resources/images/comment.png" class="iconImg">
@@ -371,11 +371,70 @@ $(function(){
 		$(".uploadResult ul").html(attachList);
 		
 	});
+	var csrfHeaderName = "${_csrf.headerName}";
+	var csrfTokenValue = "${_csrf.token}";
+	
+	var scrapTag = $("#scrapTag");
+	var scrapCnt = "${recipe.scrapCnt}";
+	
+	scrapTag.on("click", function(e){
+
+		if(replyer == null) { // 로그인이 되어있지 않다면
+			alert("추천은 스크랩 후 이용 가능합니다");
+			return;
+		}
+		
+		$.getJSON("/recipe/scrapList", {recipenum : '${recipe.recipenum}', userid : replyer}, function(scrap){
+			
+			if(scrap.length <= 0){
+				var scrapAnswer = confirm("해당 게시물을 스크랩(즐겨찾기) 하시겠습니까?");
+				var scrap = {
+						recipenum : '${recipe.recipenum}', userid : replyer,
+						title : '${recipe.title}', writer : '${recipe.userid}'
+				}
+				if(scrapAnswer){
+					$.ajax({
+						url : '/recipe/insertScrap',
+						data : scrap,
+						type : 'post',
+						beforeSend : function(xhr)
+			            {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+			                xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+			            },
+						success : function(result){
+							scrapCnt = scrapCnt * 1; // 자동 타입 형변환을 위해 먼저 곱하기 1을 함 Number타입으로 변환
+							scrapCnt = scrapCnt + 1; // Number타입으로 변환된 후 1 더하기
+							$(".scrapText").html('스크랩 ' + scrapCnt);
+							alert('${recipe.title}' + " 게시글을  스크랩(즐겨찾기) 하였습니다");
+						}
+					}); //END ajax()
+				}
+			} // END scrap.length <= 0
+			else {
+				var scrapAnswer = confirm("해당 게시물을 스크랩(즐겨찾기) 취소 하시겠습니까?");
+				if(scrapAnswer){
+					$.ajax({
+						url : '/recipe/scrapDelete',
+						data : {recipenum : '${recipe.recipenum}', userid : replyer},
+						type : 'post',
+						beforeSend : function(xhr)
+			            {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+			                xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+			            },
+						success : function(result){
+							scrapCnt = scrapCnt * 1; // 자동 타입 형변환을 위해 먼저 곱하기 1을 함 Number타입으로 변환
+							scrapCnt = scrapCnt -1;
+							$(".scrapText").html('스크랩 ' + scrapCnt);
+							alert('스크랩을 취소하였습니다');
+						}
+					});
+				}
+			}
+		});
+	});
 	
 	console.log(replyer);
 	var likeTag = $("#likeTag");
-	var csrfHeaderName = "${_csrf.headerName}";
-	var csrfTokenValue = "${_csrf.token}";
 	var likeCnt = "${recipe.likeCnt}";
 	
 	likeTag.on("click",function(e){

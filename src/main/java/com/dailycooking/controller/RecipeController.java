@@ -28,8 +28,10 @@ import com.dailycooking.domain.RecipeAttachVO;
 import com.dailycooking.domain.RecipeBoardVO;
 import com.dailycooking.domain.RecipeLikeVO;
 import com.dailycooking.domain.RecipeReplyVO;
+import com.dailycooking.domain.ScrapVO;
 import com.dailycooking.service.RecipeService;
 import com.dailycooking.service.ReportService;
+import com.dailycooking.service.ScrapService;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -44,6 +46,9 @@ public class RecipeController {
 	
 	@Setter(onMethod_ = @Autowired)
 	private ReportService reportService;
+	
+	@Setter(onMethod_ = @Autowired)
+	private ScrapService scrapService;
 	
 	@GetMapping("/list")
 	public String recipeMenu(Criteria cri, Model model) { // 레시피 전체 목록 페이징처리
@@ -214,6 +219,36 @@ public class RecipeController {
 		
 		rttr.addFlashAttribute("reportResult", reportResult);
 		return "redirect:/recipe/list";
+	}
+	
+	@PostMapping(value = "/insertScrap", produces = {MediaType.TEXT_PLAIN_VALUE})
+	@ResponseBody
+	public ResponseEntity<String> scrap(ScrapVO svo, Model model) {
+		log.info("스크랩(즐겨찾기) 처리 컨트롤러 : " + svo);
+		int scrapResult = scrapService.insertScrap(svo);
+		log.info("스크랩 결과 : " + scrapResult);
+		
+		return scrapResult == 1 ? new ResponseEntity<>("scrapOk", HttpStatus.OK) :
+			new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@GetMapping(value = "/scrapList", produces = {MediaType.APPLICATION_XML_VALUE,
+			MediaType.APPLICATION_JSON_UTF8_VALUE})
+	public ResponseEntity<List<ScrapVO>> getScrapList(Long recipenum, String userid, Model model){
+		log.info("게시물 스크랩 여부 컨트롤러 : " + recipenum + " - " + userid);
+		List<ScrapVO> list = scrapService.getScrapList(recipenum, userid);
+		
+		model.addAttribute("scrapOrNot", list);
+		
+		return new ResponseEntity<>(list,HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/scrapDelete", produces = {MediaType.TEXT_PLAIN_VALUE})
+	public ResponseEntity<String> scrapCancle(Long recipenum, String userid){
+		int scrapResult = scrapService.removeScrap(recipenum, userid);
+		
+		return scrapResult == 1 ? new ResponseEntity<>("scrapDelete", HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	/*
