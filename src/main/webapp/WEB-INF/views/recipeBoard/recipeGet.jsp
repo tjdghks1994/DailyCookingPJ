@@ -97,7 +97,16 @@
 					<input type="hidden" name="keyword" value="${cri.keyword }">
 				</form>
 			</c:if>
-				<a class="reportText">글 신고하기</a> <!-- 로그인 한 유저만 보이게 -->
+				<form action="/recipe/report" method="post" name="reportForm" style="display: inline;">
+					<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+					<input type="hidden" name="recipenum" value="${recipe.recipenum }">
+					<input type="hidden" name="pageNum" value="${cri.pageNum }">
+					<input type="hidden" name="amount" value="${cri.amount }">
+					<input type="hidden" name="type" value="${cri.type }">
+					<input type="hidden" name="keyword" value="${cri.keyword }">
+					<input type="hidden" name="reporter" value="${principal.username }">
+					<a class="reportText">글 신고하기</a> <!-- 로그인 한 유저만 보이게 -->
+				</form>
 			</sec:authorize>
 			<form action="/recipe/list" method="get" name="listForm" style="display: inline;">
 				<a class="managerText" href="#" id="recipeListTag">게시글 목록으로</a>
@@ -516,7 +525,10 @@ $(function(){
 	var reportBtn = $('.reportText'); // 게시물 신고하기 a태그
 	reportBtn.on('click', function(e) { // 게시물 신고하기 클릭시 진행
 		e.preventDefault();
-		confirm('정말 게시글을 신고하시겠습니까?');
+		var reportAnswer = confirm('정말 게시글을 신고하시겠습니까?');
+		if(reportAnswer){
+			$("form[name='reportForm']").submit();
+		}
 	});
 	
 	var order = '${recipe.cookingOrder}'; // 게시물 재료 순서 모든 값

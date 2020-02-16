@@ -29,6 +29,7 @@ import com.dailycooking.domain.RecipeBoardVO;
 import com.dailycooking.domain.RecipeLikeVO;
 import com.dailycooking.domain.RecipeReplyVO;
 import com.dailycooking.service.RecipeService;
+import com.dailycooking.service.ReportService;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -40,6 +41,9 @@ public class RecipeController {
 
 	@Setter(onMethod_ = @Autowired)
 	private RecipeService service;
+	
+	@Setter(onMethod_ = @Autowired)
+	private ReportService reportService;
 	
 	@GetMapping("/list")
 	public String recipeMenu(Criteria cri, Model model) { // 레시피 전체 목록 페이징처리
@@ -200,6 +204,16 @@ public class RecipeController {
 		log.info("get AttachList 컨트롤러 : " + recipenum);
 		
 		return new ResponseEntity<>(service.getAttachList(recipenum), HttpStatus.OK);
+	}
+	
+	@PostMapping("/report")
+	public String report(@RequestParam("recipenum") Long recipenum,@RequestParam("reporter") String reporter,
+			@ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
+		log.info("게시글 신고하기 컨트롤러 : " + recipenum + " - 신고자 : " + reporter);
+		int reportResult = reportService.report(recipenum, reporter);
+		
+		rttr.addFlashAttribute("reportResult", reportResult);
+		return "redirect:/recipe/list";
 	}
 	
 	/*

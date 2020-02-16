@@ -189,5 +189,12 @@
 		});
 	</script>
 </c:if>
+<c:if test="${reportResult != null }"> <!-- 게시글 등록 시 null값이 아니게됨  -->
+	<script>
+		$(function(){
+			alert('신고에 성공하였습니다');
+		});
+	</script>
+</c:if>
 </body>
 </html>
