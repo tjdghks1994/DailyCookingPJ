@@ -170,7 +170,7 @@ Daily Cooking은 원칙적으로 이용자의 개인정보를 회원 탈퇴 시 
                               <h3 class="modal-title" style="color: #5bc0de;">관리자에게 문의/건의 하기</h3>
                           </div>
                           <div class="modal-body">
-                        	<form action="">
+                        	<form action="" method="post" name="questionForm">
                         		<label>문의 / 건의 제목</label>
                         		<input class="form-control">
                         		<label>작성자</label>
@@ -180,8 +180,8 @@ Daily Cooking은 원칙적으로 이용자의 개인정보를 회원 탈퇴 시 
                         	</form>
                           </div>
                           <div class="modal-footer">
-							  <button type="button" class="btn btn-info" id="modalRegisterBtn">관리자에게 보내기</button>
-                              <button type="button" class="btn btn-default" id="modalCloseBtn" data-dismiss="modal">닫기</button>
+							  <button type="button" class="btn btn-info" id="questionSubmit">관리자에게 보내기</button>
+                              <button type="button" class="btn btn-default" id="questionClose" data-dismiss="modal">닫기</button>
                           </div>
                       </div>
                       <!-- /.modal-content -->
@@ -219,14 +219,6 @@ $(function(){
 			}
 	});
 	
-	var questionLink = $('#questionLink'); // 관리자 문의/건의하기 a태그
-	var modal6 = $('#myModal6'); // 관리자 문의/건의 모달창
-	
-	questionLink.on('click', function(e) { // 관리자 문의/건의하기 클릭시 진행
-		e.preventDefault();
-		modal6.modal('show');
-	});
-	
 	var logoutLink = $('.logoutLink'); // 로그아웃 링크 a 태그
 	var logoutForm = $('.logoutForm'); // 로그아웃 폼 태그
 	logoutLink.on("click",function(e){ // 로그아웃 링크 클릭시 진행
@@ -234,6 +226,27 @@ $(function(){
 	
 		logoutForm.submit();
 	});
+	
+	var memberExistence = null; // 회원 아이디 확인을 위한 변수
+	
+	<sec:authorize access="isAuthenticated()">
+	
+	memberExistence = '<sec:authentication property="principal.username"/>';
+	
+	</sec:authorize>
+	
+	console.log('회원의 아이디 : ' + memberExistence);
+
+	var questionLink = $('#questionLink'); // 관리자 문의/건의하기 a태그
+	var modal6 = $('#myModal6'); // 관리자 문의/건의 모달창
+	var questionSubmit = $("#questionSubmit"); // 문의 보내기 버튼
+	
+	questionLink.on('click', function(e) { // 관리자 문의/건의하기 클릭 시 진행
+		e.preventDefault();
+		modal6.modal('show');
+	});
+	
+	
 });
 
 </script>
