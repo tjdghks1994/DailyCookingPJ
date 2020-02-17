@@ -135,6 +135,18 @@ public class RecipeServiceImpl implements RecipeService {
 		return mapper.getLikeBy(cri);
 	}
 
+	@Override
+	public List<RecipeBoardVO> getTopList() {
+		log.info("get Top List....Service..");
+		return mapper.getTopList();
+	}
+
+	@Override
+	public List<RecipeBoardVO> getNewList() {
+		log.info("get New List 8 .... Service");
+		return mapper.getNewList();
+	}
+
 	/*
 	 * @Override public List<RecipeAttachVO> allAttachList() {
 	 * log.info("get All Attach List Service........"); return

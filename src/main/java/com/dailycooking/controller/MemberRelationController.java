@@ -1,5 +1,8 @@
 package com.dailycooking.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,17 +16,23 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dailycooking.domain.MemberVO;
 import com.dailycooking.domain.QuestionVO;
+import com.dailycooking.domain.RecipeBoardVO;
 import com.dailycooking.service.MemberRelationService;
+import com.dailycooking.service.RecipeService;
 
 import lombok.AllArgsConstructor;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
 @Controller
 @Log4j
-@AllArgsConstructor
 public class MemberRelationController { // 회원 관련된 컨트롤러 사용 예정
 	
+	@Setter(onMethod_ = @Autowired)
 	private MemberRelationService service;
+
+	@Setter(onMethod_ = @Autowired)
+	private RecipeService rService;
 	
 	@GetMapping("/accessError")
 	public void accessDenied(Authentication auth, Model model) { // 관리자 페이지에 사용자가 접근할때 접근 거부 페이지로 이동
@@ -74,8 +83,16 @@ public class MemberRelationController { // 회원 관련된 컨트롤러 사용 
 	}
 	
 	@GetMapping("/index")
-	public void loginGet() { // 로그인 완료시 index페이지로 이동하기위한 
+	public void loginGet(Model model) { // 로그인 완료시 index페이지로 이동하기위한 
 		log.info("로그인 시 index페이지로 이동");
+		log.info("메인 페이지 컨트롤러 ");
+		List<RecipeBoardVO> topList = rService.getTopList();
+		log.info("top List : " + topList);
+		List<RecipeBoardVO> list = rService.getNewList();
+		log.info("new List : " + list);
+		
+		model.addAttribute("topList", topList);
+		model.addAttribute("list", list);
 	}
 	
 	@GetMapping(value = "/userid", produces = {MediaType.APPLICATION_XML_VALUE,

@@ -135,4 +135,29 @@
 		]]>
 	
 	</select>
+	
+	<select id="getTopList" resultType="com.dailycooking.domain.RecipeBoardVO">
+	<![CDATA[		
+		select * from(
+		select /*+ INDEX_DESC(recipe_board sys_c007814) */
+		    rownum rn, recipenum, title, material, personnel, cookingtime, cookinglevel, cookingorder, cookingtip,
+		    cookingtag, replycnt, likecnt, scrapcnt, userid
+		from recipe_board where rownum <= 4 order by likecnt desc
+		)
+		where rn > 0
+	]]>
+	</select>
+	
+	<select id="getNewList" resultType="com.dailycooking.domain.RecipeBoardVO">
+	<![CDATA[		
+		select * from(
+		select /*+ INDEX_DESC(recipe_board sys_c007814) */
+		    rownum rn, recipenum, title, material, personnel, cookingtime, cookinglevel, cookingorder, cookingtip,
+		    cookingtag, replycnt, likecnt, scrapcnt, userid
+		from recipe_board where rownum <= 8
+		)
+		where rn > 0
+	]]>
+	</select>
+
 </mapper>

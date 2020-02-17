@@ -26,4 +26,6 @@ public interface RecipeMapper {
 	public int likeCntUpDown(@Param("recipenum")Long recipenum, @Param("userid")String userid, @Param("amount")int amount); // 추천 증감 처리
 	public int likeDelete(@Param("recipenum")Long recipenum, @Param("userid")String userid); // 추천 취소 처리
 	public List<RecipeBoardVO> getLikeBy(Criteria cri);
+	public List<RecipeBoardVO> getTopList(); // 레시피 게시판 Top4 목록 가져오기
+	public List<RecipeBoardVO> getNewList(); // 레시피 게시물 최근 8개 목록 가져오기
 }
