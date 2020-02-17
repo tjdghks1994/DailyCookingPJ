@@ -464,7 +464,7 @@ $(function(){
 								$(".likeText").html('추천 ' + likeCnt);
 								alert('${recipe.title}' + " 게시글을  추천하였습니다");
 							}
-						});
+						}); // END ajax
 					}
 					
 				} // END arr.length <=0 

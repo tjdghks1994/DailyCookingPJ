@@ -1,6 +1,8 @@
 package com.dailycooking.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dailycooking.domain.MemberVO;
+import com.dailycooking.domain.QuestionVO;
 import com.dailycooking.service.MemberRelationService;
 
 import lombok.AllArgsConstructor;
@@ -141,5 +144,15 @@ public class MemberRelationController { // 회원 관련된 컨트롤러 사용 
 			model.addAttribute("pwChangeResult", "notChange"); // view 페이지로 비밀번호 실패 결과 값 - notChange 전송
 			return "/pwChange";
 		}
+	}
+	
+	@PostMapping(value = "/questionInsert", produces = {MediaType.TEXT_PLAIN_VALUE})
+	public ResponseEntity<String> insertQuestion(QuestionVO qvo){
+		
+		int insertResult = service.questionReg(qvo);	
+		log.info("건의 문의사항 등록 결과 - 컨트롤러 : " + insertResult);
+		
+		return insertResult == 1 ? new ResponseEntity<>("questionOk", HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }

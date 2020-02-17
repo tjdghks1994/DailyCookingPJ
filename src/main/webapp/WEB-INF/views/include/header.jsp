@@ -28,7 +28,6 @@
 	});
 </script>
 <!-- start-smoth-scrolling -->
-<link href="css/font-awesome.css" rel="stylesheet"> 
 <link href='//fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 <link href='//fonts.googleapis.com/css?family=Noto+Sans:400,700' rel='stylesheet' type='text/css'>
 
@@ -161,6 +160,11 @@ Daily Cooking은 원칙적으로 이용자의 개인정보를 회원 탈퇴 시 
               </div>
               <!-- END 메뉴추천 모달 창  -->
               
+             <sec:authorize access="isAuthenticated()">
+              
+              <sec:authentication property="principal" var="principal"/>
+              
+             </sec:authorize>
           <!-- 관리자에게 건의/문의 모달 창 -->
               <div class="modal fade" id="myModal6" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                   <div class="modal-dialog">
@@ -170,13 +174,13 @@ Daily Cooking은 원칙적으로 이용자의 개인정보를 회원 탈퇴 시 
                               <h3 class="modal-title" style="color: #5bc0de;">관리자에게 문의/건의 하기</h3>
                           </div>
                           <div class="modal-body">
-                        	<form action="" method="post" name="questionForm">
+                        	<form action="/questionInsert" method="post" name="questionForm">
                         		<label>문의 / 건의 제목</label>
-                        		<input class="form-control">
+                        		<input class="form-control" name="title" id="questionTitle">
                         		<label>작성자</label>
-						        <input class="form-control" value="작성자" name="replyer" id="replyer" readonly="readonly">
+						        <input class="form-control" value="${principal.username }" name="userid" readonly="readonly">
 						        <label>문의 / 건의 내용</label>
-						        <textarea class="form-control" style="margin-bottom: 10px;"></textarea>	
+						        <textarea class="form-control" name="content" id="questionContent" style="margin-bottom: 10px;"></textarea>	
                         	</form>
                           </div>
                           <div class="modal-footer">
@@ -237,6 +241,9 @@ $(function(){
 	
 	console.log('회원의 아이디 : ' + memberExistence);
 
+	var csrfHeaderName = "${_csrf.headerName}";
+	var csrfTokenValue = "${_csrf.token}";
+	
 	var questionLink = $('#questionLink'); // 관리자 문의/건의하기 a태그
 	var modal6 = $('#myModal6'); // 관리자 문의/건의 모달창
 	var questionSubmit = $("#questionSubmit"); // 문의 보내기 버튼
@@ -244,6 +251,28 @@ $(function(){
 	questionLink.on('click', function(e) { // 관리자 문의/건의하기 클릭 시 진행
 		e.preventDefault();
 		modal6.modal('show');
+	});
+	questionSubmit.on('click',function(e){ // 문의/건의 보내기 버튼 클릭 시 진행
+		var questionTitle = $("#questionTitle").val();
+		var questionContent = $("#questionContent").val();
+		
+		var question = {
+				userid : memberExistence, title : questionTitle, content : questionContent
+		}
+		
+		$.ajax({
+			url : '/questionInsert',
+			data : question,
+			type : 'post',
+			beforeSend : function(xhr)
+            {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+            },
+			success : function(result){
+				modal6.modal('hide');
+				alert('관리자에게 문의/건의 내용이 전달되었습니다');
+			}
+		}); // END ajax
 	});
 	
 	

@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dailycooking.domain.MemberVO;
+import com.dailycooking.domain.QuestionVO;
 import com.dailycooking.mapper.MemberRelationMapper;
+import com.dailycooking.mapper.QuestionMapper;
 
 import lombok.AllArgsConstructor;
 import lombok.Setter;
@@ -21,6 +23,9 @@ public class MemberRelationServiceImpl implements MemberRelationService {
 	
 	@Setter(onMethod_ = @Autowired)
 	private BCryptPasswordEncoder bcrypt; // 암호화 처리를 위한
+	
+	@Setter(onMethod_ = @Autowired)
+	private QuestionMapper qMapper;
 	
 	@Override
 	@Transactional
@@ -77,6 +82,12 @@ public class MemberRelationServiceImpl implements MemberRelationService {
 		log.info("비밀번호 변경 결과 : " + result);
 		
 		return result;
+	}
+
+	@Override
+	public int questionReg(QuestionVO qvo) {
+		log.info("insert questionVO service : " + qvo);
+		return qMapper.insertQuestion(qvo);
 	}
 	
 	
