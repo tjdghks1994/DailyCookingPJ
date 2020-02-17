@@ -112,7 +112,6 @@
 			</div>
 		</div>
 	</div>
-	<jsp:include page="../include/footer.jsp"></jsp:include>
 <script>
 	$(function(){
 		var register = $("#regWriteBtn"); // 레시피 작성하기 버튼

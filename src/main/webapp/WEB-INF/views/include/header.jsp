@@ -52,7 +52,7 @@
 		</div>
 		<div class="container">
 			<div class="logo">
-				<h1><a href="index.html"><img src="/resources/images/logo.png" class="logoImg"> 
+				<h1><a href="/index"><img src="/resources/images/logo.png" class="logoImg"> 
 										Daily Cooking</a></h1>
 			</div>
 
@@ -71,7 +71,7 @@
 					</div> 
 					<div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
 						<ul class="nav navbar-nav ">
-							<li class="dropdown"><a href="index" class="hyper"><span>Home</span></a></li>	
+							<li class="dropdown"><a href="/index" class="hyper"><span>Home</span></a></li>	
 							<li class="dropdown">
 								<a href="#" class="hyper" id="menuRec"><span>메뉴 추천</span></a>
 							</li>
