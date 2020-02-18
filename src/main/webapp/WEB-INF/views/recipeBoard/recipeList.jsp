@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,7 +21,9 @@
 						<span style="font-size: 18px;">총 
 						 <span class="recipeBoardCount"></span>
 						개의 레시피가 있습니다 </span>
-						<button id="regWriteBtn" type="button" class="btn btn-success btn-sm pull-right">레시피 작성하기</button>
+						<sec:authorize access="isAuthenticated()">
+							<button id="regWriteBtn" type="button" class="btn btn-success btn-sm pull-right">레시피 작성하기</button>
+						</sec:authorize>
 					</div>
 				</div>
 			</div>
