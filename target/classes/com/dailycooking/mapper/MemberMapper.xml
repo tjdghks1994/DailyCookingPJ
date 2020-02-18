@@ -29,19 +29,7 @@
 		mem.userid = auth.userid AND mem.userid = #{userid}
 	</select>
 	
-	<select id="read" resultType="com.dailycooking.domain.MemberVO">
-	select
-		userid, userpw, username, nickname, usermail, regdate, suspension
-	from
-		daily_member
-	where userid = #{userid}
-	</select>
-	
-	<select id="read2" resultType="com.dailycooking.domain.AuthVO">
-	select
-		userid, auth
-	from
-		daily_member_auth
-	where userid = #{userid}
-	</select>
+	<update id="infoChange">
+		update daily_member set nickname = #{nickname}, usermail = #{usermail} where userid = #{userid}
+	</update>
 </mapper>

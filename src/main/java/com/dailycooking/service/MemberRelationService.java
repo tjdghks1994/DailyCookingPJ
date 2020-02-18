@@ -12,4 +12,5 @@ public interface MemberRelationService {
 	public int questionReg(QuestionVO qvo); // 건의/문의 사항 등록
 	
 	public MemberVO readInfo(String userid); // 회원 모든 정보 가져오기
+	public int infoChange(MemberVO mvo); // 회원 정보 변경
 }

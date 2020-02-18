@@ -99,6 +99,12 @@ public class MemberRelationServiceImpl implements MemberRelationService {
 		log.info("read Info Service ");
 		return mMapper.readInfo(userid);
 	}
+
+	@Override
+	public int infoChange(MemberVO mvo) {
+		log.info("info Change...Service : " + mvo);
+		return mMapper.infoChange(mvo);
+	}
 	
 	
 	

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,39 +31,40 @@
 		<div class="main-agileits">
 				<div class="form-w3agile">
 					<h3>회원 정보</h3>
-					<form action="#" method="post">
+					<form action="/myPage/infoChange" method="post" id="infoForm">
 						<p style="font-size: 20px; margin-bottom: 10px;">이름</p>
 						<div class="key">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
-							<input  type="text" value="${memberInfo.username }" readonly="readonly">
+							<input  type="text" value="${memberInfo.username }" name="username" readonly="readonly">
 							<div class="clearfix"></div>
 						</div>
 						<p style="font-size: 20px; margin-bottom: 10px;">아이디</p>
 						<div class="key">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
-							<input  type="text" value="${memberInfo.userid }" readonly="readonly">
+							<input  type="text" value="${memberInfo.userid }" name="userid" readonly="readonly">
 							<div class="clearfix"></div>
 						</div>
 						<p style="font-size: 20px; margin-bottom: 10px;">닉네임</p>
 						<div class="key">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
-							<input  type="text" value="${memberInfo.nickname }">
+							<input  type="text" value="${memberInfo.nickname }" name="nickname">
 							<div class="clearfix"></div>
 						</div>
 						<p style="font-size: 20px; margin-bottom: 10px;">이메일</p>
 						<div class="key">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
-							<input  type="text" value="${memberInfo.usermail }">
+							<input  type="text" value="${memberInfo.usermail }" name="usermail">
 							<div class="clearfix"></div>
 						</div>
 						<!-- <input type="button" value="정보 수정 하기">
 						<input type="button" value="비밀번호 변경">
 						<input type="button" value="회원 탈퇴 하기"> -->
 						<div style="text-align: center;">
-						<button class="btn btn-info" style="margin-right: 8px;">정보 수정 하기</button>
+						<button class="btn btn-info" style="margin-right: 8px;" id="infoChange">정보 수정 하기</button>
 						<button class="btn btn-primary" style="margin-right: 8px;" id="pwChange">비밀번호 변경</button>
 						<button class="btn btn-danger" id="delInfo">회원 탈퇴 하기</button>
 						</div>
+						<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 					</form>
 				</div>
 			</div>
@@ -130,10 +132,49 @@
               
 <script>
 $(function(){
-	var pwChange = $("#pwChange");
-	var delInfo = $("#delInfo");
+	var pwChange = $("#pwChange"); // 비밀번호 변경 버튼
+	var delInfo = $("#delInfo"); // 회원탈퇴 버튼
+	var infoChange = $("#infoChange"); // 정보변경 버튼
 	var modal2 = $("#myModal2"); // 패스워드 변경 모달
 	var modal3 = $("#myModal3"); // 회원탈퇴 모달 
+	
+	infoChange.on("click",function(e){
+		e.preventDefault();
+		var changeAnswer = confirm("입력한 값으로 정보를 변경하시겠습니까?");
+		var emailRegEx = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
+		var usermail = $("input[name='usermail']").val();
+		var csrfHeaderName = "${_csrf.headerName}";
+		var csrfTokenValue = "${_csrf.token}";
+		
+		if(changeAnswer){
+			
+		 	if($("input[name='nickname']").length < 1) { // 닉네임을 입력하지 않았으면
+				alert("닉네임을 입력해주세요");
+				$("input[name='nickname']").focus();
+			} else if(!(emailRegEx.test(usermail))){ // 이메일 정규표현식에 맞게 입력하지 않으면 
+				$("input[name='usermail']").val(""); // 이메일 입력 란 값 초기화
+				alert("이메일 형식대로 입력하세요 ex) xxxxx@naver.com ");
+				$("input[name='usermail']").focus();
+			} else {
+				var infoChange = {
+						username : $("input[name='username']").val(), userid : $("input[name='userid']").val(),
+						nickname : $("input[name='nickname']").val(), usermail : $("input[name='usermail']").val()
+				}
+					$.ajax({
+						url : '/myPage/infoChange',
+						data : infoChange,
+						type : 'post',
+						beforeSend : function(xhr)
+				           {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+				              xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+				           },
+						success : function(result){
+							alert("회원 정보를 수정하였습니다.");
+						}
+					}); //END ajax()
+			} // END else{}
+		} // END if(changeAnswer)
+	});
 	
 	pwChange.on("click", function(e){ // 패스워드 변경 버튼 클릭시 진행
 		e.preventDefault();
@@ -144,8 +185,13 @@ $(function(){
 		e.preventDefault();
 		modal3.modal("show");
 	});
+		
+	
+		
+	
 });
 
 </script>
+
 </body>
 </html>
