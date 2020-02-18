@@ -1,5 +1,8 @@
 package com.dailycooking.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dailycooking.domain.Criteria;
+import com.dailycooking.domain.JoinRecipeVO;
 import com.dailycooking.domain.MemberVO;
 import com.dailycooking.domain.QuestionVO;
 import com.dailycooking.domain.RecipeBoardVO;
+import com.dailycooking.domain.RecipeRepresentativeVO;
 import com.dailycooking.service.MemberRelationService;
 import com.dailycooking.service.RecipeService;
 
@@ -83,7 +89,7 @@ public class MemberRelationController { // 회원 관련된 컨트롤러 사용 
 	}
 	
 	@GetMapping("/index")
-	public void loginGet(Model model) { // 로그인 완료시 index페이지로 이동하기위한 
+	public void loginGet(Model model, Criteria cri) { // 로그인 완료시 index페이지로 이동하기위한 
 		log.info("로그인 시 index페이지로 이동");
 		log.info("메인 페이지 컨트롤러 ");
 		List<RecipeBoardVO> topList = rService.getTopList();
@@ -91,6 +97,12 @@ public class MemberRelationController { // 회원 관련된 컨트롤러 사용 
 		List<RecipeBoardVO> list = rService.getNewList();
 		log.info("new List : " + list);
 		
+		List<String> encodeList = encodeProcLike();
+		cri = new Criteria();
+		List<String> encodeNew = encodeProc(cri);
+		
+		model.addAttribute("encodeNew", encodeNew);
+		model.addAttribute("encode", encodeList);
 		model.addAttribute("topList", topList);
 		model.addAttribute("list", list);
 	}
@@ -171,5 +183,47 @@ public class MemberRelationController { // 회원 관련된 컨트롤러 사용 
 		
 		return insertResult == 1 ? new ResponseEntity<>("questionOk", HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	public List<String> encodeProc(Criteria cri) { // 각 게시물의 대표사진 인코딩 된 값을 리스트에 담아 반환
+		List<RecipeRepresentativeVO> rList = rService.getRepresentList(cri);
+		List<String> encodeList = new ArrayList<>();
+		
+		log.info("첫번째 : "+rList.get(0).getUploadpath());
+		
+		for(int i=0; i<rList.size(); i++) {
+			try {
+				String encodedPath = URLEncoder.encode(rList.get(i).getUploadpath(), "UTF-8");
+				encodeList.add(encodedPath);
+				log.info(i+" 번째 : " + encodeList.get(i));
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				log.info(e.getMessage());
+			}
+		}
+		log.info("리스트 : " + encodeList);
+		
+		return encodeList;
+	}
+	
+	public List<String> encodeProcLike() { // 각 게시물의 대표사진 인코딩 된 값을 리스트에 담아 반환
+		List<JoinRecipeVO> rList = rService.getRepresentTop4();
+		List<String> encodeList = new ArrayList<>();
+		
+		log.info("첫번째 : "+rList.get(0).getUploadpath());
+		
+		for(int i=0; i<rList.size(); i++) {
+			try {
+				String encodedPath = URLEncoder.encode(rList.get(i).getUploadpath(), "UTF-8");
+				encodeList.add(encodedPath);
+				log.info(i+" 번째 : " + encodeList.get(i));
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				log.info(e.getMessage());
+			}
+		}
+		log.info("리스트 : " + encodeList);
+		
+		return encodeList;
 	}
 }

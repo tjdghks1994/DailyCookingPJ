@@ -423,6 +423,10 @@ ul{
 	width: 350px;
 	height: 250px;;
 }
+.img-responsive {
+	width: 200px;
+	height: 100px;
+}
 
 /* 내가 추가한 style.css 끝 */
 

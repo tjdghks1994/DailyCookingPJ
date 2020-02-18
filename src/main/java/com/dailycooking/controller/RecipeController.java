@@ -1,9 +1,12 @@
 package com.dailycooking.controller;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,18 +19,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dailycooking.domain.Criteria;
+import com.dailycooking.domain.JoinRecipeVO;
 import com.dailycooking.domain.PageDTO;
 import com.dailycooking.domain.RecipeAttachVO;
 import com.dailycooking.domain.RecipeBoardVO;
 import com.dailycooking.domain.RecipeLikeVO;
-import com.dailycooking.domain.RecipeReplyVO;
+import com.dailycooking.domain.RecipeRepresentativeVO;
 import com.dailycooking.domain.ScrapVO;
 import com.dailycooking.service.RecipeService;
 import com.dailycooking.service.ReportService;
@@ -58,6 +61,9 @@ public class RecipeController {
 		int total = service.getTotal(cri);
 		log.info("전체 게시물의 수 : " + total);
 		
+		List<String> encodeList = encodeProc(cri);
+		
+		model.addAttribute("fullPath", encodeList);
 		model.addAttribute("pageMaker", new PageDTO(cri, total));
 		log.info(list.size());
 		model.addAttribute("list", list);
@@ -74,6 +80,9 @@ public class RecipeController {
 		int total = service.getTotal(cri);
 		log.info("전체 게시물의 수 : " + total);
 		
+		List<String> encodeList = encodeProcLook(cri);
+		
+		model.addAttribute("fullPath", encodeList);
 		model.addAttribute("pageMaker", new PageDTO(cri, total));
 		log.info(list.size());
 		model.addAttribute("list", list);
@@ -90,6 +99,9 @@ public class RecipeController {
 		int total = service.getTotal(cri);
 		log.info("전체 게시물의 수 : " + total);
 		
+		List<String> encodeList = encodeProcLike(cri);
+		
+		model.addAttribute("fullPath", encodeList);
 		model.addAttribute("pageMaker", new PageDTO(cri, total));
 		log.info(list.size());
 		model.addAttribute("list", list);
@@ -211,6 +223,15 @@ public class RecipeController {
 		return new ResponseEntity<>(service.getAttachList(recipenum), HttpStatus.OK);
 	}
 	
+	/*
+	 * @GetMapping(value = "/getRepresentList", produces =
+	 * MediaType.APPLICATION_JSON_UTF8_VALUE) public
+	 * ResponseEntity<List<RecipeRepresentativeVO>> getRepresentList(Criteria cri){
+	 * log.info("getRepresentList 컨트롤러 : " + cri);
+	 * 
+	 * return new ResponseEntity<>(service.getRepresentList(cri),HttpStatus.OK); }
+	 */
+	
 	@PostMapping("/report")
 	public String report(@RequestParam("recipenum") Long recipenum,@RequestParam("reporter") String reporter,
 			@ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
@@ -269,6 +290,69 @@ public class RecipeController {
 	 * 
 	 * return new ResponseEntity<>(service.allAttachList(),HttpStatus.OK); }
 	 */
+
+	public List<String> encodeProc(Criteria cri) { // 각 게시물의 대표사진 인코딩 된 값을 리스트에 담아 반환
+		List<RecipeRepresentativeVO> rList = service.getRepresentList(cri);
+		List<String> encodeList = new ArrayList<>();
+		
+		log.info("첫번째 : "+rList.get(0).getUploadpath());
+		
+		for(int i=0; i<rList.size(); i++) {
+			try {
+				String encodedPath = URLEncoder.encode(rList.get(i).getUploadpath(), "UTF-8");
+				encodeList.add(encodedPath);
+				log.info(i+" 번째 : " + encodeList.get(i));
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				log.info(e.getMessage());
+			}
+		}
+		log.info("리스트 : " + encodeList);
+		
+		return encodeList;
+	}
+	
+	public List<String> encodeProcLook(Criteria cri) { // 각 게시물의 대표사진 인코딩 된 값을 리스트에 담아 반환
+		List<JoinRecipeVO> rList = service.getRepresentLook(cri);
+		List<String> encodeList = new ArrayList<>();
+		
+		log.info("첫번째 : "+rList.get(0).getUploadpath());
+		
+		for(int i=0; i<rList.size(); i++) {
+			try {
+				String encodedPath = URLEncoder.encode(rList.get(i).getUploadpath(), "UTF-8");
+				encodeList.add(encodedPath);
+				log.info(i+" 번째 : " + encodeList.get(i));
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				log.info(e.getMessage());
+			}
+		}
+		log.info("리스트 : " + encodeList);
+		
+		return encodeList;
+	}
+	
+	public List<String> encodeProcLike(Criteria cri) { // 각 게시물의 대표사진 인코딩 된 값을 리스트에 담아 반환
+		List<JoinRecipeVO> rList = service.getRepresentLike(cri);
+		List<String> encodeList = new ArrayList<>();
+		
+		log.info("첫번째 : "+rList.get(0).getUploadpath());
+		
+		for(int i=0; i<rList.size(); i++) {
+			try {
+				String encodedPath = URLEncoder.encode(rList.get(i).getUploadpath(), "UTF-8");
+				encodeList.add(encodedPath);
+				log.info(i+" 번째 : " + encodeList.get(i));
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				log.info(e.getMessage());
+			}
+		}
+		log.info("리스트 : " + encodeList);
+		
+		return encodeList;
+	}
 	
 	private void deleteFiles(List<RecipeAttachVO> attachList) {
 		if(attachList == null || attachList.size() == 0) {

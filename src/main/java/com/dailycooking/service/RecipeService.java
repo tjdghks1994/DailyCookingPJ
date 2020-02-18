@@ -3,9 +3,11 @@ package com.dailycooking.service;
 import java.util.List;
 
 import com.dailycooking.domain.Criteria;
+import com.dailycooking.domain.JoinRecipeVO;
 import com.dailycooking.domain.RecipeAttachVO;
 import com.dailycooking.domain.RecipeBoardVO;
 import com.dailycooking.domain.RecipeLikeVO;
+import com.dailycooking.domain.RecipeRepresentativeVO;
 
 public interface RecipeService {
 
@@ -38,6 +40,14 @@ public interface RecipeService {
 	public List<RecipeBoardVO> getTopList(); // 레시피 Top4 목록
 	
 	public List<RecipeBoardVO> getNewList(); // 레시피 게시물 최근 8개 목록
+	
+	public List<RecipeRepresentativeVO> getRepresentList(Criteria cri); // 대표이미지 목록 가져오기
+	
+	public List<JoinRecipeVO> getRepresentLook(Criteria cri); // 대표이미지 목록 조회 높은 순 가져오기
+	
+	public List<JoinRecipeVO> getRepresentLike(Criteria cri); // 대표이미지 목록 추천 높은 순 가져오기
+	
+	public List<JoinRecipeVO> getRepresentTop4(); // 대표이미지 목록 top4 가져오기
 	/*
 	 * public List<RecipeAttachVO> allAttachList(); // 모든 첨부파일 목록
 	 * 

@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dailycooking.domain.Criteria;
+import com.dailycooking.domain.JoinRecipeVO;
 import com.dailycooking.domain.RecipeAttachVO;
 import com.dailycooking.domain.RecipeBoardVO;
 import com.dailycooking.domain.RecipeLikeVO;
+import com.dailycooking.domain.RecipeRepresentativeVO;
 import com.dailycooking.mapper.RecipeAttachMapper;
 import com.dailycooking.mapper.RecipeMapper;
 
@@ -41,7 +43,16 @@ public class RecipeServiceImpl implements RecipeService {
 			attach.setRecipenum(rvo.getRecipenum());
 			attachMapper.insert(attach);
 		});
+		
+		RecipeAttachVO avo = rvo.getAttachList().get(0);
+		log.info(avo);
+		RecipeRepresentativeVO rrvo = new RecipeRepresentativeVO();
+		rrvo.setRecipenum(avo.getRecipenum());
+		rrvo.setUploadpath(avo.getUploadPath()+ "/s_"+avo.getUuid()+"_"+avo.getFileName());
+		
+		attachMapper.insertRepresentativeImg(rrvo);
 	}
+
 
 	@Override
 	public RecipeBoardVO get(Long recipenum) {
@@ -145,6 +156,34 @@ public class RecipeServiceImpl implements RecipeService {
 	public List<RecipeBoardVO> getNewList() {
 		log.info("get New List 8 .... Service");
 		return mapper.getNewList();
+	}
+
+
+	@Override
+	public List<RecipeRepresentativeVO> getRepresentList(Criteria cri) {
+		log.info("get Represent List.... Service");
+		return attachMapper.getRepresentativeImg(cri);
+	}
+
+
+	@Override
+	public List<JoinRecipeVO> getRepresentLook(Criteria cri) {
+		log.info("get RepresentLook .... Service");
+		return attachMapper.getRepresentLook(cri);
+	}
+
+
+	@Override
+	public List<JoinRecipeVO> getRepresentLike(Criteria cri) {
+		log.info("get ReperesentLike.... Service");
+		return attachMapper.getRepresentLike(cri);
+	}
+
+
+	@Override
+	public List<JoinRecipeVO> getRepresentTop4() {
+		log.info("get ReperesentTop4... Service");
+		return attachMapper.getRepresentTop4();
 	}
 
 	/*

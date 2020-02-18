@@ -54,11 +54,12 @@
 				<c:if test="${list.size() == 0 }">
 					<h3 style="color: red; margin: 30px;">해당 검색 결과에 맞는 게시물이 존재 하지 않습니다</h3>
 				</c:if>
-				<c:forEach items="${list }" var="recipe">
+				<c:forEach items="${list }" var="recipe" varStatus="status">
 					<div class="col-md-3 m-wthree" style="margin-bottom : 20px; height: 340px;">
 						<div class="col-m" style="margin-bottom: 20px; height: 340px;">
 							<a href="${recipe.recipenum }" class="offer-img">
-							 <img src="/resources/images/gooksu.jpg" class="img-responsive">
+							 <img src="/display?fileName=${fullPath[status.index] }" class="img-responsive">
+							
 							</a>
 							<div class="mid-1">
 								<div class="women">
@@ -112,6 +113,7 @@
 			</div>
 		</div>
 	</div>
+	
 <script>
 	$(function(){
 		var register = $("#regWriteBtn"); // 레시피 작성하기 버튼
@@ -119,6 +121,8 @@
 			location.href = '/recipe/register'; 
 		});	
 	});
+	
+	
 	
 	var recipeBoardCnt = '${pageMaker.total}';// 게시물의 div태그 갯수 저장
 	$(".recipeBoardCount").html(recipeBoardCnt); // 게시물의 전체 갯수를 알리는 span태그의 내용을 변경

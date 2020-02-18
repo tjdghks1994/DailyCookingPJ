@@ -47,7 +47,7 @@
 				<h5 style="display: inline;"><a href="#" class="logoutLink">로그아웃</a></h5>
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token }">
 			</form>
-				<h5 style="display: inline;"><label>/</label><a href="#" id="joinLink2">마이페이지</a></h5>
+				<h5 style="display: inline;"><label>/</label><a href="/myPage/info">마이페이지</a></h5>
 			</sec:authorize>
 		</div>
 		<div class="container">

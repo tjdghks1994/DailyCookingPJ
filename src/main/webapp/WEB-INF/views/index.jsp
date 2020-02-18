@@ -29,11 +29,11 @@
 			</div>
 			<div class="tab-pane active text-style" id="tab1">
 				<div class=" con-w3l">
-				<c:forEach items="${topList }" var="top">
+				<c:forEach items="${topList }" var="top" varStatus="status">
 					<div class="col-md-3 m-wthree" style="margin-bottom : 20px; height: 340px;">
 						<div class="col-m" style="margin-bottom: 20px; height: 340px;">
 							<a href="${top.recipenum }" class="offer-img">
-							 <img src="/resources/images/gooksu.jpg" class="img-responsive">
+							 <img src="/display?fileName=${encode[status.index] }" class="img-responsive">
 							</a>
 							<div class="mid-1">
 								<div class="women">
@@ -71,11 +71,11 @@
 			</div>
 			<div class="tab-pane active text-style" id="tab1">
 			<div class=" con-w3l">
-			<c:forEach items="${list }" var="list">
+			<c:forEach items="${list }" var="list" varStatus="status">
 					<div class="col-md-3 m-wthree" style="margin-bottom : 20px; height: 340px;">
 						<div class="col-m" style="margin-bottom: 20px; height: 340px;">
 							<a href="${list.recipenum }" class="offer-img">
-							 <img src="/resources/images/gooksu.jpg" class="img-responsive">
+							 <img src="/display?fileName=${encodeNew[status.index] }" class="img-responsive">
 							</a>
 							<div class="mid-1">
 								<div class="women">

@@ -28,4 +28,48 @@
 	<select id="allAttachList" resultType="com.dailycooking.domain.RecipeAttachVO">
 		select * from recipe_attach
 	</select>
+	
+	<insert id="insertRepresentativeImg">
+		insert into representative_img values(#{uploadpath},#{recipenum})
+	</insert>
+	
+	<select id="getRepresentativeImg" resultType="com.dailycooking.domain.RecipeRepresentativeVO">
+	<![CDATA[
+		select * from ( select rownum rn, uploadpath, recipenum
+			from representative_img where rownum <= #{pageNum} * #{amount} order by recipenum desc
+			)
+		where rn > (#{pageNum} -1) * #{amount}
+	]]>
+	</select>
+	
+	<select id="getRepresentLook" resultType="com.dailycooking.domain.JoinRecipeVO">
+	<![CDATA[
+		select * from(        
+			SELECT rownum rn, r.likecnt, r.lookcnt, i.uploadpath, i.recipenum
+			FROM recipe_board r, representative_img i
+			WHERE rownum <=#{pageNum} * #{amount} and r.recipenum = i.recipenum order by lookcnt desc
+		) where rn > (#{pageNum} -1) * #{amount}
+	]]>
+	</select>
+	
+	
+	<select id="getRepresentLike" resultType="com.dailycooking.domain.JoinRecipeVO">
+	<![CDATA[
+		select * from(        
+			SELECT rownum rn, r.likecnt, r.lookcnt, i.uploadpath, i.recipenum
+			FROM recipe_board r, representative_img i
+			WHERE rownum <=#{pageNum} * #{amount} and r.recipenum = i.recipenum order by likecnt desc
+		) where rn > (#{pageNum} -1) * #{amount}
+	]]>
+	</select>
+	
+	<select id="getRepresentTop4" resultType="com.dailycooking.domain.JoinRecipeVO">
+	<![CDATA[
+		select * from(        
+			SELECT rownum rn, r.likecnt, r.lookcnt, i.uploadpath, i.recipenum
+			FROM recipe_board r, representative_img i
+			WHERE rownum <=4 and r.recipenum = i.recipenum order by likecnt desc
+		) where rn > 0
+	]]>
+	</select>
 </mapper>
