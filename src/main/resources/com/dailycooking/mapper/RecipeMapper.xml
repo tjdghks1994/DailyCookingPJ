@@ -93,7 +93,7 @@
 		<include refid="criteria"></include>
 		   
 		<![CDATA[	   
-			    rownum <= #{pageNum} * #{amount} order by lookcnt desc
+			    rownum <= #{pageNum} * #{amount} order by lookcnt desc, recipenum desc
 			  )
 		where rn > (#{pageNum} -1) * #{amount}
 	]]>
@@ -129,7 +129,7 @@
 		<include refid="criteria"></include>
 		   
 		<![CDATA[	   
-			    rownum <= #{pageNum} * #{amount} order by likecnt desc
+			    rownum <= #{pageNum} * #{amount} order by likecnt desc, recipenum desc
 			  )
 		where rn > (#{pageNum} -1) * #{amount}
 		]]>
@@ -142,7 +142,7 @@
 		select /*+ INDEX_DESC(recipe_board sys_c007814) */
 		    rownum rn, recipenum, title, material, personnel, cookingtime, cookinglevel, cookingorder, cookingtip,
 		    cookingtag, replycnt, likecnt, scrapcnt, userid
-		from recipe_board where rownum <= 4 order by likecnt desc
+		from recipe_board where rownum <= 4 order by likecnt desc, recipenum desc
 		)
 		where rn > 0
 	]]>
@@ -154,7 +154,7 @@
 		select /*+ INDEX_DESC(recipe_board sys_c007814) */
 		    rownum rn, recipenum, title, material, personnel, cookingtime, cookinglevel, cookingorder, cookingtip,
 		    cookingtag, replycnt, likecnt, scrapcnt, userid
-		from recipe_board where rownum <= 8
+		from recipe_board where rownum <= 8 order by recipenum desc
 		)
 		where rn > 0
 	]]>

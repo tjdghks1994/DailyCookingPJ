@@ -34,25 +34,25 @@
 						<p style="font-size: 20px; margin-bottom: 10px;">이름</p>
 						<div class="key">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
-							<input  type="text" value="UI작업 중" readonly="readonly">
+							<input  type="text" value="${memberInfo.username }" readonly="readonly">
 							<div class="clearfix"></div>
 						</div>
 						<p style="font-size: 20px; margin-bottom: 10px;">아이디</p>
 						<div class="key">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
-							<input  type="text" value="test1" readonly="readonly">
+							<input  type="text" value="${memberInfo.userid }" readonly="readonly">
 							<div class="clearfix"></div>
 						</div>
 						<p style="font-size: 20px; margin-bottom: 10px;">닉네임</p>
 						<div class="key">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
-							<input  type="text" value="닉네임1">
+							<input  type="text" value="${memberInfo.nickname }">
 							<div class="clearfix"></div>
 						</div>
 						<p style="font-size: 20px; margin-bottom: 10px;">이메일</p>
 						<div class="key">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
-							<input  type="text" value="test@naver.com">
+							<input  type="text" value="${memberInfo.usermail }">
 							<div class="clearfix"></div>
 						</div>
 						<!-- <input type="button" value="정보 수정 하기">

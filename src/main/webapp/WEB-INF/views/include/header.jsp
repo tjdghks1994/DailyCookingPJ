@@ -47,7 +47,11 @@
 				<h5 style="display: inline;"><a href="#" class="logoutLink">로그아웃</a></h5>
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token }">
 			</form>
-				<h5 style="display: inline;"><label>/</label><a href="/myPage/info">마이페이지</a></h5>
+				<h5 style="display: inline;"><label>/</label><a href="#" class="myPageTag">마이페이지</a></h5>
+				<sec:authentication property="principal" var="principal"/>
+				<form action="/myPage/info" method="get" id="myPageForm">
+					<input type="hidden" name="userid" value="${principal.username }">
+				</form>
 			</sec:authorize>
 		</div>
 		<div class="container">
@@ -275,7 +279,11 @@ $(function(){
 		}); // END ajax
 	});
 	
-	
+	$(".myPageTag").on("click",function(e){
+		e.preventDefault();
+		
+		$("#myPageForm").submit();
+	}); 
 });
 
 </script>

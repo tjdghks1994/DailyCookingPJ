@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dailycooking.domain.MemberVO;
 import com.dailycooking.domain.QuestionVO;
+import com.dailycooking.mapper.MemberMapper;
 import com.dailycooking.mapper.MemberRelationMapper;
 import com.dailycooking.mapper.QuestionMapper;
 
@@ -26,6 +27,9 @@ public class MemberRelationServiceImpl implements MemberRelationService {
 	
 	@Setter(onMethod_ = @Autowired)
 	private QuestionMapper qMapper;
+	
+	@Setter(onMethod_ = @Autowired)
+	private MemberMapper mMapper;
 	
 	@Override
 	@Transactional
@@ -88,6 +92,12 @@ public class MemberRelationServiceImpl implements MemberRelationService {
 	public int questionReg(QuestionVO qvo) {
 		log.info("insert questionVO service : " + qvo);
 		return qMapper.insertQuestion(qvo);
+	}
+
+	@Override
+	public MemberVO readInfo(String userid) {
+		log.info("read Info Service ");
+		return mMapper.readInfo(userid);
 	}
 	
 	

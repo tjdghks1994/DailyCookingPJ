@@ -47,7 +47,7 @@
 		select * from(        
 			SELECT rownum rn, r.likecnt, r.lookcnt, i.uploadpath, i.recipenum
 			FROM recipe_board r, representative_img i
-			WHERE rownum <=#{pageNum} * #{amount} and r.recipenum = i.recipenum order by lookcnt desc
+			WHERE rownum <=#{pageNum} * #{amount} and r.recipenum = i.recipenum order by lookcnt desc, recipenum desc
 		) where rn > (#{pageNum} -1) * #{amount}
 	]]>
 	</select>
@@ -58,7 +58,7 @@
 		select * from(        
 			SELECT rownum rn, r.likecnt, r.lookcnt, i.uploadpath, i.recipenum
 			FROM recipe_board r, representative_img i
-			WHERE rownum <=#{pageNum} * #{amount} and r.recipenum = i.recipenum order by likecnt desc
+			WHERE rownum <=#{pageNum} * #{amount} and r.recipenum = i.recipenum order by likecnt desc, recipenum desc
 		) where rn > (#{pageNum} -1) * #{amount}
 	]]>
 	</select>
@@ -68,7 +68,7 @@
 		select * from(        
 			SELECT rownum rn, r.likecnt, r.lookcnt, i.uploadpath, i.recipenum
 			FROM recipe_board r, representative_img i
-			WHERE rownum <=4 and r.recipenum = i.recipenum order by likecnt desc
+			WHERE rownum <=4 and r.recipenum = i.recipenum order by likecnt desc, recipenum desc
 		) where rn > 0
 	]]>
 	</select>
