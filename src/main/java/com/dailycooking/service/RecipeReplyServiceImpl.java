@@ -66,4 +66,16 @@ public class RecipeReplyServiceImpl implements RecipeRelpyService{
 		return new ReplyPageDTO(mapper.replyCnt(recipenum), mapper.getListWithPaging(cri, recipenum));
 	}
 
+	@Override
+	public List<RecipeReplyVO> getMemberReplyList(String userid, Criteria cri) {
+		log.info("getMemberReplyList.." + userid + " - " + cri);
+		return mapper.getMemberReplyList(userid, cri.getPageNum(), cri.getAmount());
+	}
+
+	@Override
+	public int getTotalCountReply(String userid) {
+		log.info("getTotalCountReply..." + userid);
+		return mapper.getTotalCountReply(userid);
+	}
+
 }

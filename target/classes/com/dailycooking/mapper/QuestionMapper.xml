@@ -6,4 +6,17 @@
 	<insert id="insertQuestion">
 		insert into question_list(userid,title,content,questionnum) values(#{userid},#{title},#{content},seq_questionnum.nextval)
 	</insert>
+	<select id="getMemberQuestionList" resultType="com.dailycooking.domain.QuestionVO">
+	<![CDATA[
+		select * from(
+		select 
+		    rownum rn, userid, title, content, questionnum, questiondate, status, answer
+		from question_list where rownum <= #{pageNum} * #{amount} AND userid = #{userid} order by questionnum desc
+		)
+		where rn > (#{pageNum} -1) * #{amount}
+	]]>
+	</select>
+	<select id="getTotalCountQuestion" resultType="int">
+		select count(*) from question_list where questionnum > 0 AND userid = #{userid}
+	</select>
 </mapper>

@@ -22,4 +22,8 @@ public interface RecipeReplyMapper {
 	
 	public int replyCnt(Long recipenum); // 해당 게시판의 댓글 갯수
 	
+	public List<RecipeReplyVO> getMemberReplyList(@Param("userid") String userid,@Param("pageNum") int pageNum, @Param("amount") int amount); // 해당 유저의 댓글 목록
+	
+	public int getTotalCountReply(String userid); // 해당 유저의 전체 댓글 수
+	
 }

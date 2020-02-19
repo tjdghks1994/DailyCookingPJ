@@ -20,8 +20,38 @@
 		<h3>마이페이지</h3>
 		<div class="forg2">
 					<a href="#" class="forg2-left active">회원 정보</a>
-					<a href="/myPage/board" class="forg2-left">스크랩/작성 게시물</a>
-					<a href="/myPageComment" class="forg2-left" id="joinLink">작성 댓글/관리자 문의 목록</a>
+					<form action="/myPage/scrapList" method="get" id="scrapForm">
+						<a href="#" class="forg2-left" id="myPageScrapTag">스크랩 게시물</a>
+						<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+						<sec:authentication property="principal" var="principal"/>
+						<input type="hidden" name="userid" value="${principal.username }">
+						<input type="hidden" name="pageNum" value="1">
+					    <input type="hidden" name="amount" value="10">
+					</form>
+					<form action="/myPage/boardList" method="get" id="boardForm">
+						<a href="#" class="forg2-left" id="myPageBoardTag">작성 게시물</a>
+						<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+						<sec:authentication property="principal" var="principal"/>
+						<input type="hidden" name="userid" value="${principal.username }">
+						<input type="hidden" name="pageNum" value="1">
+					    <input type="hidden" name="amount" value="10">
+					</form>
+					<form action="/myPage/replyList" method="get" id="replyForm">
+						<a href="#" class="forg2-left" id="myPageReplyTag">작성 댓글 목록</a>
+						<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+						<sec:authentication property="principal" var="principal"/>
+						<input type="hidden" name="userid" value="${principal.username }">
+						<input type="hidden" name="pageNum" value="1">
+					    <input type="hidden" name="amount" value="10">
+					</form>
+					<form action="/myPage/questionList" method="get" id="questionForm">
+						<a href="#" class="forg2-left" id="myPageQuestionTag">문의 / 건의 목록</a>
+						<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+						<sec:authentication property="principal" var="principal"/>
+						<input type="hidden" name="userid" value="${principal.username }">
+						<input type="hidden" name="pageNum" value="1">
+					    <input type="hidden" name="amount" value="10">
+					</form>
 				<div class="clearfix"></div>
 		</div>
 		<div class="clearfix"> </div>
@@ -265,6 +295,31 @@ $(function(){
 				}
 			}
 		}); //END ajax()
+	}); // END deleteMemberBtn click()
+	
+	$("#myPageScrapTag").on("click",function(e){ // 스크랩 게시물 태그 클릭 시 진행
+		e.preventDefault();
+	
+		var form = $("#scrapForm");
+		form.submit();
+	});
+	
+	$("#myPageBoardTag").on("click",function(e){
+		e.preventDefault();
+		
+		$("#boardForm").submit();
+	});
+	
+	$("#myPageReplyTag").on("click",function(e){
+		e.preventDefault();
+		
+		$("#replyForm").submit();
+	});
+	
+	$("#myPageQuestionTag").on("click",function(e){
+		e.preventDefault();
+		
+		$("#questionForm").submit();
 	});
 });
 

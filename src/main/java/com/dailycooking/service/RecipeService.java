@@ -48,8 +48,8 @@ public interface RecipeService {
 	public List<JoinRecipeVO> getRepresentLike(Criteria cri); // 대표이미지 목록 추천 높은 순 가져오기
 	
 	public List<JoinRecipeVO> getRepresentTop4(); // 대표이미지 목록 top4 가져오기
-	/*
-	 * public List<RecipeAttachVO> allAttachList(); // 모든 첨부파일 목록
-	 * 
-	 * public List<RecipeBoardVO> getAllList(); // 페이징 처리 안한 게시물 전체목록
-	 */}
+	
+	public List<RecipeBoardVO> getUserRecipeList(String userid, Criteria cri); // 유저의 전체 레시피 게시물 목록
+	
+	public int getUserRecipeConut(String userid); // 유저의 전체 레시피 게시물 갯수
+}

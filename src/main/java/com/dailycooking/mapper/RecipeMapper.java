@@ -28,4 +28,6 @@ public interface RecipeMapper {
 	public List<RecipeBoardVO> getLikeBy(Criteria cri);
 	public List<RecipeBoardVO> getTopList(); // 레시피 게시판 Top4 목록 가져오기
 	public List<RecipeBoardVO> getNewList(); // 레시피 게시물 최근 8개 목록 가져오기
+	public List<RecipeBoardVO> getUserList(@Param("userid")String userid,@Param("pageNum") int pageNum,@Param("amount") int amount); // 해당 유저의 레시피 게시물 전체 목록
+	public int getTotalCountBoard(String userid); // 해당 유저의 게시물 전체 갯수  
 }

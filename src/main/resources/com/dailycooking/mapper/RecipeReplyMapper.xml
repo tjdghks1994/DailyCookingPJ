@@ -38,4 +38,18 @@
 		select count(recipenum) from recipe_reply where recipenum = #{recipenum}
 		]]>
 	</select>
+	
+	<select id="getMemberReplyList" resultType="com.dailycooking.domain.RecipeReplyVO">
+	<![CDATA[
+		select * from(
+		select 
+		    rownum rn, replynum, recipenum, reply, regdate, updatedate
+		from recipe_reply where rownum <= #{pageNum} * #{amount} AND userid = #{userid} order by recipenum desc
+		)
+		where rn > (#{pageNum} -1) * #{amount}
+	]]>
+	</select>
+	<select id="getTotalCountReply" resultType="int">
+		select count(*) from recipe_reply where recipenum > 0 AND userid = #{userid}
+	</select>
 </mapper>

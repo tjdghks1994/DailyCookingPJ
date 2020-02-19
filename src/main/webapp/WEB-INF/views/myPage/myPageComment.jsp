@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,9 +20,39 @@
 	<div class="container">
 		<h3>마이페이지</h3>
 		<div class="forg2">
-					<a href="/myPage/info" class="forg2-left">회원 정보</a>
-					<a href="/myPage/board" class="forg2-left">스크랩/작성 게시물</a>
-					<a href="#" class="forg2-left active" id="joinLink">작성 댓글/관리자 문의 목록</a>
+					<form action="/myPage/info" method="get" id="infoForm">
+						<a href="#" class="forg2-left" id="infoTag">회원 정보</a>
+						<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+						<sec:authentication property="principal" var="principal"/>
+						<input type="hidden" name="userid" value="${principal.username }">
+						<input type="hidden" name="pageNum" value="1">
+					    <input type="hidden" name="amount" value="10">
+					</form>
+						<form action="/myPage/scrapList" method="get" id="scrapForm">
+						<a href="#" class="forg2-left" id="myPageScrapTag">스크랩 게시물</a>
+						<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+						<sec:authentication property="principal" var="principal"/>
+						<input type="hidden" name="userid" value="${principal.username }">
+						<input type="hidden" name="pageNum" value="1">
+					    <input type="hidden" name="amount" value="10">
+					</form>
+					<form action="/myPage/boardList" method="get" id="boardForm">
+						<a href="#" class="forg2-left" id="myPageBoardTag">작성 게시물</a>
+						<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+						<sec:authentication property="principal" var="principal"/>
+						<input type="hidden" name="userid" value="${principal.username }">
+						<input type="hidden" name="pageNum" value="1">
+					    <input type="hidden" name="amount" value="10">
+					</form>
+					<a href="#" class="forg2-left active" id="joinLink">작성 댓글 목록</a>
+					<form action="/myPage/questionList" method="get" id="questionForm">
+						<a href="#" class="forg2-left" id="myPageQuestionTag">문의 / 건의 목록</a>
+						<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+						<sec:authentication property="principal" var="principal"/>
+						<input type="hidden" name="userid" value="${principal.username }">
+						<input type="hidden" name="pageNum" value="1">
+					    <input type="hidden" name="amount" value="10">
+					</form>
 				<div class="clearfix"></div>
 		</div>
 		<div class="clearfix"> </div>
@@ -33,134 +66,82 @@
               <thead>
                 <tr>
                   <th style="width: 10%;">게시글 번호</th>
-                  <th>게시글 제목</th>
                   <th>댓글 내용</th>
                   <th style="width: 20%;">작성 날짜</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>아아아아</td>
-                  <td>안녕하세요</td>
-                  <td>20.01.06</td>
+              <c:forEach items="${rrList }" var="rrList">
+                <tr class="gotoRecipe" data-num="${rrList.recipenum }">
+                  <td>${rrList.recipenum }</td>
+                  <td>${rrList.reply }</td>
+                  <td><fmt:formatDate value="${rrList.regDate }" pattern="yyyy-MM-dd"/> </td>
                 </tr>
-                <tr>
-                  <td>2</td>
-                  <td>우우우</td>
-                  <td>댓글</td>
-                  <td>20.01.06</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>요요요</td>
-                  <td>반가워용</td>
-                  <td>20.01.07</td>
-                </tr>
+              </c:forEach>
               </tbody>
             </table>
+            
             <div style="text-align: center;">
 	            <ul class="pagination pagination">
-					<li class="disabled"><a href="#"><span aria-hidden="true">«</span></a></li>
-					<li class="active"><a href="#">1</a></li>
-					<li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-					<li><a href="#">5</a></li>
+	            <c:if test="${paging.prev }">
+	            	<li class="disabled"><a href="#"><span aria-hidden="true">«</span></a></li>
+	            </c:if>
+	            <c:forEach var="num" begin="${paging.startPage }" end="${paging.endPage }">
+	            	<li class="paginate_button ${paging.cri.pageNum == num ? "active":"" }"><a href="${num }">${num }</a></li>
+	            </c:forEach>	
+				<c:if test="${paging.next }">
 					<li><a href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+				</c:if>
 				</ul>
 			</div>
+			<form action="/myPage/replyList" method="get" id="replyPageForm">
+				<sec:authentication property="principal" var="principal"/>
+				<input type="hidden" name="userid" value="${principal.username }">
+				<input type="hidden" name="pageNum" value="${paging.cri.pageNum }">
+				<input type="hidden" name="amount" value="${paging.cri.amount }">
+			</form>
 </div>
-
-<div class="bs-docs-example">
-	<p style="margin: 20px; font-weight: bold; font-size: 20px;">관리자에게 문의/건의 한 목록</p>
-	
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th style="width: 10%;">문의 번호</th>
-                  <th>문의 제목</th>
-                  <th>문의 내용</th>
-                  <th style="width: 20%;">문의 날짜</th>
-                  <th style="width: 10%">답변 상태</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="reportList">
-                  <td>1</td>
-                  <td>아아아아</td>
-                  <td>안녕하세요</td>
-                  <td>20.01.06</td>
-                  <td>미완료</td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>우우우</td>
-                  <td>댓글</td>
-                  <td>20.01.06</td>
-                  <td>미완료</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>요요요</td>
-                  <td>반가워용</td>
-                  <td>20.01.07</td>
-                  <td>미완료</td>
-                </tr>
-              </tbody>
-            </table>
-            <div style="text-align: center;">
-	            <ul class="pagination pagination">
-					<li class="disabled"><a href="#"><span aria-hidden="true">«</span></a></li>
-					<li class="active"><a href="#">1</a></li>
-					<li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-					<li><a href="#">5</a></li>
-					<li><a href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
-				</ul>
-			</div>
-</div>
-
- <!-- 관리자에게 건의/문의 모달 창 -->
-              <div class="modal fade" id="myModal8" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                  <div class="modal-dialog">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                              <h3 class="modal-title" style="color: #5bc0de;">관리자에게 문의/건의 하기</h3>
-                          </div>
-                          <div class="modal-body">
-                        	
-                        		<label>문의 / 건의 제목</label>
-                        		<input class="form-control" value="문의 문의 문의!">
-                        		<label>작성자</label>
-						        <input class="form-control" value="작성자" name="replyer" id="replyer" readonly="readonly">
-						        <label>문의 / 건의 내용</label>
-						        <textarea class="form-control" style="margin-bottom: 10px;">문의 한다아아</textarea>	
-                        	
-                        		<div>
-                        			<label>관리자 답변</label>
-                        			<textarea class="form-control" style="margin-bottom: 10px;">관리자 답변이 없으면 - 관리자가 아직 답변을 하지 않았습니다 출력</textarea>
-                        		</div>
-                          </div>
-                          <div class="modal-footer">
-                              <button type="button" class="btn btn-default" id="modalCloseBtn" data-dismiss="modal">닫기</button>
-                          </div>
-                      </div>
-                      <!-- /.modal-content -->
-                  </div>
-                  <!-- /.modal-dialog -->
-              </div>
-              <!-- END 관리자에게 건의/문의 모달 창  -->   
-
 
 <script>
-	var reportList = $('.reportList');
-	var modal8 = $('#myModal8');
+	var replyPageForm = $("#replyPageForm");
 	
-	reportList.on('click', function(e) {
-		modal8.modal('show');
+	$(".paginate_button a").on("click", function(e){ // 댓글 페이지 버튼 클릭 시 진행
+		e.preventDefault();
+		replyPageForm.find("input[name='pageNum']").val($(this).attr("href"));
+		replyPageForm.submit();
+	});
+
+	$(".gotoRecipe").on("click",function(e){ // 스크랩 목록 클릭 시 진행
+		e.preventDefault();
+		
+		var recipenum = $(this).data("num");
+		
+		location.href='/recipe/get?recipenum=' + recipenum + '';
+	});
+
+	$("#infoTag").on("click", function(e){
+		e.preventDefault();
+		
+		$("#infoForm").submit();
+	});
+	
+	$("#myPageScrapTag").on("click",function(e){ // 스크랩 게시물 태그 클릭 시 진행
+		e.preventDefault();
+	
+		var form = $("#scrapForm");
+		form.submit();
+	});
+	
+	$("#myPageBoardTag").on("click",function(e){
+		e.preventDefault();
+		
+		$("#boardForm").submit();
+	});
+	
+	$("#myPageQuestionTag").on("click",function(e){
+		e.preventDefault();
+		
+		$("#questionForm").submit();
 	});
 </script>
 </body>

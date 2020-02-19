@@ -16,4 +16,17 @@
 		update recipe_board set scrapcnt = scrapcnt + #{amount} 
 		where recipenum = #{recipenum}
 	</update>
+	<select id="getMemberScrapList" resultType="com.dailycooking.domain.ScrapVO">
+	<![CDATA[
+		select * from(
+		select 
+		    rownum rn, recipenum, title, writer, userid, boardtype, scrapdate 
+		from scrap_list where rownum <= #{pageNum} * #{amount} AND userid = #{userid} order by recipenum desc
+		)
+		where rn > (#{pageNum} -1) * #{amount}
+	]]>
+	</select>
+	<select id="getTotalCountScrap" resultType="int">
+		select count(*) from scrap_list where recipenum > 0 AND userid = #{userid}
+	</select>
 </mapper>

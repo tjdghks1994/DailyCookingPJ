@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>마이페이지 - 작성 게시물</title>
+<title>마이페이지 - 스크랩 게시물</title>
 <!-- //for-mobile-apps -->
 <link href="/resources/css/bootstrap.css" rel='stylesheet' type='text/css' />
 <!-- Custom Theme files -->
@@ -28,15 +28,15 @@
 						<input type="hidden" name="pageNum" value="1">
 					    <input type="hidden" name="amount" value="10">
 					</form>
-					<form action="/myPage/scrapList" method="get" id="scrapForm">
-						<a href="#" class="forg2-left" id="myPageScrapTag">스크랩 게시물</a>
+					<a href="#" class="forg2-left active">스크랩 게시물</a>
+					<form action="/myPage/boardList" method="get" id="boardForm">
+						<a href="#" class="forg2-left" id="myPageBoardTag">작성 게시물</a>
 						<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 						<sec:authentication property="principal" var="principal"/>
 						<input type="hidden" name="userid" value="${principal.username }">
 						<input type="hidden" name="pageNum" value="1">
 					    <input type="hidden" name="amount" value="10">
 					</form>
-					<a href="#" class="forg2-left active">작성 게시물</a>
 					<form action="/myPage/replyList" method="get" id="replyForm">
 						<a href="#" class="forg2-left" id="myPageReplyTag">작성 댓글 목록</a>
 						<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
@@ -58,9 +58,9 @@
 		<div class="clearfix"> </div>
 	</div>
 </div>
-	
+
 <div class="bs-docs-example">
-	<p style="margin: 20px; font-weight: bold; font-size: 20px;">작성 한 게시물</p>
+	<p style="margin: 20px; font-weight: bold; font-size: 20px;">스크랩 한 게시물</p>
 	
             <table class="table table-striped">
               <thead>
@@ -72,18 +72,19 @@
                 </tr>
               </thead>
               <tbody>
-              <c:forEach items="${rList }" var="rList">
-                <tr class="gotoRecipe" data-num="${rList.recipenum }">
-                  <td>${rList.recipenum }</td>
-                  <td>${rList.title }</td>
-                  <td>${rList.userid }</td>
+              <c:forEach items="${sList }" var="sList">
+          
+              	<tr class="gotoRecipe" data-num="${sList.recipenum}" }>
+                  <td>${sList.recipenum }</td>
+               	  <td>${sList.title }</td> 
+                  <td>${sList.writer }</td>
                   <td></td>
                 </tr>
+          
               </c:forEach>
               </tbody>
             </table>
-           
-           <div style="text-align: center;">
+            <div style="text-align: center;">
 	            <ul class="pagination pagination">
 	            <c:if test="${pageMaker.prev }">
 	            	<li class="disabled"><a href="#"><span aria-hidden="true">«</span></a></li>
@@ -96,7 +97,7 @@
 				</c:if>
 				</ul>
 			</div>
-			<form action="/myPage/boardList" method="get" id="boardPageForm">
+			<form action="/myPage/scrapList" method="get" id="scrapPageForm">
 				<sec:authentication property="principal" var="principal"/>
 				<input type="hidden" name="userid" value="${principal.username }">
 				<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
@@ -104,17 +105,18 @@
 			</form>
 </div>
 
+
 <script>
-	var boardPageForm = $("#boardPageForm");
+	var scrapPageForm = $("#scrapPageForm");
 	
-	$(".paginate_button a").on("click", function(e){ // 게시물 페이지 버튼 클릭 시 진행
+	$(".paginate_button a").on("click", function(e){ // 스크랩 페이지 버튼 클릭 시 진행
 		e.preventDefault();
-		boardPageForm.find("input[name='pageNum']").val($(this).attr("href"));
-		boardPageForm.submit();
+		scrapPageForm.find("input[name='pageNum']").val($(this).attr("href"));
+		scrapPageForm.submit();
 	});
 	
 
-	$(".gotoRecipe").on("click",function(e){ // 게시물 목록 클릭 시 진행
+	$(".gotoRecipe").on("click",function(e){ // 스크랩 목록 클릭 시 진행
 		e.preventDefault();
 		
 		var recipenum = $(this).data("num");
@@ -128,10 +130,10 @@
 		$("#infoForm").submit();
 	});
 	
-	$("#myPageScrapTag").on("click",function(e){ // 스크랩 게시물 태그 클릭 시 진행
+	$("#myPageBoardTag").on("click",function(e){
 		e.preventDefault();
-	
-		var form = $("#scrapForm");
+		
+		var form = $("#boardForm");
 		form.submit();
 	});
 	

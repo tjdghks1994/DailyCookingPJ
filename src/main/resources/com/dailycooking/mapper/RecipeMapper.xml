@@ -159,5 +159,19 @@
 		where rn > 0
 	]]>
 	</select>
-
+	
+	<select id="getUserList" resultType="com.dailycooking.domain.RecipeBoardVO">
+		<![CDATA[
+		select * from(
+		select 
+		    rownum rn, recipenum, title, material, personnel, cookingtime, cookinglevel, cookingorder, cookingtip,
+		    cookingtag, replycnt, likecnt, scrapcnt, userid
+		from recipe_board where rownum <= #{pageNum} * #{amount} AND userid = #{userid} order by recipenum desc
+		)
+		where rn > (#{pageNum} -1) * #{amount}
+	]]>
+	</select>
+	<select id="getTotalCountBoard" resultType="int">
+		select count(*) from recipe_board where recipenum > 0 AND userid = #{userid}
+	</select>
 </mapper>

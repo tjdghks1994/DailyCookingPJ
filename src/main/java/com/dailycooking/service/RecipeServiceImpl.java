@@ -186,6 +186,19 @@ public class RecipeServiceImpl implements RecipeService {
 		return attachMapper.getRepresentTop4();
 	}
 
+
+	@Override
+	public List<RecipeBoardVO> getUserRecipeList(String userid, Criteria cri) {
+		log.info("get User RecipeList : " + userid + " : " + cri);
+		return mapper.getUserList(userid, cri.getPageNum(), cri.getAmount());
+	}
+
+
+	@Override
+	public int getUserRecipeConut(String userid) {
+		return mapper.getTotalCountBoard(userid);
+	}
+
 	/*
 	 * @Override public List<RecipeAttachVO> allAttachList() {
 	 * log.info("get All Attach List Service........"); return
