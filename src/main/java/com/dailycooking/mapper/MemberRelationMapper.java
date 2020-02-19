@@ -9,4 +9,5 @@ public interface MemberRelationMapper {
 	public MemberVO idSearch(MemberVO mvo); // 아이디 찾기
 	public MemberVO pwSearch(MemberVO mvo); // 비밀번호 찾기
 	public int pwChange(MemberVO mvo); // 비밀번호 변경
+	public int deleteMember(String userid); // 회원 탈퇴
 }

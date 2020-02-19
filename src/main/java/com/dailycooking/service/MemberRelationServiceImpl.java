@@ -105,7 +105,11 @@ public class MemberRelationServiceImpl implements MemberRelationService {
 		log.info("info Change...Service : " + mvo);
 		return mMapper.infoChange(mvo);
 	}
-	
-	
+
+	@Override
+	public int removeMember(String userid) {
+		return mapper.deleteMember(userid);
+	}
+
 	
 }

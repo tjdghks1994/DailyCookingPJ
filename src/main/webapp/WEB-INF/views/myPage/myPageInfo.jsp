@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -79,22 +80,19 @@
                               <h3 class="modal-title" id="myModalLabel">비밀번호 변경</h3>
                           </div>
                           <div class="modal-body">
-                        		<form><div class="form-group">
-						            <label>현재 비밀번호</label>
-						            <input class="form-control">
-						          </div>
+                        		<form>
 						          <div class="form-group">
 						            <label>새 비밀번호</label>
-						            <input class="form-control">
+						            <input class="form-control" type="password" id="newPw" name="userpw">
 						          </div>
 						          <div class="form-group">
-						            <label>비밀번호 확인</label>
-						            <input class="form-control">
+						            <label>새 비밀번호 확인</label>
+						            <input class="form-control" type="password" id="newPwCk">
 						          </div>
 						        </form>
                           </div>
                           <div class="modal-footer">
-                              <button type="button" class="btn btn-primary">비밀번호 변경</button>
+                              <button type="button" class="btn btn-primary" id="changePwBtn">비밀번호 변경</button>
                               <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
                           </div>
                       </div>
@@ -115,12 +113,11 @@
                           <div class="modal-body">
                         		<ul class="modal-ul">
                         			<li>회원 탈퇴 일로부터 계정과 모든 개인 정보는 완전히 삭제되며 더 이상 복구할 수 없게 됩니다.</li>
-                        			<li>작성된 게시물은 삭제되지 않으며, 익명처리 후 Daily Cooking 소유권이 귀속됩니다.</li>
-                        			<li>게시물 삭제가 필요한 경우에는 관리자(admin@naver.com)로 문의해 주시기 바랍니다.</li>
+                        			<li>작성된 게시물, 댓글 등 전부 삭제 처리 됩니다.</li>
                         		</ul>
                           </div>
                           <div class="modal-footer">
-                              <button type="button" class="btn btn-danger">예, 탈퇴하겠습니다</button>
+                              <button type="button" class="btn btn-danger" id="deleteMemberBtn">예, 탈퇴하겠습니다</button>
                               <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
                           </div>
                       </div>
@@ -129,7 +126,11 @@
                   <!-- /.modal-dialog -->
               </div>
               <!-- END 회원탈퇴 모달 창  -->
-              
+            
+            <form action="/customLogout" method="post" style="display: inline;" class="logoutProc"> <!-- 비밀번호 변경, 회원 탈퇴 시 로그아웃처리를 위한 form  -->
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token }">
+			</form>
+
 <script>
 $(function(){
 	var pwChange = $("#pwChange"); // 비밀번호 변경 버튼
@@ -186,9 +187,85 @@ $(function(){
 		modal3.modal("show");
 	});
 		
+	var memId = null; // 회원 아이디 변수
 	
+	
+	$("#changePwBtn").on("click", function(e){ // 비밀번호 변경 클릭 시 진행
+		var csrfHeaderName = "${_csrf.headerName}";
+		var csrfTokenValue = "${_csrf.token}";
 		
-	
+		<sec:authorize access="isAuthenticated()">
+		
+		memId = '<sec:authentication property="principal.username"/>'; //회원 아이디 가져오기
+		
+		</sec:authorize>
+		
+		e.preventDefault();
+		
+		var newPw = $("#newPw").val(); // 새 비밀번호 값
+		var newPwCk = $("#newPwCk").val(); // 새 비밀번호 확인란 값
+		// 비밀번호 정규표현식 - 6~20자리의 영문 대소문자여야 하며 최소 1개의 숫자나 특수문자를 포함해야함
+		var pwRegEx = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{6,20}$/;
+		
+		if(!(pwRegEx.test(newPw))){ // 비밀번호 정규표현식에 맞게 입력하지 않으면
+			$("#newPw").val(""); // 비밀번호 입력 란 값 초기화
+			alert("비밀번호는 6~20자리의 영문 대소문자여야 하며 최소 1개의 숫자나 특수문자를 포함해야됩니다 다시입력해주세요!");
+			$("#newPw").focus();
+		} else if(!(pwRegEx.test(newPwCk))){ // 비밀번호 정규표현식에 맞게 입력하지 않으면
+			$("#newPwCk").val(""); // 비밀번호 확인란 값 초기화
+			alert("비밀번호 확인란은 6~20자리의 영문 대소문자여야 하며 최소 1개의 숫자나 특수문자를 포함해야됩니다 다시입력해주세요!");
+			$("#newPwCk").focus();
+		} else if(newPw != newPwCk) { // 비밀번호와 비밀번호 확인란 값이 다르면
+			$("#newPwCk").val(""); // 비밀번호 확인란 값 초기화
+			alert("비밀번호와 비밀번호 확인란이 동일하지 않습니다 다시 입력해주세요");
+			$("#newPwCk").focus();
+		} else {
+			$.ajax({
+				url : '/myPage/pwChange',
+				data :{ userid : memId , userpw : newPw },
+				type : 'post',
+				beforeSend : function(xhr)
+		           {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+		              xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+		           },
+				success : function(result){
+					if(result == 'changeOk'){
+						alert('비밀번호가 수정되었습니다. 새 비밀번호로 다시 로그인 바랍니다.');
+						modal2.modal("hide");
+						$(".logoutProc").submit();
+					}
+				}
+			}); //END ajax()
+		}
+	}); // END 비밀번호 변경
+		
+	$("#deleteMemberBtn").on("click",function(e){ // 예, 탈퇴하겠습니다 버튼 클릭 시 진행
+		var csrfHeaderName = "${_csrf.headerName}";
+		var csrfTokenValue = "${_csrf.token}";
+		
+		<sec:authorize access="isAuthenticated()">
+		
+		memId = '<sec:authentication property="principal.username"/>'; //회원 아이디 가져오기
+		
+		</sec:authorize>
+		
+		$.ajax({
+			url : '/myPage/removeMember',
+			data :{ userid : memId },
+			type : 'post',
+			beforeSend : function(xhr)
+	           {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+	              xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+	           },
+			success : function(result){
+				if(result == 'removeOk'){
+					alert('회원이 정상적으로 탈퇴 되었습니다. 자동으로 로그아웃 됩니다.');
+					modal3.modal("hide");
+					$(".logoutProc").submit();
+				}
+			}
+		}); //END ajax()
+	});
 });
 
 </script>

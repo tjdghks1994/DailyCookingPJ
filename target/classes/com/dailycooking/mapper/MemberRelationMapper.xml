@@ -26,4 +26,7 @@
 	<update id="pwChange">
 		update daily_member set userpw = #{userpw} where userid = #{userid}
 	</update>
+	<delete id="deleteMember">
+		delete from daily_member where userid = #{userid}
+	</delete>
 </mapper>

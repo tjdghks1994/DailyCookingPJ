@@ -42,11 +42,33 @@ public class MyPageController {
 	@PreAuthorize("isAutenticated()")
 	@PostMapping(value = "/infoChange", produces = {MediaType.TEXT_PLAIN_VALUE})
 	@ResponseBody
-	public ResponseEntity<String> infoChange(MemberVO mvo, Model model) {
+	public ResponseEntity<String> infoChange(MemberVO mvo) {
 		log.info("회원 정보 변경 컨트롤러 : " + mvo);
 		int infoResult = service.infoChange(mvo);
 		
 		return infoResult == 1 ? new ResponseEntity<>("infoOk", HttpStatus.OK) :
+			new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@PostMapping(value = "/pwChange", produces = {MediaType.TEXT_PLAIN_VALUE})
+	@ResponseBody
+	public ResponseEntity<String> changePw(MemberVO mvo){
+		log.info("회원 비밀번호 변경하기 컨트롤러 : " + mvo.getUserid());
+		
+		int changeResult = service.pwChange(mvo);
+		
+		return changeResult == 1 ? new ResponseEntity<>("changeOk", HttpStatus.OK) :
+			new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@PostMapping(value = "/removeMember", produces = {MediaType.TEXT_PLAIN_VALUE})
+	@ResponseBody
+	public ResponseEntity<String> removeMember(String userid){
+		log.info("회원 탈퇴 컨트롤러 : " + userid);
+		
+		int removeResult = service.removeMember(userid);
+		
+		return removeResult == 1 ? new ResponseEntity<>("removeOk", HttpStatus.OK) :
 			new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }
