@@ -31,7 +31,7 @@ public class MyPageController {
 	
 	@GetMapping("/info")
 	@PostAuthorize("isAutenticated()")
-	public String info(String userid, Model model) { // 관리자 페이지에 사용자가 접근할때 접근 거부 페이지로 이동
+	public String info(String userid, Model model) { 
 		log.info("마이페이지 info 페이지");
 		MemberVO mvo = service.readInfo(userid);
 		
@@ -50,6 +50,7 @@ public class MyPageController {
 			new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
+	@PreAuthorize("isAutenticated()")
 	@PostMapping(value = "/pwChange", produces = {MediaType.TEXT_PLAIN_VALUE})
 	@ResponseBody
 	public ResponseEntity<String> changePw(MemberVO mvo){
@@ -61,6 +62,7 @@ public class MyPageController {
 			new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
+	@PreAuthorize("isAutenticated()")
 	@PostMapping(value = "/removeMember", produces = {MediaType.TEXT_PLAIN_VALUE})
 	@ResponseBody
 	public ResponseEntity<String> removeMember(String userid){
@@ -70,5 +72,13 @@ public class MyPageController {
 		
 		return removeResult == 1 ? new ResponseEntity<>("removeOk", HttpStatus.OK) :
 			new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@GetMapping("/board")
+	@PostAuthorize("isAutenticated()")
+	public String board(String userid, Model model) { 
+		log.info("마이페이지 board 페이지");
+		
+		return "/myPage/myPageBoard";
 	}
 }

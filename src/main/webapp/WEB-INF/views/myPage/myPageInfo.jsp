@@ -19,8 +19,8 @@
 	<div class="container">
 		<h3>마이페이지</h3>
 		<div class="forg2">
-					<a href="/myPageInfo" class="forg2-left active">회원 정보</a>
-					<a href="/myPageBoard" class="forg2-left">스크랩/작성 게시물</a>
+					<a href="#" class="forg2-left active">회원 정보</a>
+					<a href="/myPage/board" class="forg2-left">스크랩/작성 게시물</a>
 					<a href="/myPageComment" class="forg2-left" id="joinLink">작성 댓글/관리자 문의 목록</a>
 				<div class="clearfix"></div>
 		</div>
@@ -139,7 +139,7 @@ $(function(){
 	var modal2 = $("#myModal2"); // 패스워드 변경 모달
 	var modal3 = $("#myModal3"); // 회원탈퇴 모달 
 	
-	infoChange.on("click",function(e){
+	infoChange.on("click",function(e){ // 정보 변경 버튼 클릭 시 진행
 		e.preventDefault();
 		var changeAnswer = confirm("입력한 값으로 정보를 변경하시겠습니까?");
 		var emailRegEx = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;

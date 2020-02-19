@@ -28,38 +28,38 @@
 						<p style="font-size: 20px; margin-bottom: 10px;">이름</p>
 						<div class="key">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
-							<input  type="text" name="username">
+							<input  type="text" name="username" id="joinName">
 							<div class="clearfix"></div>
 						</div>
 						<p style="font-size: 20px; margin-bottom: 10px; display: inline-block;">아이디</p>
 						<span class="checkOverlap"></span>
 						<div class="key">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
-							<input  type="text" name="userid" id="userid">
+							<input  type="text" name="userid" id="joinId">
 							<div class="clearfix"></div>
 						</div>
 						<p style="font-size: 20px; margin-bottom: 10px;">비밀번호</p>
 						<div class="key">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
-							<input  type="password" name="userpw">
+							<input  type="password" name="userpw" id="joinPw">
 							<div class="clearfix"></div>
 						</div>
 						<p style="font-size: 20px; margin-bottom: 10px;">비밀번호 확인</p>
 						<div class="key">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
-							<input  type="password" name="userpwck">
+							<input  type="password" name="userpwck" id="joinPwCk">
 							<div class="clearfix"></div>
 						</div>
 						<p style="font-size: 20px; margin-bottom: 10px;">닉네임</p>
 						<div class="key">
 							<i class="fa fa-lock" aria-hidden="true"></i>
-							<input  type="text" name="nickname">
+							<input  type="text" name="nickname" id="joinNickName">
 							<div class="clearfix"></div>
 						</div>
 						<p style="font-size: 20px; margin-bottom: 10px;">이메일</p>
 						<div class="key">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
-							<input  type="text" name="usermail">
+							<input  type="text" name="usermail" id="joinEmail">
 							<div class="clearfix"></div>
 						</div>
 						<input type="button" value="회원가입" id="joinButton" style="background: #fdb515;">
@@ -83,12 +83,12 @@ $(function(){
 	var joinButton = $("#joinButton"); // 회원가입 버튼 태그
 	
 	joinButton.on("click",function(e){ // 회원가입 버튼 클릭시 진행 - 정규표현식 처리 할것
-		var inputName = $("input[name='username']").val(); // 회원이 입력한 이름 값 저장
-		var inputId = $("input[name='userid']").val(); // 회원이 입력한 아이디 값 저장
-		var inputPw = $("input[name='userpw']").val(); // 회원이 입력한 패스워드 값 저장
-		var inputPwCk = $("input[name='userpwck']").val(); // 회원이 입력한 패스워드 확인 값 저장
-		var inputNick = $("input[name='nickname']").val(); // 회원이 입력한 닉네임 값 저장
-		var inputEmail = $("input[name='usermail']").val(); // 회원이 입력한 메일 값 저장
+		var inputName = $("#joinName").val(); // 회원이 입력한 이름 값 저장
+		var inputId = $("#joinId").val(); // 회원이 입력한 아이디 값 저장
+		var inputPw = $("#joinPw").val(); // 회원이 입력한 패스워드 값 저장
+		var inputPwCk = $("#joinPwCk").val(); // 회원이 입력한 패스워드 확인 값 저장
+		var inputNick = $("#joinNickName").val(); // 회원이 입력한 닉네임 값 저장
+		var inputEmail = $("#joinEmail").val(); // 회원이 입력한 메일 값 저장
 		var nameRegEx = /^[가-힣]+$/; // 이름 정규표현식은 한글만 가능
 		// 이메일 정규표현식
 		var emailRegEx = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
@@ -97,42 +97,42 @@ $(function(){
 		
 		if(inputName.length < 1){ // 이름을 입력하지 않았으면
 			alert("이름을 입력하세요");
-			$("input[name='username']").focus();
+			$("#joinName").focus();
 		} else if(!(nameRegEx.test(inputName))){ // 이름 정규표현식에 맞게 입력하지 않으면
-			$("input[name='username']").val(""); // 이름 입력 란 값 초기화
+			$("#joinName").val(""); // 이름 입력 란 값 초기화
 			alert("이름은 한글만 작성가능합니다");
-			$("input[name='username']").focus();
+			$("#joinName").focus();
 		} else if(inputId.length < 1){ // 아이디를 입력하지 않았으면
 			alert("아이디를 입력하세요");
 			idCheck = false;
-			$("input[name='userid']").focus();
+			$("#joinId").focus();
 		} else if(idCheck == false) { // 아이디 정규표현식에 맞지않게 입력하지 않으면
 			alert("아이디는 영어 소문자로 시작하는 5~15자 영문 또는 숫자만 입력하세요");
-			$("input[name='userid']").val("");
-			$("input[name='userid']").focus();
+			$("#joinId").val("");
+			$("#joinId").focus();
 		} else if(!(pwRegEx.test(inputPw))){ // 비밀번호 정규표현식에 맞게 입력하지 않으면
-			$("input[name='userpw']").val(""); // 비밀번호 입력 란 값 초기화
+			$("#joinPw").val(""); // 비밀번호 입력 란 값 초기화
 			alert("비밀번호는 6~20자리의 영문 대소문자여야 하며 최소 1개의 숫자나 특수문자를 포함해야됩니다 다시입력해주세요!");
-			$("input[name='userpw']").focus();
+			$("#joinPw").focus();
 		} else if(!(pwRegEx.test(inputPwCk))){ // 비밀번호 정규표현식에 맞게 입력하지 않으면
-			$("input[name='userpwck']").val(""); // 비밀번호 확인란 값 초기화
+			$("#joinPwCk").val(""); // 비밀번호 확인란 값 초기화
 			alert("비밀번호 확인란은 6~20자리의 영문 대소문자여야 하며 최소 1개의 숫자나 특수문자를 포함해야됩니다 다시입력해주세요!");
-			$("input[name='userpwck']").focus();
+			$("#joinPwCk").focus();
 		} else if(inputPw != inputPwCk) { // 비밀번호와 비밀번호 확인란 값이 다르면
-			$("input[name='userpwck']").val(""); // 비밀번호 확인란 값 초기화
+			$("#joinPwCk").val(""); // 비밀번호 확인란 값 초기화
 			alert("비밀번호와 비밀번호 확인란이 동일하지 않습니다 다시 입력해주세요");
-			$("input[name='userpwck']").focus();
+			$("#joinPwCk").focus();
 		} else if(inputNick.length < 1) { // 닉네임을 입력하지 않았으면
 			alert("닉네임을 입력해주세요");
-			$("input[name='nickname']").focus();
+			$("#joinNickName").focus();
 		} else if(!(emailRegEx.test(inputEmail))){ // 이메일 정규표현식에 맞게 입력하지 않으면 
-			$("input[name='usermail']").val(""); // 이메일 입력 란 값 초기화
+			$("#joinEmail").val(""); // 이메일 입력 란 값 초기화
 			alert("이메일 형식대로 입력하세요 ex) xxx.naver.com ");
-			$("input[name='usermail']").focus();
+			$("#joinEmail").focus();
 		} else if(checkOverlap == false){ // 아이디가 중복된 경우
-			$("input[name='userid']").val(""); // 아이디 입력 란 값 초기화
+			$("#joinId").val(""); // 아이디 입력 란 값 초기화
 			alert("중복된 아이디 입니다 다시입력해주세요");
-			$("input[name='userid']").focus();
+			$("#joinId").focus();
 		} else { // 전부 만족했을 때 폼 전송 - 회원가입
 			formJoin.submit();
 		} 
@@ -141,12 +141,12 @@ $(function(){
 	var idCheck = false; // 아이디 정규표현식 체크 값
 	var idRegEx =  /^[a-z]{1}[a-z0-9]{4,14}$/; // 아이디는 영어 소문자로 시작하는 5~15자 영문 또는 숫자
 	var checkOverlap = false; // 아이디 중복 체크 - 중복이면 false 중복이 아니면 true
-	var inputIdTag = $("input[name='userid']"); // 아이디 입력 태그
+	var inputIdTag = $("#joinId"); // 아이디 입력 태그
 	
 	inputIdTag.on("keyup", function(){ // 회원가입 시 아이디값 입력시 진행
 		var value = $(this).val(); // 아이디 입력 태그의 값 저장
 		
-		if($("input[name='userid']").val().length > 4 ){ // 5자리 이상의 아이디를 입력했을경우 진행
+		if($("#joinId").val().length > 4 ){ // 5자리 이상의 아이디를 입력했을경우 진행
 			
 			$.get("/userid", // 아이디 중복확인 ajax로 처리
 					{userid:value},

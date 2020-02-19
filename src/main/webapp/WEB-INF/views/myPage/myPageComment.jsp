@@ -17,8 +17,8 @@
 	<div class="container">
 		<h3>마이페이지</h3>
 		<div class="forg2">
-					<a href="/myPageInfo" class="forg2-left">회원 정보</a>
-					<a href="/myPageBoard" class="forg2-left">스크랩/작성 게시물</a>
+					<a href="/myPage/info" class="forg2-left">회원 정보</a>
+					<a href="/myPage/board" class="forg2-left">스크랩/작성 게시물</a>
 					<a href="#" class="forg2-left active" id="joinLink">작성 댓글/관리자 문의 목록</a>
 				<div class="clearfix"></div>
 		</div>
