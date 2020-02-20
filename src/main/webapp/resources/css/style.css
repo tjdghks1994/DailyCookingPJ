@@ -428,6 +428,10 @@ ul{
 	height: 100px;
 }
 
+.bold {
+	 font-weight: 800;
+}
+
 /* 내가 추가한 style.css 끝 */
 
 /*--popup--*/

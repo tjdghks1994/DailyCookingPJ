@@ -32,4 +32,7 @@
 	<update id="infoChange">
 		update daily_member set nickname = #{nickname}, usermail = #{usermail} where userid = #{userid}
 	</update>
+	<update id="infoAdmin">
+		update daily_member set username = #{username}, nickname = #{nickname}, usermail = #{usermail} where userid = #{userid}
+	</update>
 </mapper>

@@ -19,4 +19,20 @@
 	<select id="getTotalCountQuestion" resultType="int">
 		select count(*) from question_list where questionnum > 0 AND userid = #{userid}
 	</select>
+	<select id="getQuestionList" resultType="com.dailycooking.domain.QuestionVO">
+	<![CDATA[
+		select * from(
+		select 
+		    rownum rn, userid, title, content, questionnum, questiondate, status, answer
+		from question_list where rownum <= #{pageNum} * #{amount} order by questionnum desc
+		)
+		where rn > (#{pageNum} -1) * #{amount}
+	]]>
+	</select>
+	<select id="getTotalCount" resultType="int">
+		select count(*) from question_list where questionnum > 0 
+	</select>
+	<update id="updateQuestion">
+		update question_list set answer = #{answer}, status = 1 where questionNum = #{questionNum}
+	</update>
 </mapper>

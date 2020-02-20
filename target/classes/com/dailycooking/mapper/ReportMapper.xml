@@ -6,4 +6,22 @@
 	<insert id="report">
 		insert into report_list values(1,#{recipenum},#{reporter},sysdate)
 	</insert>
+	<select id="getList" resultType="com.dailycooking.domain.JoinReportVO">
+	<![CDATA[
+		select * from (
+			select rownum rn, rb.userid, rb.title, rl.recipenum, rl.reporter from recipe_board rb, report_list rl
+			where rownum <= #{pageNum} * #{amount} and rb.recipenum = rl.recipenum order by recipenum
+		) where rn > (#{pageNum} -1) * #{amount}
+	]]>
+
+	</select>
+	<select id="getTotalCount" resultType="int">
+		select count(*) from (
+			select * from report_list
+		)
+	</select>
+	
+	<delete id="deleteReport">
+		delete from report_list where recipenum = #{recipenum}
+	</delete>
 </mapper>

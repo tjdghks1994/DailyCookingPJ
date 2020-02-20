@@ -178,6 +178,19 @@
 		
 		$("#replyForm").submit();
 	});
+	$("#myPageScrapTag").on("click",function(e){ // 스크랩 게시물 태그 클릭 시 진행
+		e.preventDefault();
+	
+		var form = $("#scrapForm");
+		form.submit();
+	});
+	
+	$("#myPageBoardTag").on("click",function(e){
+		e.preventDefault();
+		
+		$("#boardForm").submit();
+	});
+	
 </script>
 </body>
 </html>

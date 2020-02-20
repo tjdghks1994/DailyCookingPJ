@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.dailycooking.domain.Criteria;
 import com.dailycooking.domain.QuestionVO;
 
 public interface QuestionMapper {
@@ -13,4 +14,10 @@ public interface QuestionMapper {
 	public List<QuestionVO> getMemberQuestionList(@Param("userid") String userid,@Param("pageNum") int pageNum, @Param("amount") int amount);
 
 	public int getTotalCountQuestion(String userid); // 해당 유저의 전체 문의 목록 수
+	
+	public List<QuestionVO> getQuestionList(Criteria cri); // 전체 문의/건의 사항 목록 
+	
+	public int getTotalCount(); // 전체 수
+	
+	public int updateQuestion(QuestionVO qvo); // 답변 완료
 }

@@ -29,4 +29,22 @@ public class QuestionServiceImpl implements QuestionService{
 		log.info("getTotalQuestionCount...." + userid);
 		return mapper.getTotalCountQuestion(userid);
 	}
+
+	@Override
+	public List<QuestionVO> getList(Criteria cri) {
+		log.info("getQuestionList.." + cri);
+		return mapper.getQuestionList(cri);
+	}
+
+	@Override
+	public int getTotal() {
+		log.info("getTotal..");
+		return mapper.getTotalCount();
+	}
+
+	@Override
+	public int answerComplete(QuestionVO qvo) {
+		log.info("answer Complete.." + qvo);
+		return mapper.updateQuestion(qvo);
+	}
 }

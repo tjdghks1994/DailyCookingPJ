@@ -14,4 +14,5 @@ public interface MemberRelationService {
 	public MemberVO readInfo(String userid); // 회원 모든 정보 가져오기
 	public int infoChange(MemberVO mvo); // 회원 정보 변경
 	public int removeMember(String userid); // 회원 탈퇴
+	public int infoAdminChange(MemberVO mvo); // 관리자 정보 변경
 }

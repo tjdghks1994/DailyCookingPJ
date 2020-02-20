@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,16 +18,8 @@
 
 <div class="bs-docs-example" style="position: relative; left: 10px; top: 30px; display: inline-block; width: 75%;">
 	<span style="margin-left: 20px; font-weight: bold; font-size: 20px;">정지 회원 목록 ( 
-	<span class="suspendNum"> 5 </span> )</span>
-	<div class="searchDiv">
-      	<form id="searchForm" action="" method="get">
-            <select name="type" style="height: 26px;">
-               <option value="">ID</option>
-            </select>
-            <input type="text" name="keyword">
-           <button class="btn btn-default" style="height: 30px; padding: 1px 5px;">검색</button>
-        </form>
-    </div>
+	<span class="suspendNum"> ${count } </span> )</span>
+	
 	<div style="margin-bottom: 20px;">
 	</div>
             <table class="table table-striped">
@@ -37,48 +32,44 @@
                 </tr>
               </thead>
               <tbody>
+              <c:forEach items="${bList }" var="bList" varStatus="status">
                 <tr>
-                  <td><a href="#" class="suspendMemberInfo"> dasdf11</a></td>
-                  <td>2020/01/01</td>
-                  <td>활동정지</td>
-                  <td><button class="btn btn-warning btn-xs" name="suspendBtn">정지 해제</button> </td>
+                  <td><a href="#" class="suspendMemberInfo"  data-id="${mList[status.index].userid }" data-na="${mList[status.index].username }"
+	                  data-ni="${mList[status.index].nickname }" data-ma="${mList[status.index].usermail }" data-rd='<fmt:formatDate value="${mList[status.index].regDate }" pattern="yyyy-MM-dd"/>' data-su="${mList[suspension.index] }">
+	                	${bList.userid }</a>
+	               </td>
+                  <td><fmt:formatDate value="${bList.suspensionDate }" pattern="yyyy-MM-dd"/> </td>
+                  <td>활동 정지</td>
+                  <td><button class="btn btn-warning btn-xs" id="freezeBtn" data-id="${bList.userid }">정지 해제</button> </td>
                 </tr>
-                <tr>
-                  <td>asdfasdf</td>
-                  <td>2020/01/02</td>
-                  <td>활동정지</td>
-                  <td><button class="btn btn-warning btn-xs" name="suspendBtn">정지 해제</button></td>
-                </tr>
-                <tr>
-                  <td>asdf2314</td>
-                  <td>2020/01/03</td>
-                  <td>활동정지</td>
-                  <td><button class="btn btn-warning btn-xs" name="suspendBtn">정지 해제</button></td>
-                </tr>
-                 <tr>
-                  <td>asdfzxcv12</td>
-                  <td>2020/01/03</td>
-                  <td>활동정지</td>
-                  <td><button class="btn btn-warning btn-xs" name="suspendBtn">정지 해제</button></td>
-                </tr> <tr>
-                  <td>user02</td>
-                  <td>2020/01/03</td>
-                  <td>활동정지</td>
-                  <td><button class="btn btn-warning btn-xs" name="suspendBtn">정지 해제</button></td>
-                </tr>
+              </c:forEach> 
               </tbody>
             </table>
-            <div style="text-align: center;">
+            
+             <form action="/admin/susList" id="susForm">
+              		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token }">
+              		<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
+					<input type="hidden" name="amount" value="${pageMaker.cri.amount }">
+              </form>
+            
+           <div style="text-align: center;">
 	            <ul class="pagination pagination">
-					<li class="disabled"><a href="#"><span aria-hidden="true">«</span></a></li>
-					<li class="active"><a href="#">1</a></li>
-					<li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-					<li><a href="#">5</a></li>
+	            <c:if test="${pageMaker.prev }">
+	            	<li class="disabled"><a href="#"><span aria-hidden="true">«</span></a></li>
+	            </c:if>
+	            <c:forEach var="num" begin="${pageMaker.startPage }" end="${pageMaker.endPage }">
+	            	<li class="paginate_button ${pageMaker.cri.pageNum == num ? "active":"" }"><a href="${num }">${num }</a></li>
+	            </c:forEach>	
+				<c:if test="${pageMaker.next }">
 					<li><a href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+				</c:if>
 				</ul>
 			</div>
+			<form action="/admin/susList" method="get" id="susPageForm">
+				<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
+				<input type="hidden" name="amount" value="${pageMaker.cri.amount }">
+			</form>
+			
 			
 			<!-- 회원 정보 모달 창 -->
               <div class="modal fade" id="myModal13" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -91,27 +82,27 @@
                           <div class="modal-body">
                         		<form><div class="form-group">
 						            <label>아이디</label>
-						            <input class="form-control" type="text" readonly="readonly" value="dasdf11">
+						            <input class="form-control" id="infoId" name="userid" type="text" readonly="readonly">
 						          </div>
 						          <div class="form-group">
 						            <label>이름</label>
-						            <input class="form-control" type="text" readonly="readonly" value="최영우">
+						            <input class="form-control" name="username" type="text" readonly="readonly">
 						          </div>
 						          <div class="form-group">
 						            <label>닉네임</label>
-						            <input class="form-control" type="text" readonly="readonly" value="진주love영우">
+						            <input class="form-control" name="nickname" type="text" readonly="readonly">
 						          </div>
 						          <div class="form-group">
 						            <label>이메일</label>
-						            <input class="form-control" type="text" readonly="readonly" value="youngwoo@naver.com">
+						            <input class="form-control" name="usermail" type="text" readonly="readonly">
 						          </div>
 						          <div class="form-group">
 						            <label>가입 일자</label>
-						            <input class="form-control" type="text" readonly="readonly" value="2020/01/01">
+						            <input class="form-control" name="regDate" type="text" readonly="readonly">
 						          </div>
 						          <div class="form-group">
 						            <label>정지 여부</label>
-						            <input class="form-control" type="text" readonly="readonly" value="정지 된 아이디 입니다.">
+						            <input class="form-control" name="suspension" type="text" readonly="readonly">
 						          </div>
 						        </form>
                           </div>
@@ -128,19 +119,46 @@
 
 <script>
 	$(function(){
-		var memberDelete = $("button[name='suspendBtn']");
-		memberDelete.on("click",function(e){
-			e.preventDefault();
-			
-			confirm('정말 정지를 해제 하시겠습니까?');
-		});
 		
 		var modal13 = $('#myModal13');
 		var suspendMember = $('.suspendMemberInfo');
 		suspendMember.on('click',function(e){
 			e.preventDefault();
 			
+			$("#infoId").val($(this).data("id"));
+			$("input[name='username']").val($(this).data("na"));
+			$("input[name='nickname']").val($(this).data("ni"));
+			$("input[name='usermail']").val($(this).data("ma"));
+			$("input[name='regDate']").val($(this).data("rd"));
+			$("input[name='suspension']").val('활동 정지된 회원입니다');
+			
 			modal13.modal('show');
+		});
+		
+		$("#freezeBtn").on("click",function(e){
+			var userid = $(this).data("id");
+			var csrfHeaderName = "${_csrf.headerName}";
+			var csrfTokenValue = "${_csrf.token}";
+			
+			e.preventDefault();
+			if(confirm("정말 정지를 해제 하시겠습니까?")){
+				$.ajax({
+					url : '/admin/susFreeze',
+					data : {userid : userid},
+					type : 'post',
+					beforeSend : function(xhr)
+			           {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+			              xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+			           },
+			        success : function(result){
+			        	if(result == 'ok'){
+			        		alert("정상적으로 정지가 해제되었습니다");
+			        		$("#susForm").submit();
+			        	}
+			        }
+				});
+			}
+		
 		});
 	});
 </script>

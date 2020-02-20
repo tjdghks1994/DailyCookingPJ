@@ -9,20 +9,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dailycooking.domain.BlackListVO;
 import com.dailycooking.domain.Criteria;
 import com.dailycooking.domain.JoinRecipeVO;
 import com.dailycooking.domain.MemberVO;
 import com.dailycooking.domain.QuestionVO;
 import com.dailycooking.domain.RecipeBoardVO;
 import com.dailycooking.domain.RecipeRepresentativeVO;
+import com.dailycooking.service.BlackListService;
 import com.dailycooking.service.MemberRelationService;
 import com.dailycooking.service.RecipeService;
 
@@ -39,6 +43,9 @@ public class MemberRelationController { // 회원 관련된 컨트롤러 사용 
 
 	@Setter(onMethod_ = @Autowired)
 	private RecipeService rService;
+	
+	@Setter(onMethod_ = @Autowired)
+	private BlackListService bService;
 	
 	@GetMapping("/accessError")
 	public void accessDenied(Authentication auth, Model model) { // 관리자 페이지에 사용자가 접근할때 접근 거부 페이지로 이동
@@ -225,5 +232,31 @@ public class MemberRelationController { // 회원 관련된 컨트롤러 사용 
 		log.info("리스트 : " + encodeList);
 		
 		return encodeList;
+	}
+	
+	@PostMapping(value = "/susCheck", produces = {MediaType.TEXT_PLAIN_VALUE})
+	@ResponseBody
+	public ResponseEntity<String> memberSuspension(String userid, Model model ){
+		log.info("회원 정지 여부 컨트롤러 : " + userid);
+		
+		MemberVO mvo = service.readInfo(userid);
+		int suspension = mvo.getSuspension();
+		
+		log.info("정지여부 : " + suspension);
+		
+		return suspension == 0 || suspension == 1 ? new ResponseEntity<>(Integer.toString(suspension), HttpStatus.OK) :
+			new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@PostMapping(value = "/valueCheck", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+	@ResponseBody
+	public ResponseEntity<BlackListVO> memberData(String userid, Model model ){
+		log.info("정지 회원 이유, 날짜 가져오기 컨트롤러 : " + userid);
+		
+		BlackListVO bvo = bService.readMember(userid);
+		
+		
+		return bvo != null ? new ResponseEntity<>(bvo, HttpStatus.OK) :
+			new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }

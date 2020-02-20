@@ -27,11 +27,11 @@
 		<div class="main-agileits">
 				<div class="form-w3agile">
 					<h3>로그인</h3>
-					<form action="/login" method="post">
+					<form action="/login" method="post" id="loginForm">
 						<p style="font-size: 20px; margin-bottom: 10px;">아이디</p>
 						<div class="key">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
-							<input  type="text" name="username">
+							<input  type="text" name="username" id="inputId">
 							<div class="clearfix"></div>
 						</div>
 						<p style="font-size: 20px; margin-bottom: 10px;">비밀번호</p>
@@ -40,7 +40,9 @@
 							<input  type="password" name="password">
 							<div class="clearfix"></div>
 						</div>
-						<input type="submit" value="Login">
+						
+						<input type="submit" value="Login" id="loginBtn">
+						
 						<div class="form-w3agile2">
 							<input type="checkbox" name="remember-me"> 로그인 상태 유지하기
 						</div>
@@ -73,6 +75,43 @@ $(function(){
 	
 });
 
+	var csrfHeaderName = "${_csrf.headerName}";
+	var csrfTokenValue = "${_csrf.token}";
+	
+	$("#loginBtn").on("click",function(e){
+		e.preventDefault();
+		
+		
+		$.ajax({
+			url : '/susCheck',
+			data :{ userid : $("#inputId").val() },
+			type : 'post',
+			beforeSend : function(xhr)
+	           {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+	              xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+	           },
+			success : function(result){
+				if(result == 1){
+					
+					$.ajax({
+						url : '/valueCheck',
+						data : {userid : $("#inputId").val()},
+						type : 'post',
+						beforeSend : function(xhr)
+				           {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+				              xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+				           },
+				        success : function(result){
+				        	alert("회원님은 " + result.reason + " 의 사유로 인해 정지 되었습니다.  해제를 원하신다면 admin@naver.com 으로 연락주세요");
+				        }
+					});
+					
+				} else {
+					$("#loginForm").submit();
+				}
+			}
+		}); //END ajax()
+	});
 </script>
 
 <c:if test="${joinResult != null }"> <!-- 회원가입 완료시 알림창 -->

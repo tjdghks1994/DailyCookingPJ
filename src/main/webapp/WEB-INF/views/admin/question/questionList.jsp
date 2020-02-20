@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,7 +18,7 @@
 
 <div class="bs-docs-example" style="position: relative; left: 10px; top: 30px; display: inline-block; width: 75%;">
 	<span style="margin-left: 20px; font-weight: bold; font-size: 20px;">전체 건의/문의 사항 목록 (
-	<span class="memberNum"> 5 </span> )</span>
+	<span class="memberNum"> ${total } </span> )</span>
 	<div style="margin-bottom: 20px;">
 	</div>
             <table class="table table-striped">
@@ -23,59 +26,45 @@
                 <tr>
                   <th>번호</th>
                   <th>제목</th>
-                  <th>작성자(닉네임)</th>
-                  <th>건의 한 날짜 </th>
+                  <th>작성자</th>
+                  <th>문의/건의 한 날짜 </th>
                   <th style="width: 15%;">답변 상태</th>
                 </tr>
               </thead>
               <tbody>
-                <tr class="questionList">
-                  <td>1</td>
-                  <td>관리자님 질문이요</td>
-                  <td>유후우</td>
-                  <td>2020/01/20</td>
-                  <td>답변 안함</td>
+              <c:forEach items="${qList }" var="li">
+                <tr class="questionList" data-ti="${li.title }" data-id="${li.userid }" data-co="${li.content }" data-st="${li.status }"
+                data-an="${li.answer }" data-num="${li.questionNum }">
+                  <td>${li.questionNum }</td>
+                  <td>${li.title }</td>
+                  <td>${li.userid }</td>
+                  <td><fmt:formatDate value="${li.questionDate }" pattern="yyyy-MM-dd"/> </td>
+                  <td>
+	                  <c:if test="${li.status eq 0 }">답변 대기중</c:if>
+	                  <c:if test="${li.status eq 1 }">답변 완료</c:if>
+                  </td>
                 </tr>
-                <tr>
-                  <td>2</td>
-                  <td>관리자님 제 게시글이 이상해요</td>
-                  <td>원주토박이</td>
-                  <td>2020/01/20</td>
-                  <td>답변 안함</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>관리자님 계정 정지 해제 해주세요</td>
-                  <td>그루트</td>
-                  <td>2020/01/22</td>
-                  <td>답변 안함</td>
-                </tr>
-                 <tr>
-                  <td>4</td>
-                  <td>관리자님 로그인이 안되요</td>
-                  <td>백종원아들</td>
-                  <td>2020/01/23</td>
-                  <td>답변 안함</td>
-                </tr> <tr>
-                  <td>5</td>
-                  <td>게시물 삭제가 안되요 ㅠㅠ</td>
-                  <td>술꾼</td>
-                  <td>2020/01/29</td>
-                  <td>답변 완료</td>
-                </tr>
+              </c:forEach>
               </tbody>
             </table>
+            
             <div style="text-align: center;">
 	            <ul class="pagination pagination">
-					<li class="disabled"><a href="#"><span aria-hidden="true">«</span></a></li>
-					<li class="active"><a href="#">1</a></li>
-					<li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-					<li><a href="#">5</a></li>
+	            <c:if test="${pageMaker.prev }">
+	            	<li class="disabled"><a href="#"><span aria-hidden="true">«</span></a></li>
+	            </c:if>
+	            <c:forEach var="num" begin="${pageMaker.startPage }" end="${pageMaker.endPage }">
+	            	<li class="paginate_button ${pageMaker.cri.pageNum == num ? "active":"" }"><a href="${num }">${num }</a></li>
+	            </c:forEach>	
+				<c:if test="${pageMaker.next }">
 					<li><a href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+				</c:if>
 				</ul>
 			</div>
+			<form action="/admin/getQuestionList" method="get" id="questionPageForm">
+				<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
+				<input type="hidden" name="amount" value="${pageMaker.cri.amount }">
+			</form>
 </div>
 
 <!-- 관리자에게 건의/문의 모달 창 -->
@@ -89,15 +78,16 @@
                           <div class="modal-body">
                         	
                         		<label>문의 / 건의 제목</label>
-                        		<input class="form-control" value="관리자님 질문이요">
+                        		<input class="form-control" name="title" readonly="readonly">
                         		<label>작성자</label>
-						        <input class="form-control" value="유후우" name="replyer" id="replyer" readonly="readonly">
+						        <input class="form-control" name="userid" readonly="readonly">
 						        <label>문의 / 건의 내용</label>
-						        <textarea class="form-control" style="margin-bottom: 10px;">저도 홈페이지 만들고 싶은데 알려주세용</textarea>	
-                        	
+						        <textarea class="form-control" name="content" style="margin-bottom: 10px;">
+						        
+						        </textarea>	
                         		<div>
                         			<label>관리자 답변</label>
-                        			<textarea class="form-control" style="margin-bottom: 10px;"></textarea>
+                        			<textarea class="form-control" name="answer" style="margin-bottom: 10px;"></textarea>
                         		</div>
                           </div>
                           <div class="modal-footer">
@@ -110,7 +100,7 @@
                   <!-- /.modal-dialog -->
               </div>
               <!-- END 관리자에게 건의/문의 모달 창  -->   
-
+              
 <script>
 $(function(){
 
@@ -120,8 +110,52 @@ $(function(){
 		question.on("click",function(e){
 			e.preventDefault();
 			$('#myModal9').modal('show');
+			var num = $(this).data("num");
+			var csrfHeaderName = "${_csrf.headerName}";
+			var csrfTokenValue = "${_csrf.token}";
+			
+			$("input[name='title']").val($(this).data("ti"));
+			$("input[name='userid']").val($(this).data("id"));
+			$("textarea[name='content']").html($(this).data("co"));
+			$("textarea[name='content']").attr("readonly","readonly");
+			
+			if($(this).data("st") == 0){
+				$("textarea[name='answer']").html("");
+			} else {
+				$("textarea[name='answer']").html($(this).data("an"));
+				$("textarea[name='answer']").attr("readonly","readonly");
+			}
+			
+			$("#modalAnswerBtn").on("click",function(e){ // 답변 완료시 진행
+				
+				$.ajax({
+					url : '/admin/answerQuestion',
+					data : {answer : $("textarea[name='answer']").val(), questionNum : num},
+					type : 'post',
+					beforeSend : function(xhr)
+			           {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+			              xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+			           },
+					success : function(result){
+						if(result == 'ok'){
+							alert("문의/건의 사항에 답변을 완료했습니다");
+							modal9.modal('hide');
+							$("#questionPageForm").submit();
+						}
+					}
+				});
+			});
 		});
 		
+	
+		
+		var questionPageForm = $("#questionPageForm");
+		
+		$(".paginate_button a").on("click", function(e){ // 페이지 버튼 클릭 시 진행
+			e.preventDefault();
+			questionPageForm.find("input[name='pageNum']").val($(this).attr("href"));
+			questionPageForm.submit();
+		});
 });
 </script>
 </body>

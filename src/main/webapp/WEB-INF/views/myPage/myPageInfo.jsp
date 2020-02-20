@@ -179,9 +179,12 @@ $(function(){
 		
 		if(changeAnswer){
 			
-		 	if($("input[name='nickname']").length < 1) { // 닉네임을 입력하지 않았으면
+		 	if($("input[name='nickname']").val().length < 1) { // 닉네임을 입력하지 않았으면
 				alert("닉네임을 입력해주세요");
 				$("input[name='nickname']").focus();
+			} else if($("input[name='usermail']").val().length < 1){ // 이메일을 입력하지 않았으면
+				alert("이메일을 입력해주세요");
+				$("input[name='usermail']").focus();
 			} else if(!(emailRegEx.test(usermail))){ // 이메일 정규표현식에 맞게 입력하지 않으면 
 				$("input[name='usermail']").val(""); // 이메일 입력 란 값 초기화
 				alert("이메일 형식대로 입력하세요 ex) xxxxx@naver.com ");

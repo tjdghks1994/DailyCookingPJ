@@ -111,5 +111,10 @@ public class MemberRelationServiceImpl implements MemberRelationService {
 		return mapper.deleteMember(userid);
 	}
 
+	@Override
+	public int infoAdminChange(MemberVO mvo) {
+		return mMapper.infoAdmin(mvo);
+	}
+
 	
 }

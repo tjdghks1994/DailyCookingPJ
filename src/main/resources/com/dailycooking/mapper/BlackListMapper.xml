@@ -3,5 +3,33 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dailycooking.mapper.BlackListMapper">
-	
+	<insert id="susMember">
+		insert into blacklist values(#{userid},sysdate,#{reason})
+	</insert>
+	<update id="susUpdate">
+		update daily_member set suspension = 1 where userid = #{userid}
+	</update>
+	<select id="readMember" resultType="com.dailycooking.domain.BlackListVO">
+		select * from blacklist where userid = #{userid}
+	</select>
+	<select id="readAll" resultType="com.dailycooking.domain.BlackListVO">
+	<![CDATA[
+		select* from (
+			select rownum rn, userid, suspensionDate, reason
+			from blacklist
+			where rownum <= #{pageNum} * #{amount} 
+		) where rn > (#{pageNum} -1) * #{amount}
+	]]>
+	</select>
+	<select id="getTotal" resultType="int">
+		select count(*) from (
+			select * from blacklist
+			)
+	</select>
+	<update id="susFreeze">
+		update daily_member set suspension = 0 where userid = #{userid}
+	</update>
+	<delete id="susDelete">
+		delete from blacklist where userid = #{userid}
+	</delete>
 </mapper>

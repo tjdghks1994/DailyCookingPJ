@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>관리자페이지 - 레시피 게시판 목록</title>
+<title>관리자페이지 - 레시피 게시판 신고 목록</title>
 <!-- //for-mobile-apps -->
 <link href="/resources/css/bootstrap.css" rel='stylesheet' type='text/css' />
 <!-- Custom Theme files -->
@@ -17,7 +17,7 @@
 <jsp:include page="../adminBar.jsp"></jsp:include>
 
 <div class="bs-docs-example" style="position: relative; left: 10px; top: 30px; display: inline-block; width: 75%;">
-	<span style="margin-left: 20px; font-weight: bold; font-size: 20px;">전체 레시피 게시물 목록 (
+	<span style="margin-left: 20px; font-weight: bold; font-size: 20px;">전체 레시피 게시물 신고 목록 (
 	<span class="memberNum"> ${total } </span> )</span>
 	
 	<div style="margin-bottom: 20px;">
@@ -28,27 +28,29 @@
                   <th>글 번호</th>
                   <th>제목</th>
                   <th>작성자</th>
+                  <th>신고자</th>
                   <th style="width: 15%;">관리</th>
                 </tr>
               </thead>
               <tbody>
-              <c:forEach items="${rList }" var="rList">
+              <c:forEach items="${rpList }" var="li">
                 <tr>
-                  <td>${rList.recipenum }</td>
-                  <td><a href="#" id="gotoRecipe" data-num="${rList.recipenum }">${rList.title }</a></td>
-                  <td>${rList.userid }</td>
-                  <td><button class="btn btn-warning btn-xs" name="deleteRecipe" data-num="${rList.recipenum }">게시물 삭제</button> </td>
+                  <td>${li.recipenum }</td>
+                  <td><a href="#" id="gotoRecipe" data-num="${li.recipenum }">${li.title }</a></td>
+                  <td>${li.userid }</td>
+                  <td>${li.reporter }</td>
+                  <td><button class="btn btn-warning btn-xs" name="deleteRecipeSus" data-num="${li.recipenum }">게시물 삭제</button> </td>
                 </tr>
               </c:forEach>
               </tbody>
             </table>
-   
-         	<form action="/admin/getRecipeList" id="getForm">
+            
+            <form action="/admin/getReportList" id="getForm">
             	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token }">
               	<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
 				<input type="hidden" name="amount" value="${pageMaker.cri.amount }">
             </form>
-          
+            
             <div style="text-align: center;">
 	            <ul class="pagination pagination">
 	            <c:if test="${pageMaker.prev }">
@@ -62,7 +64,7 @@
 				</c:if>
 				</ul>
 			</div>
-			<form action="/admin/getRecipeList" method="get" id="recipePageForm">
+			<form action="/admin/getReportList" method="get" id="reportPageForm">
 				<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
 				<input type="hidden" name="amount" value="${pageMaker.cri.amount }">
 			</form>
@@ -70,8 +72,8 @@
 
 <script>
 	$(function(){
-		var recipeDelete = $("button[name='deleteRecipe']");
-		recipeDelete.on("click",function(e){
+		var recipeDeleteSus = $("button[name='deleteRecipeSus']");
+		recipeDeleteSus.on("click",function(e){
 			e.preventDefault();
 			
 			var num = $(this).data("num");
@@ -81,7 +83,7 @@
 			if(confirm('정말 게시물을 삭제 하시겠습니까?')){
 				
 				$.ajax({
-					url : '/admin/removeRecipe',
+					url : '/admin/removeReport',
 					data : {recipenum : num},
 					type : 'post',
 					beforeSend : function(xhr)
@@ -97,15 +99,14 @@
 				});
 				
 			}
-			
 		});
 		
-		var recipePageForm = $("#recipePageForm");
+		var reportPageForm = $("#reportPageForm");
 		
-		$(".paginate_button a").on("click", function(e){ // 댓글 페이지 버튼 클릭 시 진행
+		$(".paginate_button a").on("click", function(e){ // 페이지 버튼 클릭 시 진행
 			e.preventDefault();
-			recipePageForm.find("input[name='pageNum']").val($(this).attr("href"));
-			recipePageForm.submit();
+			reportPageForm.find("input[name='pageNum']").val($(this).attr("href"));
+			reportPageForm.submit();
 		});
 		
 		$("#gotoRecipe").on("click",function(e){ // 게시물 목록 클릭 시 진행
