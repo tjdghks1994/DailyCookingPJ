@@ -18,7 +18,6 @@
 		</div>
 	</div>
 
-	<script src="js/jquery.vide.min.js"></script>
 	<div class="content-top">
 		<div class="container ">
 			<div class="spec ">
