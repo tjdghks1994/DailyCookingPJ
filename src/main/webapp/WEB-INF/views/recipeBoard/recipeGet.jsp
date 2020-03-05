@@ -380,7 +380,7 @@ $(function(){
 	scrapTag.on("click", function(e){
 
 		if(replyer == null) { // 로그인이 되어있지 않다면
-			alert("추천은 스크랩 후 이용 가능합니다");
+			alert("스크랩은 로그인 후 이용 가능합니다");
 			return;
 		}
 		

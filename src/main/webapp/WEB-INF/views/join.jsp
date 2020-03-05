@@ -106,6 +106,10 @@ $(function(){
 			alert("아이디를 입력하세요");
 			idCheck = false;
 			$("#joinId").focus();
+		} else if(inputId.length < 5 || inputId.length > 15) {
+			alert("아이디는 5~15자 까지만 입력가능 합니다.");
+			$("#joinId").val("");
+			$("#joinId").focus();
 		} else if(idCheck == false) { // 아이디 정규표현식에 맞지않게 입력하지 않으면
 			alert("아이디는 영어 소문자로 시작하는 5~15자 영문 또는 숫자만 입력하세요");
 			$("#joinId").val("");
