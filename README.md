@@ -4,3 +4,5 @@
 #### 홈페이지 사용자들이 음식을 만들 때 도움을 주기 위한 시스템이다.
 
 ## 개발 환경
+
+![ex_screenshot](./src/main/webapp/resources/images/개발환경.png)
