@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.dailycooking.domain.Criteria;
 import com.dailycooking.domain.RecipeReplyVO;
-import com.dailycooking.domain.ReplyPageDTO;
+import com.dailycooking.domain.ReplyPageVO;
 
 public interface RecipeRelpyService {
 
@@ -18,7 +18,7 @@ public interface RecipeRelpyService {
 	
 	public List<RecipeReplyVO> getList(Criteria cri, Long recipenum); // 해당 게시물의 댓글 전체 목록
 	
-	public ReplyPageDTO getListPage(Criteria cri, Long recipenum); // 해당 게시물의 댓글 전체목록과 댓글 갯수
+	public ReplyPageVO getListPage(Criteria cri, Long recipenum); // 해당 게시물의 댓글 전체목록과 댓글 갯수
 	
 	public List<RecipeReplyVO> getMemberReplyList(String userid, Criteria cri); // 해당 유저의 댓글 전체 목록
 	

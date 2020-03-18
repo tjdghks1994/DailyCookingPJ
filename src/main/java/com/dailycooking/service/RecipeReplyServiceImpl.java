@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dailycooking.domain.Criteria;
 import com.dailycooking.domain.RecipeReplyVO;
-import com.dailycooking.domain.ReplyPageDTO;
+import com.dailycooking.domain.ReplyPageVO;
 import com.dailycooking.mapper.RecipeMapper;
 import com.dailycooking.mapper.RecipeReplyMapper;
 
@@ -61,9 +61,9 @@ public class RecipeReplyServiceImpl implements RecipeRelpyService{
 	}
 
 	@Override
-	public ReplyPageDTO getListPage(Criteria cri, Long recipenum) {
+	public ReplyPageVO getListPage(Criteria cri, Long recipenum) {
 		
-		return new ReplyPageDTO(mapper.replyCnt(recipenum), mapper.getListWithPaging(cri, recipenum));
+		return new ReplyPageVO(mapper.replyCnt(recipenum), mapper.getListWithPaging(cri, recipenum));
 	}
 
 	@Override
